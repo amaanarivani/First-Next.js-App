@@ -28,7 +28,7 @@ export default function MyBlogs() {
         fetchMyblogData();
     }, []);
     return <div className="pt-20">
-        <h1 className="text-center font-bold text-3xl mt-8">Here's Your Blogs</h1>
+        <h1 className="text-center font-bold text-3xl mt-8">Here are Your Blogs</h1>
         <Box className='grid grid-cols-4 gap-4 p-8 m-auto'>
             {
               myblogData.map((myblog) => {
