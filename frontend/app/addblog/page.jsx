@@ -16,7 +16,7 @@ export default function AddBlog() {
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'));
-        console.log(user, "inside use effect");
+        // console.log(user, "inside use effect");
         if (!user) {
             Swal.fire({
                 icon: 'error',

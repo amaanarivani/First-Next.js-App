@@ -38,8 +38,6 @@ router.get("/getall", (req, res) => {
       res.status(500).json(err);
     });
   });
-  
-  
       
   router.get("/getbyid/:id", (req, res) => {
     console.log(req.params.id);
@@ -55,6 +53,18 @@ router.get("/getall", (req, res) => {
         }
       }
       res.json(finalResult);
+      
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  });
+
+  router.get("/getsingleblog/:id", (req, res) => {
+    console.log(req.params.id);
+    Model.findById(req.params.id)
+    .then(async (result) => {
+      res.json(result);
       
     }).catch((err) => {
       console.log(err);
