@@ -43,9 +43,18 @@ router.get("/getall", (req, res) => {
       
   router.get("/getbyid/:id", (req, res) => {
     console.log(req.params.id);
-    Model.findById(req.params.id)
-    .then((result) => {
-      res.json(result);
+    Model.find({userId : req.params.id})
+    .then(async (result) => {
+      let finalResult = [];
+      let i=0;
+      for(i=0; i<result.length; i++){
+        let currentData = result[i];
+        let fetchUserData  = await User.findById(currentData.userId);
+        if (fetchUserData){
+          finalResult.push({...currentData._doc, userData : fetchUserData});
+        }
+      }
+      res.json(finalResult);
       
     }).catch((err) => {
       console.log(err);
