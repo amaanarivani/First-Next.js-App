@@ -2,6 +2,7 @@
 const express = require('express');
 
 const userRouter = require('./Routers/userRouter');
+const blogRouter = require('./Routers/blogRouter');
 
 const cors = require('cors');
 
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 
 app.use('/user', userRouter);
+app.use('/blog', blogRouter);
 
 // Routes
 
