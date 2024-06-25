@@ -37,8 +37,8 @@ export default function MyBlogs() {
                     return <div>
                         <Link href={`/singleblog?blogid=${myblog._id}`}>
                             <Paper elevation={16} className="p-10">
-                                <h3 className="text-xl mb-3"><font className='font-bold'>Title : </font><font>{myblog.title}</font></h3>
-                                <p><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
+                                <h3 className="text-xl mb-3 font-bold"><font>{myblog.title}</font></h3>
+                                <p className="mb-2"><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
                                 <p><AccountCircle style={{color: '#2196f3'}}/><font className='ms-4'>{myblog.userData.name}</font></p>
                             </Paper>
                         </Link>
