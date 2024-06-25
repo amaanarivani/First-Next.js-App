@@ -64,7 +64,11 @@ router.get("/getall", (req, res) => {
     console.log(req.params.id);
     Model.findById(req.params.id)
     .then(async (result) => {
-      res.json(result);
+      let finalResult;
+      let userResult;
+      userResult = await User.findById(result.userId);
+      finalResult = {...result._doc, userData : userResult}
+      res.json(finalResult);
       
     }).catch((err) => {
       console.log(err);
