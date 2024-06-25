@@ -39,7 +39,7 @@ export default function MyBlogs() {
                             <Paper elevation={16} className="p-10">
                                 <h3 className="text-xl mb-3"><font className='font-bold'>Title : </font><font>{myblog.title}</font></h3>
                                 <p><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
-                                <p><AccountCircle /><font className='ms-4'>{myblog.userData.name}</font></p>
+                                <p><AccountCircle style={{color: '#2196f3'}}/><font className='ms-4'>{myblog.userData.name}</font></p>
                             </Paper>
                         </Link>
                     </div>

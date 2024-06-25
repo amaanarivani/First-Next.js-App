@@ -32,8 +32,8 @@ export default function Home() {
                   <Link href={`/singleblog?blogid=${blog._id}`}>
                   <Paper elevation={16} className="p-10 mb-5">
                     <h3 className="text-xl"><font className='font-bold'>Title : </font><font>{blog.title.substring(0, 10)}......</font></h3>
-                    <p><Description/><font className='ms-4'>{blog.description.substring(0, 10)}......</font></p>
-                    <p><AccountCircle fontSize='medium' style={{color: "blue"}}/><font className='ms-4'>{blog.userData.name}</font></p>
+                    <p><Description /><font className='ms-4'>{blog.description.substring(0, 10)}......</font></p>
+                    <p><AccountCircle fontSize='medium' style={{color: "#7c4dff"}}/><font className='ms-4'>{blog.userData.name}</font></p>
                   </Paper>
                   </Link>
                 </div>
