@@ -75,7 +75,7 @@ function SingleBlog() {
             </div>
         } else {
             return <div>
-               <h1 className="pt-20 text-center font-bold text-3xl">Loading<CircularProgress color='success' /></h1>
+               <h1 className="pt-20 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
                <img src="https://i.pinimg.com/originals/78/5b/ff/785bffb987465e9348c1d6d48a6e4b31.gif  " alt="" className='w-1/3 block m-auto pt-20'/>
             </div>
         }

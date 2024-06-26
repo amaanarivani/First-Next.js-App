@@ -3,6 +3,7 @@ import { AppBar, Box, IconButton, Toolbar, MenuIcon, Typography, Button } from "
 import { useState } from "react";
 import UseAppContext from "./UseContext";
 import Link from "next/link";
+import { Person } from "@mui/icons-material";
 export default function AppNavbar() {
 
   const { loggedIn, logout } = UseAppContext();
@@ -10,17 +11,18 @@ export default function AppNavbar() {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(sessionStorage.getItem('user'))
   );
+  console.log(currentUser.name);
 
   const displayMyBlog = () => {
     if (loggedIn) {
       return (
         <>
-            <a
-              href="/myblogs"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-            >
-              My Blogs
-            </a>
+          <a
+            href="/myblogs"
+            className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+          >
+            My Blogs
+          </a>
         </>
       )
     }
@@ -30,7 +32,8 @@ export default function AppNavbar() {
     if (loggedIn) {
       return (
         <>
-          <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
+          <Person className="mb-1"/><font className=''>{currentUser.name}</font>
+          <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
         </>
       )
     }
@@ -117,14 +120,6 @@ export default function AppNavbar() {
               className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
             >
               Add Blog
-            </a>
-          </li>
-          <li>
-            <a
-              href="/aboutus"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-            >
-              About
             </a>
           </li>
           <li>
