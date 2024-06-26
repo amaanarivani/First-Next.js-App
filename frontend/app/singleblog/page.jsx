@@ -11,6 +11,11 @@ function SingleBlog() {
 
     const { loggedIn, logout } = UseAppContext();
 
+    const [currentUser, setCurrentUser] = useState(
+        JSON.parse(sessionStorage.getItem('user'))
+    );
+    console.log(currentUser);
+
     const searchParams = useSearchParams()
     const blogid = searchParams.get('blogid');
     const router = useRouter();
@@ -45,8 +50,9 @@ function SingleBlog() {
             
         }
       }
+      console.log(loggedIn);
       const deleteButton = () => {
-        if(loggedIn){
+        if(currentUser._id == singleBlog.userId){
             return (
                 <>
                 <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{marginTop: '2rem'}}>Delete Blog</Button>

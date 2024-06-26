@@ -1,11 +1,12 @@
 'use client'
-import { AccountCircle, Description, Title } from "@mui/icons-material";
+import { AccountCircle, Description, Event, Title } from "@mui/icons-material";
 import { Box, Paper } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [blogData, setBlogData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const fetchBlogData = async () => {
     const res = await fetch('http://localhost:5000/blog/getall');
     console.log(res.status);
@@ -14,13 +15,15 @@ export default function Home() {
       const data = await res.json();
       console.log(data);
       setBlogData(data);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchBlogData();
   }, [])
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between pt-20">
+  const dsiplayData = () => {
+    if(!isLoading){
+      return <main className="flex min-h-screen flex-col items-center justify-between pt-20">
       <svg
         className="background--custom"
         id="demo"
@@ -55,23 +58,35 @@ export default function Home() {
       <div className="mt-5">
         <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
-        <Box className='grid grid-cols-4 gap-x-6 gap-y-6'>
+        <Box className='grid grid-cols-1 gap-y-10'>
 
           {
             blogData.map((blog) => {
-              return <div>
+              return <div className="container">
                 <Link href={`/singleblog?blogid=${blog._id}`}>
                   <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
-                    <h3 className="text-xl font-extrabold mb-2"><font>{blog.title.substring(0, 10)}......</font></h3>
-                    <p className="mb-2"><Description /><font className='ms-4'>{blog.description.substring(0, 10)}......</font></p>
-                    <p><AccountCircle fontSize='medium' style={{ color: "#7c4dff" }} /><font className='ms-4'>{blog.userData.name}</font></p>
+
+                    <h3 className="text-3xl font-extrabold mb-5"><font>{blog.title}</font></h3>
+                    <p className="mb-2 text-lg"><Description /><font className='ms-4 text-lg'>{blog.description}</font></p>
+                    <p className="text-xl font-bold mt-5"><AccountCircle fontSize='large' style={{ color: "#7c4dff" }} /><font className='ms-4'>{blog.userData.name}</font></p>
+                    <p className="text-md mt-8"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{blog.createdAt}</font></p>
                   </Paper>
                 </Link>
               </div>
             })
           }
         </Box>
-      </div>
-    </main>
+      </div >
+    </main >
+    }else{
+      return <div>
+                <img src="https://usagif.com/wp-content/uploads/loading-12.gif" alt="" className='w-1/5 block m-auto pt-36' />
+            </div>
+    }
+  }
+    
+  return (
+    <div>{dsiplayData()}</div>
   );
 }
+

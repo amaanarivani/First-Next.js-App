@@ -14,6 +14,7 @@ export default function MyBlogs() {
     console.log(currentUser);
 
     const [myblogData, setMyblogData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const fetchMyblogData = async () => {
         // console.log(id);
         const res = await fetch(`http://localhost:5000/blog/getbyid/${currentUser._id}`);
@@ -23,6 +24,7 @@ export default function MyBlogs() {
             const data = await res.json();
             console.log(data);
             setMyblogData(data);
+            setIsLoading(false);
         }
     };
 
@@ -30,7 +32,7 @@ export default function MyBlogs() {
         fetchMyblogData();
     }, []);
     const displayData = () => {
-        if(myblogData){
+        if(!isLoading){
             return <div className="pt-20">
             <h1 className="text-center font-bold text-3xl mt-8">Here are Your Blogs</h1>
             <Box className='grid grid-cols-4 gap-4 p-8 m-auto'>
@@ -51,7 +53,7 @@ export default function MyBlogs() {
         </div>
         } else {
             return <div>
-                <img src="https://usagif.com/wp-content/uploads/loading-12.gif" alt="" className='w-1/3 block m-auto pt-36'/>
+                <img src="https://usagif.com/wp-content/uploads/loading-12.gif" alt="" className='w-1/5 block m-auto pt-36'/>
             </div>
         }
     }
