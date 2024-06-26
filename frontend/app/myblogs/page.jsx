@@ -1,7 +1,7 @@
 'use client'
 
 import { AccountCircle, Description } from "@mui/icons-material";
-import { Box, Paper } from "@mui/material";
+import { Box, CircularProgress, Paper } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -53,7 +53,8 @@ export default function MyBlogs() {
         </div>
         } else {
             return <div>
-                <img src="https://usagif.com/wp-content/uploads/loading-12.gif" alt="" className='w-1/5 block m-auto pt-36'/>
+                <h1 className="pt-36 text-center font-bold text-3xl">Loading<CircularProgress color='success' /></h1>
+                <img src="https://i.pinimg.com/originals/78/5b/ff/785bffb987465e9348c1d6d48a6e4b31.gif  " alt="" className='w-1/3 block m-auto pt-36'/>
             </div>
         }
     }

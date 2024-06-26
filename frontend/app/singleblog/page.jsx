@@ -1,7 +1,7 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Event, Person } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
 import { Suspense, useEffect, useState } from "react";
@@ -65,6 +65,7 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="pt-10">
                 <div className="ms-20">
+                <h1 className="text-center font-bold text-3xl">Blog Details</h1>
                     <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                     <p className="text-xl mt-10"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
                     <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{singleBlog?.createdAt}</font></p>
@@ -74,14 +75,14 @@ function SingleBlog() {
             </div>
         } else {
             return <div>
-                <img src="https://usagif.com/wp-content/uploads/loading-12.gif" alt="" className='w-1/5  block m-auto pt-20' />
+               <h1 className="pt-20 text-center font-bold text-3xl">Loading<CircularProgress color='success' /></h1>
+               <img src="https://i.pinimg.com/originals/78/5b/ff/785bffb987465e9348c1d6d48a6e4b31.gif  " alt="" className='w-1/3 block m-auto pt-20'/>
             </div>
         }
     }
 
 
     return <div className="pt-20">
-        <h1 className="text-center font-bold text-3xl mt-8">Blog Details</h1>
         <div>
         {displayData()}
         </div>
