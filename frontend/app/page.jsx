@@ -22,50 +22,55 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between pt-20">
       <svg
-  className="background--custom"
-  id="demo"
-  viewBox="0 0 100 100"
-  preserveAspectRatio="none"
->
-  <path
-    fill="#FFFF00"
-    fillOpacity="0.4"
-    d="M-100 -100L200 -100L200 60L-100 60Z"
-    style={{ animation: "path0 3.3557046979865772s linear infinite alternate" }}
-  />
-  <path
-    fill="#00FFFF"
-    fillOpacity="0.6"
-    d="M-100 -100L200 -100L200 60L-100 60Z"
-    style={{ animation: "path1 4.716981132075472s linear infinite alternate" }}
-  />
-  <path
-    fill="#FF00FF"
-    fillOpacity="0.2"
-    d="M-100 -100L200 -100L200 50L-100 50Z"
-    style={{ animation: "path2 4.9504950495049505s linear infinite alternate" }}
-  />
-</svg>
-
+        className="background--custom"
+        id="demo"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="#FFFF00"
+          fillOpacity="0.8"
+          d="M-100 -100L200 -100L200 60L-100 60Z"
+          style={{ animation: "path0 2.9585798816568047s linear infinite alternate" }}
+        />
+        <path
+          fill="#00FFFF"
+          fillOpacity="0.7"
+          d="M-100 -100L200 -100L200 50L-100 50Z"
+          style={{ animation: "path1 6.944444444444445s linear infinite alternate" }}
+        />
+        <path
+          fill="#D7FF00"
+          fillOpacity="0.8"
+          d="M-100 -100L200 -100L200 30L-100 30Z"
+          style={{ animation: "path2 2.9761904761904763s linear infinite alternate" }}
+        />
+        <path
+          fill="#34BECE"
+          fillOpacity="0.3"
+          d="M-100 -100L200 -100L200 20L-100 20Z"
+          style={{ animation: "path3 15.625s linear infinite alternate" }}
+        />
+      </svg>
       <div className="mt-5">
-        <h1 className="text-3xl font-bold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
-        
-          <Box className='grid grid-cols-4 gap-x-6 gap-y-6'>
+        <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
-            {
-              blogData.map((blog) => {
-                return <div>
-                  <Link href={`/singleblog?blogid=${blog._id}`}>
-                  <Paper elevation={16} className="p-10 mb-3">
-                    <h3 className="text-xl font-bold mb-2"><font>{blog.title.substring(0, 10)}......</font></h3>
+        <Box className='grid grid-cols-4 gap-x-6 gap-y-6'>
+
+          {
+            blogData.map((blog) => {
+              return <div>
+                <Link href={`/singleblog?blogid=${blog._id}`}>
+                  <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
+                    <h3 className="text-xl font-extrabold mb-2"><font>{blog.title.substring(0, 10)}......</font></h3>
                     <p className="mb-2"><Description /><font className='ms-4'>{blog.description.substring(0, 10)}......</font></p>
-                    <p><AccountCircle fontSize='medium' style={{color: "#7c4dff"}}/><font className='ms-4'>{blog.userData.name}</font></p>
+                    <p><AccountCircle fontSize='medium' style={{ color: "#7c4dff" }} /><font className='ms-4'>{blog.userData.name}</font></p>
                   </Paper>
-                  </Link>
-                </div>
-              })
-            }
-          </Box>
+                </Link>
+              </div>
+            })
+          }
+        </Box>
       </div>
     </main>
   );

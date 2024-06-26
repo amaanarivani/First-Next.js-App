@@ -17,7 +17,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-      {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script> */}
       </head>
       <body className={inter.className}>
         <AppProvider>
@@ -25,8 +24,7 @@ export default function RootLayout({ children }) {
         {children}
         </AppProvider>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-      </body>
-      
+      </body> 
     </html>
   );
 }
