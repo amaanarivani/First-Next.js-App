@@ -1,12 +1,13 @@
 'use client'
 import { AccountCircle, Description, Event, Title } from "@mui/icons-material";
-import { Box, CircularProgress, Paper } from "@mui/material";
+import { Box, CircularProgress, Paper, TextField } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [blogList, setBlogList] = useState([]);
   const fetchBlogData = async () => {
     const res = await fetch('http://localhost:5000/blog/getall');
     console.log(res.status);
@@ -16,11 +17,19 @@ export default function Home() {
       console.log(data);
       setBlogData(data);
       setIsLoading(false);
+      setBlogList(data);
     }
   };
   useEffect(() => {
     fetchBlogData();
   }, [])
+
+  const searchBlog = (e) => {
+    const search = e.target.value;
+    const result = blogList.filter((blog) => { return blog.title.toLowerCase().includes(search.toLowerCase()) })
+    setBlogData(result);
+  }
+
   const dsiplayData = () => {
     if(!isLoading){
       return <main className="flex min-h-screen flex-col items-center justify-between pt-20">
@@ -56,6 +65,7 @@ export default function Home() {
         />
       </svg>
       <div className="mt-5">
+        <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right" style={{backgroundColor: 'white'}}/>
         <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
         <Box className='grid grid-cols-1 gap-y-10'>
