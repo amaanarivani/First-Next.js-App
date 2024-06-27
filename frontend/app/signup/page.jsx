@@ -72,7 +72,7 @@ export default function Signup() {
                         <label className="text-lg">Full Name</label>
                         <TextField name="name" required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.name} />
                         <label className="text-lg">Email</label>
-                        <TextField name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.email} />
+                        <TextField type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.email} />
                         <label className="text-lg">Password</label>
                         <TextField name="password" required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
                         <label className="text-lg">Confirm Password</label>

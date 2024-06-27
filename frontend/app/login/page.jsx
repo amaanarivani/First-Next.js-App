@@ -77,8 +77,8 @@ export default function Login() {
                         <TextField onChange={loginForm.handleChange} value={loginForm.values.email} required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" type="email" name="email" />
                         <label className="text-lg">Password</label>
                         <TextField onChange={loginForm.handleChange} value={loginForm.values.password} required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" name="password" />
-                        <Button fullWidth type="submit" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>Submit</Button>
-                        <p className="mt-3">Does'nt have an account?<Button href="http://localhost:3000/signup">Signup</Button></p>
+                        <Button fullWidth type="submit" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem', marginBottom: '1rem' }}>Submit</Button>
+                        <font className="mt-5">Did You Forgot your Password?<Button href="/forgotpassword">Reset Password</Button></font>
                     </form>
                 </Paper>
             </Box>
