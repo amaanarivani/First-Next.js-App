@@ -12,7 +12,7 @@ export default function Login() {
 
     const router = useRouter();
 
-    const { setLoggedIn } = UseAppContext();
+    const { setLoggedIn, setCurrentUser } = UseAppContext();
 
     const loginForm = useFormik({
         initialValues: {
@@ -49,6 +49,7 @@ export default function Login() {
                 console.log(data);
                 sessionStorage.setItem('user', JSON.stringify(data));
                 setLoggedIn(true);
+                setCurrentUser(data);
             }
             else if (res.status === 401) {
                 Swal.fire({

@@ -6,11 +6,8 @@ import Link from "next/link";
 import { Person } from "@mui/icons-material";
 export default function AppNavbar() {
 
-  const { loggedIn, logout } = UseAppContext();
+  const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
 
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(sessionStorage.getItem('user'))
-  );
   console.log(currentUser?.name);
 
   const displayMyBlog = () => {

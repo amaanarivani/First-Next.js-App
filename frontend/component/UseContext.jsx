@@ -15,12 +15,14 @@ export const AppProvider = ({children}) => {
     const logout = () => {
         sessionStorage.removeItem('user');
         setLoggedIn(false);
+        console.log('inside logout');
+        setCurrentUser(null);
         router.push('/login');
     }
 
     const [loggedIn, setLoggedIn] = useState(currentUser!==null);
 
-    return <AppContext.Provider value={{ loggedIn, setLoggedIn, logout }}>
+    return <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser}}>
         {children}
     </AppContext.Provider>
 };
