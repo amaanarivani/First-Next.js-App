@@ -2,6 +2,7 @@
 import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Event, Person } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
 import { Suspense, useEffect, useState } from "react";
@@ -9,11 +10,11 @@ import Swal from "sweetalert2";
 
 function SingleBlog() {
 
-    const { loggedIn, logout } = UseAppContext();
+    const { loggedIn, logout, currentUser } = UseAppContext();
 
-    const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('user'))
-    );
+    // const [currentUser, setCurrentUser] = useState(
+    //     JSON.parse(sessionStorage.getItem('user'))
+    // );
     console.log(currentUser);
 
     const searchParams = useSearchParams()
@@ -52,10 +53,12 @@ function SingleBlog() {
       }
       console.log(loggedIn);
       const deleteButton = () => {
-        if(currentUser._id == singleBlog.userId){
+        if(currentUser?._id == singleBlog.userId){
             return (
                 <>
                 <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{marginTop: '2rem'}}>Delete Blog</Button>
+                {/* <Link href={`/updateblog?blogid=${singleBlog._id}`}>Update Blog</Link> */}
+                <Button variant="contained" color="success" onClick={() => {router.push(`/updateblog?blogid=${singleBlog._id}`)}} style={{marginTop: '2rem', marginInlineStart: '2rem'}}>Update Blog</Button>
                 </>
             )
         }

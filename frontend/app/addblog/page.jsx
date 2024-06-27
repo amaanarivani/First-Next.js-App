@@ -20,7 +20,7 @@ export default function AddBlog() {
         if (!user) {
             Swal.fire({
                 icon: 'error',
-                title: 'oops!!',
+                title: 'Not Permitted!',
                 text: 'Please Login to continue.'
             });
             router.push("/login")

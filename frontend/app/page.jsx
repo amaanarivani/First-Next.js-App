@@ -65,7 +65,7 @@ export default function Home() {
         />
       </svg>
       <div className="mt-5">
-        <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right" style={{backgroundColor: 'white'}}/>
+        <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right rounded-none border-none" style={{backgroundColor: 'white'}}/>
         <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
         <Box className='grid grid-cols-1 gap-y-10'>
