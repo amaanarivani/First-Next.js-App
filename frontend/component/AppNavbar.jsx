@@ -11,7 +11,7 @@ export default function AppNavbar() {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(sessionStorage.getItem('user'))
   );
-  console.log(currentUser.name);
+  console.log(currentUser?.name);
 
   const displayMyBlog = () => {
     if (loggedIn) {
@@ -32,7 +32,7 @@ export default function AppNavbar() {
     if (loggedIn) {
       return (
         <>
-          <Person className="mb-1"/><font className=''>{currentUser.name}</font>
+          <Person className="mb-1"/><font className=''>{currentUser?.name}</font>
           <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
         </>
       )
