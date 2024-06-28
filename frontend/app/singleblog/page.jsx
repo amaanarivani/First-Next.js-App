@@ -57,11 +57,11 @@ function SingleBlog() {
     const displayAvatar = () => {
         if (singleBlog?.userData.myFile !== undefined) {
             return <>
-            <div className="grid grid-cols-2 w-1/4">
+            <div className="grid grid-cols-3 w-1/5">
             <div>
             <img className="w-12 h-12 rounded-full" src={singleBlog?.userData?.myFile} />
             </div>
-            <div>
+            <div className="col-span-2 mt-2">
             <h2 className="font-bold text-xl">{singleBlog?.userData?.name}</h2>
             </div>
             </div>

@@ -37,15 +37,15 @@ export default function MyBlogs() {
     const displayAvatar = () => {
         if (currentUser?.myFile !== undefined) {
             return <>
-            <div className="grid grid-cols-2 w-1/2">
-            <div>
-            <img className="w-12 h-12 rounded-full" src={currentUser?.myFile} />
-            </div>
-            <div>
-            <h2 className="font-bold text-xl">{currentUser?.name}</h2>
-            </div>
-            </div>
-                 
+                <div className="grid grid-cols-3">
+                    <div className="">
+                        <img className="w-14 h-14 rounded-full" src={currentUser?.myFile} />
+                    </div>
+                    <div className="col-span-2 mt-2">
+                        <h2 className="font-bold text-xl">{currentUser?.name}</h2>
+                    </div>
+                </div>
+
             </>
         } else {
             return <>
@@ -55,36 +55,36 @@ export default function MyBlogs() {
     }
 
     const displayData = () => {
-        if(!isLoading){
+        if (!isLoading) {
             return <div className="pt-20">
-            <h1 className="text-center font-bold text-3xl mt-8">Here are Your Blogs</h1>
-            <Box className='grid grid-cols-4 gap-4 p-8 m-auto'>
-                {
-                    myblogData.map((myblog) => {
-                        return <div>
-                            <Link href={`/singleblog?blogid=${myblog._id}`}>
-                                <Paper elevation={16} className="p-10">
-                                    <h3 className="text-xl mb-3 font-bold"><font>{myblog.title.substring(0, 10)}......</font></h3>
-                                    <p className="mb-2"><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
-                                    <div>
-                                        {displayAvatar()}
-                                    </div>
-                                </Paper>
-                            </Link>
-                        </div>
-                    })
-                }
-            </Box>
-        </div>
+                <h1 className="text-center font-bold text-3xl mt-8">Here are Your Blogs</h1>
+                <Box className='grid grid-cols-4 gap-4 p-8 m-auto'>
+                    {
+                        myblogData.map((myblog) => {
+                            return <div>
+                                <Link href={`/singleblog?blogid=${myblog._id}`}>
+                                    <Paper elevation={16} className="p-10">
+                                        <h3 className="text-xl mb-3 font-bold"><font>{myblog.title.substring(0, 10)}......</font></h3>
+                                        <p className="mb-2"><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
+                                        <div className="mt-5">
+                                            {displayAvatar()}
+                                        </div>
+                                    </Paper>
+                                </Link>
+                            </div>
+                        })
+                    }
+                </Box>
+            </div>
         } else {
             return <div>
                 <h1 className="pt-36 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
-                <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20'/>
+                <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
             </div>
         }
     }
     return <div>
         {displayData()}
     </div>
-    
+
 }

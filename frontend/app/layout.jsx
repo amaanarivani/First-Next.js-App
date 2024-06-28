@@ -18,13 +18,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+      
       </head>
       <body className={inter.className}>
         <AppProvider>
         <AppNavbar/>
         {children}
         </AppProvider>
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.js" referrerpolicy="no-referrer"/>
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.js"/>
       </body> 
     </html>
   );
