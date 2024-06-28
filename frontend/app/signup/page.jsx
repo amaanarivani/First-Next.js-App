@@ -2,21 +2,32 @@
 import { Card, Paper, Button, Box, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import axios from "axios";
+import { useState } from "react";
 
 export default function Signup() {
 
-    const router = useRouter()
+    const router = useRouter();
+    const [selFile, setSelFile] = useState('');
+    const [convertedFile, setConvertedFile] = useState('');
 
     const signupform = useFormik({
         initialValues: {
             name: '',
             email: '',
             password: '',
-            confirmpassword: ''
+            confirmpassword: '',
+            myFile: ''
         },
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
+            values.myFile = selFile;
+            setTimeout(() => {
+                console.log(values);
+                console.log(values.myFile);
+                setSubmitting(false);
+            }, 3000);
 
             if (values.password != values.confirmpassword) {
                 Swal.fire({
@@ -27,10 +38,7 @@ export default function Signup() {
                 return;
             }
 
-            setTimeout(() => {
-                console.log(values);
-                setSubmitting(false);
-            }, 3000);
+            
 
             //send data to the server
             const res = await fetch("http://localhost:5000/user/add", {
@@ -63,6 +71,43 @@ export default function Signup() {
               }
         },
     });
+    const uploadFile = async (e) => {
+        if (!e.target.files) return;
+
+        let file = e.target.files[0];
+        let converted = await convertToBase64(file);
+        console.log(converted);
+        // console.log(file, 'abc');
+        setSelFile(converted);
+        
+
+        const fd = new FormData();
+        fd.append('myfile', converted);
+
+        const res = await fetch('http://localhost:5000/utils/uploadfile', {
+            method: 'POST',
+            body: fd
+        });
+        console.log(res.status);
+    }
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
+        });
+      };
+      const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setSelFile({ ...selFile, myFile: base64 });
+        // uploadFile();
+      };
     return (
         <div className="pt-20">
             <Box className='w-1/2 p-8 m-auto'>
@@ -77,6 +122,7 @@ export default function Signup() {
                         <TextField name="password" required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
                         <label className="text-lg">Confirm Password</label>
                         <TextField name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
+                        <input type="file" onChange={uploadFile} />
                         <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                             {
                                 signupform.isSubmitting ? (

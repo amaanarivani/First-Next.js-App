@@ -37,49 +37,59 @@ function SingleBlog() {
 
     const deleteBlog = async () => {
         try {
-            const res = await fetch (`http://localhost:5000/blog/delete/${blogid}`, {method: 'DELETE'});
-            if (res.status === 200){
-              Swal.fire({
-                icon: 'success',
-                title: 'Task deleted Successfully',
-              });
-              router.back();
-              console.log('task deleted');
-              fetchSingleBlogData();
+            const res = await fetch(`http://localhost:5000/blog/delete/${blogid}`, { method: 'DELETE' });
+            if (res.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Task deleted Successfully',
+                });
+                router.back();
+                console.log('task deleted');
+                fetchSingleBlogData();
             }
         } catch (error) {
-            
+
         }
-      }
-      console.log(loggedIn);
-      const deleteButton = () => {
-        if(currentUser?._id == singleBlog.userId){
+    }
+    console.log(loggedIn);
+    const deleteAndUpdateButton = () => {
+        if (currentUser?._id == singleBlog.userId) {
             return (
                 <>
-                <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{marginTop: '2rem'}}>Delete Blog</Button>
-                {/* <Link href={`/updateblog?blogid=${singleBlog._id}`}>Update Blog</Link> */}
-                <Button variant="contained" color="success" onClick={() => {router.push(`/updateblog?blogid=${singleBlog._id}`)}} style={{marginTop: '2rem', marginInlineStart: '2rem'}}>Update Blog</Button>
+                    <div className="">
+                        <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{ }}>Delete Blog</Button>
+                        <Button variant="contained" color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }} style={{marginInlineStart: '2rem' }}>Update Blog</Button>
+                    </div>
+
                 </>
             )
         }
-      }
+    }
 
     const displayData = () => {
         if (singleBlog) {
             return <div className="pt-10">
                 <div className="ms-20">
-                <h1 className="text-center font-bold text-3xl">Blog Details</h1>
+                    <div className="grid grid-cols-2 gap-8 mb-10">
+                        <div className="float-left">
+                            <h1 className="text-center font-bold text-3xl">Blog Details</h1>
+                        </div>
+                        <div className="float-right">
+                        {deleteAndUpdateButton()}
+                        </div>
+                    </div>
+
                     <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                     <p className="text-xl mt-10"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
-                    <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{singleBlog?.createdAt}</font></p>
-                    <p className="text-xl mt-10"><AccountCircle style={{ color: "#7c4dff" }} fontSize='large' className="me-4" /><font className='text-gray-900'>{singleBlog?.userData.name}</font></p>
-                    <div>{deleteButton()}</div>
+                    <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
+                    <p className="text-xl mt-7"><AccountCircle style={{ color: "#7c4dff" }} fontSize='large' className="me-4" /><font className='text-gray-900'>{singleBlog?.userData.name}</font></p>
+                    <div></div>
                 </div>
             </div>
         } else {
             return <div>
-               <h1 className="pt-20 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
-               <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20'/>
+                <h1 className="pt-20 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
+                <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
             </div>
         }
     }
@@ -87,9 +97,9 @@ function SingleBlog() {
 
     return <div className="pt-20">
         <div>
-        {displayData()}
+            {displayData()}
         </div>
-        
+
     </div>
 }
 

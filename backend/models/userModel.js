@@ -5,6 +5,7 @@
         email : String,
         password : String,
         confirmpassword : String,
+        myFile : String,
     });
 
    module.exports =  model( 'user', mySchema );
