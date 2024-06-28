@@ -86,7 +86,10 @@ export default function Signup() {
 
         const res = await fetch('http://localhost:5000/utils/uploadfile', {
             method: 'POST',
-            body: fd
+            body: JSON.stringify({myFile: converted}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
         });
         console.log(res.status);
     }
@@ -122,6 +125,7 @@ export default function Signup() {
                         <TextField name="password" required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
                         <label className="text-lg">Confirm Password</label>
                         <TextField name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
+                        <label className="text-lg">Avatar</label><br />
                         <input type="file" onChange={uploadFile} />
                         <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                             {

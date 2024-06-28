@@ -9,6 +9,7 @@ export default function AppNavbar() {
   const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
 
   console.log(currentUser?.name);
+  console.log(currentUser?.myFile);
 
   const displayMyBlog = () => {
     if (loggedIn) {
@@ -29,8 +30,47 @@ export default function AppNavbar() {
     if (loggedIn) {
       return (
         <>
-          <Person className="mb-1"/><font className=''>{currentUser?.name}</font>
-          <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
+          {/* <img src={currentUser?.myFile} alt="" />
+          <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button> */}
+          <>
+            <button
+              type="button"
+              className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              id="user-menu-button"
+              aria-expanded="false"
+              data-dropdown-toggle="user-dropdown"
+              data-dropdown-placement="bottom"
+            >
+              <span className="sr-only">Open user menu</span>
+              <img
+                className="w-8 h-8 rounded-full"
+                src={currentUser?.myFile}
+                alt="user photo"
+              />
+            </button>
+            <div
+              className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+              id="user-dropdown"
+            >
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">
+                  {currentUser?.name}
+                </span>
+                
+              </div>
+              <ul className="py-2" aria-labelledby="user-menu-button">
+                <li>
+                  <button
+                  onClick={logout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Sign out
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </>
+
         </>
       )
     }

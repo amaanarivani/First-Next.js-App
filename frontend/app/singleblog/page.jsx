@@ -52,13 +52,35 @@ function SingleBlog() {
         }
     }
     console.log(loggedIn);
+    console.log(singleBlog?.userData.myFile);
+
+    const displayAvatar = () => {
+        if (singleBlog?.userData.myFile !== undefined) {
+            return <>
+            <div className="grid grid-cols-2 w-1/4">
+            <div>
+            <img className="w-12 h-12 rounded-full" src={singleBlog?.userData?.myFile} />
+            </div>
+            <div>
+            <h2 className="font-bold text-xl">{singleBlog?.userData?.name}</h2>
+            </div>
+            </div>
+                 
+            </>
+        } else {
+            return <>
+                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{singleBlog?.userData?.name}</font>
+            </>
+        }
+    }
+
     const deleteAndUpdateButton = () => {
         if (currentUser?._id == singleBlog.userId) {
             return (
                 <>
                     <div className="">
-                        <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{ }}>Delete Blog</Button>
-                        <Button variant="contained" color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }} style={{marginInlineStart: '2rem' }}>Update Blog</Button>
+                        <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{}}>Delete Blog</Button>
+                        <Button variant="contained" color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }} style={{ marginInlineStart: '2rem' }}>Update Blog</Button>
                     </div>
 
                 </>
@@ -75,15 +97,14 @@ function SingleBlog() {
                             <h1 className="text-center font-bold text-3xl">Blog Details</h1>
                         </div>
                         <div className="float-right">
-                        {deleteAndUpdateButton()}
+                            {deleteAndUpdateButton()}
                         </div>
                     </div>
 
                     <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                     <p className="text-xl mt-10"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
                     <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
-                    <p className="text-xl mt-7"><AccountCircle style={{ color: "#7c4dff" }} fontSize='large' className="me-4" /><font className='text-gray-900'>{singleBlog?.userData.name}</font></p>
-                    <div></div>
+                    <div className="mt-8">{displayAvatar()}</div>
                 </div>
             </div>
         } else {

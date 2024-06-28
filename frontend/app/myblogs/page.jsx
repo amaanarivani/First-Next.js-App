@@ -1,6 +1,6 @@
 'use client'
 
-import { AccountCircle, Description } from "@mui/icons-material";
+import { AccountCircle, Description, Person } from "@mui/icons-material";
 import { Box, CircularProgress, Paper } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -31,6 +31,29 @@ export default function MyBlogs() {
     useEffect(() => {
         fetchMyblogData();
     }, []);
+
+    console.log(currentUser?.myFile);
+
+    const displayAvatar = () => {
+        if (currentUser?.myFile !== undefined) {
+            return <>
+            <div className="grid grid-cols-2 w-1/2">
+            <div>
+            <img className="w-12 h-12 rounded-full" src={currentUser?.myFile} />
+            </div>
+            <div>
+            <h2 className="font-bold text-xl">{currentUser?.name}</h2>
+            </div>
+            </div>
+                 
+            </>
+        } else {
+            return <>
+                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{currentUser?.name}</font>
+            </>
+        }
+    }
+
     const displayData = () => {
         if(!isLoading){
             return <div className="pt-20">
@@ -43,7 +66,9 @@ export default function MyBlogs() {
                                 <Paper elevation={16} className="p-10">
                                     <h3 className="text-xl mb-3 font-bold"><font>{myblog.title.substring(0, 10)}......</font></h3>
                                     <p className="mb-2"><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
-                                    <p><AccountCircle style={{color: '#2196f3'}}/><font className='ms-4'>{myblog.userData.name}</font></p>
+                                    <div>
+                                        {displayAvatar()}
+                                    </div>
                                 </Paper>
                             </Link>
                         </div>
