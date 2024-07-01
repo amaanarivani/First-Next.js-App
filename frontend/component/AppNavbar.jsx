@@ -32,9 +32,10 @@ export default function AppNavbar() {
       return (
         <>
           <div className="grid grid-cols-2">
-            <div>
-              <Image src={currentUser?.myFile} alt="" width={32} height={32} className="rounded-full float-right" />
-              <p className=''>{currentUser?.firstname}</p>
+            <div className="inline-flex">
+              <img src={currentUser?.myFile} alt="" className="rounded-full w-8 h-8 float-right" />
+              <p className= 'ms-2 mt-1'>{currentUser?.firstname}</p> 
+              {/* <p className=''>{currentUser?.firstname}</p> */}
             </div>
             {/* <div className="ms-2 mt-1 text-center">
               <font className=''>{currentUser?.firstname}</font>

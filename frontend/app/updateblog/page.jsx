@@ -62,7 +62,7 @@ export default function UpdateBlog() {
         setSubmitting(false);
     }
 
-    return <div className="pt-20">
+    return <div className="signup-login-body pt-20">
         <Box className='w-1/2 p-8 m-auto'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Update your Blogs here!</h1>

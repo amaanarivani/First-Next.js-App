@@ -111,7 +111,7 @@ export default function AddBlog() {
         setSelFile({ ...selFile, blogFile: base64 });
         // uploadFile();
       };
-    return <div className="pt-20">
+    return <div className="signup-login-body pt-20">
         <Box className='w-1/2 p-8 m-auto'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Add your Blogs here!</h1>
@@ -121,7 +121,7 @@ export default function AddBlog() {
                     <label className="text-lg mb-10">Description</label><br />
                     <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={Blog.handleChange} value={Blog.values.description} />
                     <label className="text-lg">Blog Image</label><br />
-                    <input type="file" onChange={uploadFile} />
+                    <input required type="file" onChange={uploadFile} />
                     <Button fullWidth disabled={Blog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                         {
                             Blog.isSubmitting ? (

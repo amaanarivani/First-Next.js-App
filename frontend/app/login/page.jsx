@@ -68,7 +68,7 @@ export default function Login() {
         },
     });
     return (
-        <div className="p-20">
+        <div className="signup-login-body p-20">
             <Box className='w-1/2 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="text-center font-bold text-3xl">Login Here</h1>

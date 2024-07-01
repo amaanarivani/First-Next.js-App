@@ -1,25 +1,33 @@
 'use client'
-import { AccountCircle, Description, Event, Person, Title } from "@mui/icons-material";
-import { Box, CircularProgress, Paper, TextField } from "@mui/material";
+import { AccountCircle, Description, Event, Person, ThumbUp, Title } from "@mui/icons-material";
+import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import Link from "next/link";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [blogData, setBlogData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
   const fetchBlogData = async () => {
-    const res = await fetch('http://localhost:5000/blog/getall');
-    console.log(res, "llllllllllllllllllll");
+    try {
+      setIsLoading(true);
+      const res = await fetch('http://localhost:5000/blog/getall');
+      console.log(res);
 
-    if (res.status === 200) {
+      if (res.status === 200) {
+        setIsLoading(false);
+        const data = await res.json();
+        console.log(data);
+        setBlogData(data);
+        setBlogList(data);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
       setIsLoading(false);
-      const data = await res.json();
-      console.log(data);
-      setBlogData(data);
-      setBlogList(data);
     }
+
   };
   useEffect(() => {
     fetchBlogData();
@@ -29,19 +37,29 @@ export default function Home() {
     const search = e.target.value;
     const result = blogList.filter((blog) => { return blog.title.toLowerCase().includes(search.toLowerCase()) })
     setBlogData(result);
+  };
+
+  const likeBlog = async(blogId, userId) => {
+    try {
+      const res = await fetch("http://localhost:5000/blog/blog-like", {
+        method: 'Post',
+        body: JSON.stringify({
+          blogId,
+          userId
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    console.log(res);
+
+      
+    } catch (error) {
+      
+    } 
   }
 
-  // const displayAvatar = () => {
-  //   if (blogData.myFile !== null) {
-  //     return <>
-  //       <img className="w-12 h-12 rounded-full" src={blogData.userData.myFile} />
-  //     </>
-  //   } else{
-  //     return <>
-  //     <Person fontSize="large"/>
-  //     </>
-  //   }
-  // }
+
 
   const dsiplayData = () => {
     if (!isLoading) {
@@ -86,8 +104,8 @@ export default function Home() {
             {
               blogData.map((blog) => {
                 return <div className="container">
-                  <Link href={`/singleblog?blogid=${blog._id}`}>
-                    <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
+                  <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
+                    <Link href={`/singleblog?blogid=${blog._id}`}>
                       <div className="grid grid-cols-2">
                         <div className="mr-9">
                           <img src={blog.blogFile} alt="" className="img-fluid" />
@@ -101,18 +119,19 @@ export default function Home() {
                               <p className="text-xl font-bold float-left mt-3"><font className='ms-4'>{blog.userData.firstname}</font></p>
                             </div>
                             <div className="col-span-2 mt-5">
-                              
+
                             </div>
                             <div className="mt-5">
                               <Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(blog?.createdAt).toLocaleDateString()}</font>
                             </div>
                           </div>
-
                         </div>
                       </div>
-
-                    </Paper>
-                  </Link>
+                    </Link>
+                    <div>
+                    </div>
+                    <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />
+                  </Paper>
                 </div>
               })
             }

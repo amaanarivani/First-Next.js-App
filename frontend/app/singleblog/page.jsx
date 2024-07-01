@@ -41,7 +41,7 @@ function SingleBlog() {
             if (res.status === 200) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Task deleted Successfully',
+                    title: 'Blog deleted Successfully',
                 });
                 router.back();
                 console.log('task deleted');
@@ -57,15 +57,10 @@ function SingleBlog() {
     const displayAvatar = () => {
         if (singleBlog?.userData.myFile !== undefined) {
             return <>
-            <div className="grid grid-cols-3 w-1/5">
-            <div>
-            <img className="w-12 h-12 rounded-full" src={singleBlog?.userData?.myFile} />
-            </div>
-            <div className="col-span-2 mt-2">
-            <h2 className="font-bold text-xl">{currentUser?.firstname + currentUser?.lastname}</h2>
-            </div>
-            </div>
-                 
+                <div className="inline-flex">
+                    <img className="w-12 h-12 rounded-full me-3" src={singleBlog?.userData?.myFile} />
+                    <font className="font-bold text-xl">{currentUser?.firstname + currentUser?.lastname}</font>
+                </div>
             </>
         } else {
             return <>
@@ -79,8 +74,8 @@ function SingleBlog() {
             return (
                 <>
                     <div className="">
-                        <Button  color="error" onClick={() => { deleteBlog(singleBlog._id) }} style={{}}><Delete fontSize="large"/></Button>
-                        <Button  color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }}><Edit fontSize="large"/></Button>
+                        <Button color="error" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="large" /></Button>
+                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }}><Edit fontSize="large" /></Button>
                     </div>
 
                 </>
@@ -103,16 +98,22 @@ function SingleBlog() {
                     <h1 className="text-center font-bold text-3xl">Blog Details</h1>
                     <div className="grid grid-cols-3 w-1/2">
                         <div>
-                        <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
+                            <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                         </div>
                         <div className="col-span-2 mt-2">
-                        {deleteAndUpdateButton()} 
+                            {deleteAndUpdateButton()}
                         </div>
                     </div>
-                    
-                    <p className="text-xl mt-10"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
-                    <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
-                    <div className="mt-8">{displayAvatar()}</div>
+                    <div className="grid grid-cols-2 mt-5">
+                        <div>
+                            <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
+                        </div>
+                        <div className="ml-5">
+                            <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
+                            <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
+                            <div className="mt-8">{displayAvatar()}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         } else {
