@@ -1,6 +1,6 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { AccountCircle, Event, Person } from "@mui/icons-material";
+import { AccountCircle, Delete, Edit, EditNote, Event, Person, Update } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation"
@@ -62,7 +62,7 @@ function SingleBlog() {
             <img className="w-12 h-12 rounded-full" src={singleBlog?.userData?.myFile} />
             </div>
             <div className="col-span-2 mt-2">
-            <h2 className="font-bold text-xl">{singleBlog?.userData?.name}</h2>
+            <h2 className="font-bold text-xl">{currentUser?.firstname + currentUser?.lastname}</h2>
             </div>
             </div>
                  
@@ -79,8 +79,8 @@ function SingleBlog() {
             return (
                 <>
                     <div className="">
-                        <Button onClick={() => { deleteBlog(singleBlog._id) }} variant='contained' color="error" style={{}}>Delete Blog</Button>
-                        <Button variant="contained" color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }} style={{ marginInlineStart: '2rem' }}>Update Blog</Button>
+                        <Button  color="error" onClick={() => { deleteBlog(singleBlog._id) }} style={{}}><Delete fontSize="large"/></Button>
+                        <Button  color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }}><Edit fontSize="large"/></Button>
                     </div>
 
                 </>
@@ -92,16 +92,24 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="pt-10">
                 <div className="ms-20">
-                    <div className="grid grid-cols-2 gap-8 mb-10">
-                        <div className="float-left">
+                    {/* <div className="grid grid-cols-2 mb-10">
+                        <div className="">
                             <h1 className="text-center font-bold text-3xl">Blog Details</h1>
                         </div>
-                        <div className="float-right">
+                        <div className="">
                             {deleteAndUpdateButton()}
                         </div>
+                    </div> */}
+                    <h1 className="text-center font-bold text-3xl">Blog Details</h1>
+                    <div className="grid grid-cols-3 w-1/2">
+                        <div>
+                        <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
+                        </div>
+                        <div className="col-span-2 mt-2">
+                        {deleteAndUpdateButton()} 
+                        </div>
                     </div>
-
-                    <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
+                    
                     <p className="text-xl mt-10"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
                     <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
                     <div className="mt-8">{displayAvatar()}</div>

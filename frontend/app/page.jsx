@@ -11,7 +11,7 @@ export default function Home() {
   const [blogList, setBlogList] = useState([]);
   const fetchBlogData = async () => {
     const res = await fetch('http://localhost:5000/blog/getall');
-    console.log(res,"llllllllllllllllllll");
+    console.log(res, "llllllllllllllllllll");
 
     if (res.status === 200) {
       const data = await res.json();
@@ -88,18 +88,26 @@ export default function Home() {
                 return <div className="container">
                   <Link href={`/singleblog?blogid=${blog._id}`}>
                     <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
-
-                      <h3 className="text-3xl font-extrabold mb-5"><font>{blog.title}</font></h3>
-                      <p className="mb-2 text-lg"><Description /><font className='text-lg'>{blog.description}</font></p>
-                      <div className="grid grid-cols-4 mt-4 w-1/3">
-                        <div>
-                          <img className="w-20 h-20 rounded-full" src={blog.userData.myFile} />
+                      <div className="grid grid-cols-3">
+                        <div className="col-span-2">
+                          <img src={blog.blogFile} alt="" className="w-2/4" />
                         </div>
-                        <div className="col-span-3 mt-3">
-                          <p className="text-xl font-bold"><font className='ms-4'>{blog.userData.firstname}</font></p>
+                        <div>
+                          <h3 className="text-3xl font-extrabold mb-5"><font>{blog.title}</font></h3>
+                          <p className="mb-2 text-lg"><Description /><font className='text-lg'>{blog.description}</font></p>
+                          <div className="grid grid-cols-4 mt-4 w-1/3">
+                            <div>
+                              <img className="w-3/5 rounded-full" src={blog.userData.myFile} />
+                            </div>
+                            <div className="col-span-3 mt-3">
+                              <p className="text-xl font-bold"><font className='ms-4'>{blog.userData.firstname}</font></p>
+                            </div>
+                          </div>
+                          <p className="text-md mt-8"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{blog.createdAt}</font></p>
                         </div>
                       </div>
-                      <p className="text-md mt-8"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{blog.createdAt}</font></p>
+
+
                     </Paper>
                   </Link>
                 </div>

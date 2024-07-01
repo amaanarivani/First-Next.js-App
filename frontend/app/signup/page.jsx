@@ -124,7 +124,7 @@ export default function Signup() {
                             </div>
                             <div>
                                 <label className="text-lg">Last Name</label>
-                                <TextField name="lastname" required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
+                                <TextField name="lastname"  className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
                             </div>
                         </div>
                         <label className="text-lg">Email</label>
