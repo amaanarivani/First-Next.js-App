@@ -6,7 +6,8 @@ const mySchema = new Schema({
     userId : String,
     createdAt : Date,
     updatedAt : Date,
-    updatedBy : String
+    updatedBy : String,
+    blogFile : String
 });
 
 module.exports =  model( 'blog', mySchema );

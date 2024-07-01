@@ -3,7 +3,6 @@ import { Card, Paper, Button, Box, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
-import axios from "axios";
 import { useState } from "react";
 
 export default function Signup() {
@@ -14,7 +13,8 @@ export default function Signup() {
 
     const signupform = useFormik({
         initialValues: {
-            name: '',
+            firstname: '',
+            lastname: '',
             email: '',
             password: '',
             confirmpassword: '',
@@ -34,11 +34,11 @@ export default function Signup() {
                     icon: 'error',
                     title: 'oops!!',
                     text: 'Password Not Matched'
-                  })
+                })
                 return;
             }
 
-            
+
 
             //send data to the server
             const res = await fetch("http://localhost:5000/user/add", {
@@ -51,24 +51,24 @@ export default function Signup() {
             console.log(res.status);
             if (res.status === 200) {
                 Swal.fire({
-                  icon: 'success',
-                  title: 'Nice',
-                  text: 'You have signed up successfully'
+                    icon: 'success',
+                    title: 'Nice',
+                    text: 'You have signed up successfully'
                 })
-                  .then((result) => {
-                    //navigate('http://localhost:3000/login');
-                    router.push('http://localhost:3000/login', { scroll: false })
-        
-                  }).catch((err) => {
-        
-                  });
-              } else {
+                    .then((result) => {
+                        //navigate('http://localhost:3000/login');
+                        router.push('http://localhost:3000/login', { scroll: false })
+
+                    }).catch((err) => {
+
+                    });
+            } else {
                 Swal.fire({
-                  icon: 'error',
-                  title: 'oops!!',
-                  text: 'Something went wrong'
+                    icon: 'error',
+                    title: 'oops!!',
+                    text: 'Something went wrong'
                 })
-              }
+            }
         },
     });
     const uploadFile = async (e) => {
@@ -79,46 +79,54 @@ export default function Signup() {
         console.log(converted);
         // console.log(file, 'abc');
         setSelFile(converted);
-        
+
 
         const fd = new FormData();
         fd.append('myfile', converted);
 
         const res = await fetch('http://localhost:5000/utils/uploadfile', {
             method: 'POST',
-            body: JSON.stringify({myFile: converted}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            body: JSON.stringify({ myFile: converted }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         console.log(res.status);
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
         });
-      };
-      const handleFileUpload = async (e) => {
+    };
+    const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setSelFile({ ...selFile, myFile: base64 });
         // uploadFile();
-      };
+    };
     return (
         <div className="pt-20">
             <Box className='w-1/2 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="font-bold text-3xl text-center">Signup Here</h1>
                     <form onSubmit={signupform.handleSubmit}>
-                        <label className="text-lg">Full Name</label>
-                        <TextField name="name" required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.name} />
+                        <div className="grid grid-cols-2 mt-3">
+                            <div>
+                                <label className="text-lg">First Name</label>
+                                <TextField name="firstname" required className="w-75 margin-vt" id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.firstname} />
+                            </div>
+                            <div>
+                                <label className="text-lg">Last Name</label>
+                                <TextField name="lastname" required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
+                            </div>
+                        </div>
                         <label className="text-lg">Email</label>
                         <TextField type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.email} />
                         <label className="text-lg">Password</label>

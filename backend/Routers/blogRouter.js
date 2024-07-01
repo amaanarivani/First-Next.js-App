@@ -27,6 +27,7 @@ router.get("/getall", (req, res) => {
       for(i=0; i<result.length; i++){
         let currentData = result[i];
         let fetchUserData  = await User.findById(currentData.userId);
+        // console.log(fetchUserData);
         if (fetchUserData){
           finalResult.push({...currentData._doc, userData : fetchUserData});
         }
@@ -34,6 +35,7 @@ router.get("/getall", (req, res) => {
       res.json(finalResult);
     })
     .catch((err) => {
+      console.log("catch");
       console.log(err);
       res.status(500).json(err);
     });

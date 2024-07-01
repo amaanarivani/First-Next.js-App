@@ -11,7 +11,7 @@ export default function Home() {
   const [blogList, setBlogList] = useState([]);
   const fetchBlogData = async () => {
     const res = await fetch('http://localhost:5000/blog/getall');
-    console.log(res.status);
+    console.log(res,"llllllllllllllllllll");
 
     if (res.status === 200) {
       const data = await res.json();
@@ -77,7 +77,7 @@ export default function Home() {
             style={{ animation: "path3 15.625s linear infinite alternate" }}
           />
         </svg>
-        <div className="mt-5">
+        <div className="mt-5 w-11/12">
           <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
           <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
@@ -96,7 +96,7 @@ export default function Home() {
                           <img className="w-20 h-20 rounded-full" src={blog.userData.myFile} />
                         </div>
                         <div className="col-span-3 mt-3">
-                          <p className="text-xl font-bold"><font className='ms-4'>{blog.userData.name}</font></p>
+                          <p className="text-xl font-bold"><font className='ms-4'>{blog.userData.firstname}</font></p>
                         </div>
                       </div>
                       <p className="text-md mt-8"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{blog.createdAt}</font></p>

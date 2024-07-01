@@ -4,6 +4,7 @@ import { useState } from "react";
 import UseAppContext from "./UseContext";
 import Link from "next/link";
 import { Person } from "@mui/icons-material";
+import Image from "next/image";
 export default function AppNavbar() {
 
   const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
@@ -30,13 +31,14 @@ export default function AppNavbar() {
     if (loggedIn) {
       return (
         <>
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-2">
             <div>
-              <img src={currentUser?.myFile} alt="" className="rounded-full w-8 h-8 float-right" />
+              <Image src={currentUser?.myFile} alt="" width={32} height={32} className="rounded-full float-right" />
+              <p className=''>{currentUser?.firstname}</p>
             </div>
-            <div className="ms-2 mt-1">
-              <font className=''>{currentUser?.name}</font>
-            </div>
+            {/* <div className="ms-2 mt-1 text-center">
+              <font className=''>{currentUser?.firstname}</font>
+              </div> */}
             <div className="">
               <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
             </div>
