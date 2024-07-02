@@ -10,7 +10,7 @@ export default function AppNavbar() {
   const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
 
   console.log(currentUser?.name);
-  console.log(currentUser?.myFile);
+  // console.log(currentUser?.myFile);
 
   const displayMyBlog = () => {
     if (loggedIn) {

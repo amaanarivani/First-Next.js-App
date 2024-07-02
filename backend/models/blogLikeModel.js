@@ -6,10 +6,10 @@ const mySchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'blog'
     },
-    likes : [{
-        userId : String,
-        isBlogLiked : { type : Boolean, default: false}
-    }]
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref:'user'
+    }
     
 });
 

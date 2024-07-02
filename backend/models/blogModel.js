@@ -7,7 +7,8 @@ const mySchema = new Schema({
     createdAt : Date,
     updatedAt : Date,
     updatedBy : String,
-    blogFile : String
+    blogFile : String,
+    viewCount : Number,
 });
 
 module.exports =  model( 'blog', mySchema );

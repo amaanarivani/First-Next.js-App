@@ -2,6 +2,7 @@
 import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Delete, Edit, EditNote, Event, Person, Update } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
@@ -22,18 +23,28 @@ function SingleBlog() {
     const router = useRouter();
 
     const [singleBlog, setSingleBlog] = useState();
+    const [blogUser, setBlogUser] = useState();
     const fetchSingleBlogData = async () => {
-        const res = await fetch(`http://localhost:5000/blog/getsingleblog/${blogid}`);
-        if (res.status === 200) {
-            const data = await res.json();
-            console.log(data);
-            setSingleBlog(data);
+        try {
+            const res = await axios.get(`http://localhost:5000/blog/getsingleblog/${searchParams.get('blogid')}`);
+            let singleBlogdata = res.data.finalResult;
+            let userData = res.data.userResult
+            console.log(singleBlogdata);
+            console.log(userData);
+            setSingleBlog(singleBlogdata);
+            setBlogUser(userData);
+        } catch (error) {
+            console.log(error);
         }
     };
 
     useEffect(() => {
-        fetchSingleBlogData();
-    }, [blogid]);
+        console.log(blogid);
+        if(searchParams.get('blogid') && !singleBlog){
+            fetchSingleBlogData();
+        }
+        // fetchSingleBlogData();
+    }, [searchParams, singleBlog]);
 
     const deleteBlog = async () => {
         try {
@@ -52,19 +63,19 @@ function SingleBlog() {
         }
     }
     console.log(loggedIn);
-    console.log(singleBlog?.userData.myFile);
+    // console.log(singleBlog?.userData.myFile);
 
     const displayAvatar = () => {
-        if (singleBlog?.userData.myFile !== undefined) {
+        if (blogUser?.myFile !== undefined) {
             return <>
                 <div className="inline-flex">
-                    <img className="w-12 h-12 rounded-full me-3" src={singleBlog?.userData?.myFile} />
-                    <font className="font-bold text-xl">{currentUser?.firstname + currentUser?.lastname}</font>
+                    <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
+                    <font className="font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
                 </div>
             </>
         } else {
             return <>
-                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{singleBlog?.userData?.name}</font>
+                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
             </>
         }
     }
@@ -107,6 +118,7 @@ function SingleBlog() {
                     <div className="grid grid-cols-2 mt-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
+
                         </div>
                         <div className="ml-5">
                             <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
@@ -125,7 +137,7 @@ function SingleBlog() {
     }
 
 
-    return <div className="pt-20">
+    return <div className="py-20">
         <div>
             {displayData()}
         </div>

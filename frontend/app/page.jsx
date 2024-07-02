@@ -1,14 +1,25 @@
 'use client'
 import { AccountCircle, Description, Event, Person, ThumbUp, Title } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(sessionStorage.getItem('user'))
+  );
+
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
+  // const [likes, setLikes] = useState(3000);
+  const [viewCount, setViewCount] = useState(0);
+
+  
+
   const fetchBlogData = async () => {
     try {
       setIsLoading(true);
@@ -39,7 +50,7 @@ export default function Home() {
     setBlogData(result);
   };
 
-  const likeBlog = async(blogId, userId) => {
+  const likeBlog = async (blogId, userId) => {
     try {
       const res = await fetch("http://localhost:5000/blog/blog-like", {
         method: 'Post',
@@ -48,15 +59,28 @@ export default function Home() {
           userId
         }),
         headers: {
-            'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         }
-    });
-    console.log(res);
+      });
+      console.log(res);
 
-      
+
     } catch (error) {
-      
-    } 
+
+    }
+  }
+
+  const viewBlog = async (blogId, userId) => {
+    console.log('view Blog');
+    try {
+      const res = await axios.post("http://localhost:5000/blog/blog-view", {
+        blogId,
+        userId
+      })
+      console.log(res + 'view');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
@@ -104,6 +128,7 @@ export default function Home() {
             {
               blogData.map((blog) => {
                 return <div className="container">
+                  {/* onClick={() => { viewBlog(blog?._id, currentUser?._id) }}  */}
                   <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
                     <Link href={`/singleblog?blogid=${blog._id}`}>
                       <div className="grid grid-cols-2">
@@ -130,7 +155,12 @@ export default function Home() {
                     </Link>
                     <div>
                     </div>
-                    <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />
+                    {/* <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />*/}
+                    {/* <div className="mt-4">
+                      <font>{likes}Likes</font><br />
+                      <Button variant="contained" onClick={() => {setLikes(likes+1)}}>Like</Button>
+                    </div> */}
+
                   </Paper>
                 </div>
               })
