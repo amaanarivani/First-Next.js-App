@@ -35,11 +35,7 @@ export default function AppNavbar() {
             <div className="inline-flex">
               <img src={currentUser?.myFile} alt="" className="rounded-full w-8 h-8 float-right" />
               <p className= 'ms-2 mt-1'>{currentUser?.firstname}</p> 
-              {/* <p className=''>{currentUser?.firstname}</p> */}
             </div>
-            {/* <div className="ms-2 mt-1 text-center">
-              <font className=''>{currentUser?.firstname}</font>
-              </div> */}
             <div className="">
               <button type="button" className="ms-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={logout}>Logout</button>
             </div>

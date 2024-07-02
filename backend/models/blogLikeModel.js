@@ -10,7 +10,6 @@ const mySchema = new Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref:'user'
     }
-    
 });
 
 module.exports = model('blogLike', mySchema)
