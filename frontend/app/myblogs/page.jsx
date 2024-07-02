@@ -1,6 +1,6 @@
 'use client'
 
-import { AccountCircle, Description, Person } from "@mui/icons-material";
+import { AccountCircle, Description, Person, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -65,6 +65,9 @@ export default function MyBlogs() {
                                 <Link href={`/singleblog?blogid=${myblog._id}`}>
                                     <Paper elevation={16} className="p-10">
                                         <img src={myblog.blogFile} alt="" className="object-cover w-full h-44" />
+                                        <div className="mt-2 float-right">
+                                            <Visibility fontSize="" /><font className='font-bold ms-2'>{myblog?.viewCount} Views</font>
+                                        </div>
                                         <h3 className="text-xl my-3 font-bold"><font>{myblog.title.substring(0, 20)}......</font></h3>
                                         <p className="mb-2 text-large"><Description /><font className='ms-4'>{myblog.description.substring(0, 10)}......</font></p>
                                         <div className="mt-5">

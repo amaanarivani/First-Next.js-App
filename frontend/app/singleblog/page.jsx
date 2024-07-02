@@ -1,6 +1,6 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { AccountCircle, Delete, Edit, EditNote, Event, Person, Update } from "@mui/icons-material";
+import { AccountCircle, Delete, Edit, EditNote, Event, Person, Update, Visibility } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -12,10 +12,6 @@ import Swal from "sweetalert2";
 function SingleBlog() {
 
     const { loggedIn, logout, currentUser } = UseAppContext();
-
-    // const [currentUser, setCurrentUser] = useState(
-    //     JSON.parse(sessionStorage.getItem('user'))
-    // );
     console.log(currentUser);
 
     const searchParams = useSearchParams()
@@ -40,10 +36,9 @@ function SingleBlog() {
 
     useEffect(() => {
         console.log(blogid);
-        if(searchParams.get('blogid') && !singleBlog){
+        if (searchParams.get('blogid') && !singleBlog) {
             fetchSingleBlogData();
         }
-        // fetchSingleBlogData();
     }, [searchParams, singleBlog]);
 
     const deleteBlog = async () => {
@@ -63,7 +58,6 @@ function SingleBlog() {
         }
     }
     console.log(loggedIn);
-    // console.log(singleBlog?.userData.myFile);
 
     const displayAvatar = () => {
         if (blogUser?.myFile !== undefined) {
@@ -98,14 +92,6 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="pt-10">
                 <div className="ms-20">
-                    {/* <div className="grid grid-cols-2 mb-10">
-                        <div className="">
-                            <h1 className="text-center font-bold text-3xl">Blog Details</h1>
-                        </div>
-                        <div className="">
-                            {deleteAndUpdateButton()}
-                        </div>
-                    </div> */}
                     <h1 className="text-center font-bold text-3xl">Blog Details</h1>
                     <div className="grid grid-cols-3 w-1/2">
                         <div>
@@ -118,7 +104,9 @@ function SingleBlog() {
                     <div className="grid grid-cols-2 mt-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
-
+                            <div className="float-right me-5 mt-5">
+                                <Visibility fontSize="large" /><font className='font-bold ms-2'>{singleBlog?.viewCount} Views</font>
+                            </div>
                         </div>
                         <div className="ml-5">
                             <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>

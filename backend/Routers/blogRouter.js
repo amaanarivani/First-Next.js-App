@@ -13,10 +13,6 @@ router.post("/add", (req, res) => {
     ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0,
   }).save()
     .then((result) => {
-    //   await blogLikeModel.create({
-    //     blogId: result._id,
-    //     likes: [],
-    // })
       res.json(result);
 
     }).catch((err) => {
@@ -48,30 +44,6 @@ router.get("/getall", (req, res) => {
     });
 });
 
-// router.post("/blog-like", async (req, res) => {
-//   const { blogId, userId } = req.body;
-//   console.log(blogId+"liked blogId");
-//   console.log(userId+"liked userId");
-//   // console.log(req.body + "blog like api");
-//   try {
-//     let blog = await blogModel.findById(blogId)
-//     if (!blog) {
-//       return res.status(400).json({ message: "blog not found !!" })
-//     }
-//     let check = await blogLikeModel.findOne({ blogId: blogId, "likes.userId": userId })
-//     if (check) {
-//       await blogLikeModel.findOneAndUpdate({ blogId: blogId, "likes.userId": userId }, { "$set": { "likes.$.isBlogLiked": true } }, { new: true })
-//       return res.json({ message: "Blog likedddd" })
-//     }
-//     let likeblog = await blogLikeModel.findOneAndUpdate({ blogId }, { $push: { likes: { isBlogLiked: true, userId: userId } } }, { new: true })
-//     res.json({ message: "Blog liked", likeblog });
-//   } catch (error) {
-//     res.status(409).json({
-//       message: error.message,
-//     });
-//   }
-// });
-
 router.post("/blog-view", async(req, res) => {
     const {userId, blogId} = req.body;
 
@@ -93,6 +65,25 @@ router.post("/blog-view", async(req, res) => {
       }
     }
 });
+
+router.post("/blog-like", async(req, res) => {
+  const {blogId, userId} = req.body;
+
+  let check = await blogLikeModel.findOne({blogId : blogId, userId : userId})
+  if(check){
+    return res.status(400).json({message:"Blog Already Liked by the user"});
+  }else{
+    try {
+      const result = await blogLikeModel.create({
+        blogId,
+        userId
+      })
+      return res.status(200).json({message:"Blog Liked", data:result})
+    } catch (error) {
+      return res.status(500).json({message:error.message})
+    }
+  }
+})
 
 router.get("/getbyid/:id", (req, res) => {
   console.log(req.params.id);
@@ -133,26 +124,6 @@ router.get("/getsingleblog/:id", async(req, res) => {
     console.log(error);
     res.status(500).json(error);
   }
-  // Model.findById(blogId)
-    // .then(async (result) => {
-    //   let finalResult;
-    //   let userResult;
-    //   userResult = await User.findById(result.userId);
-    //   finalResult = { ...result._doc, userData: userResult }
-      // update views
-      // Model.findByIdAndUpdate()(
-      //   blogId,
-      //   {
-      //     $inc: { numViews: 1 },
-      //   },
-      //   { new: true }
-      // );
-      // res.json(finalResult);
-
-    // }).catch((err) => {
-    //   console.log(err);
-    //   res.status(500).json(err);
-    // });
 });
 
 router.put("/update/:id", (req, res) => {
@@ -175,6 +146,30 @@ router.delete("/delete/:id", (req, res) => {
       res.status(500).json(err);
     });
 });
+
+// router.post("/blog-like", async (req, res) => {
+//   const { blogId, userId } = req.body;
+//   console.log(blogId+"liked blogId");
+//   console.log(userId+"liked userId");
+//   // console.log(req.body + "blog like api");
+//   try {
+//     let blog = await blogModel.findById(blogId)
+//     if (!blog) {
+//       return res.status(400).json({ message: "blog not found !!" })
+//     }
+//     let check = await blogLikeModel.findOne({ blogId: blogId, "likes.userId": userId })
+//     if (check) {
+//       await blogLikeModel.findOneAndUpdate({ blogId: blogId, "likes.userId": userId }, { "$set": { "likes.$.isBlogLiked": true } }, { new: true })
+//       return res.json({ message: "Blog likedddd" })
+//     }
+//     let likeblog = await blogLikeModel.findOneAndUpdate({ blogId }, { $push: { likes: { isBlogLiked: true, userId: userId } } }, { new: true })
+//     res.json({ message: "Blog liked", likeblog });
+//   } catch (error) {
+//     res.status(409).json({
+//       message: error.message,
+//     });
+//   }
+// });
 
 
 

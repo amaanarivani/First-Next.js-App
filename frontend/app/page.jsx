@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircle, Description, Event, Person, ThumbUp, Title } from "@mui/icons-material";
+import { AccountCircle, Description, Event, Person, ThumbUp, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function Home() {
   // const [likes, setLikes] = useState(3000);
   const [viewCount, setViewCount] = useState(0);
 
-  
+
 
   const fetchBlogData = async () => {
     try {
@@ -51,22 +51,15 @@ export default function Home() {
   };
 
   const likeBlog = async (blogId, userId) => {
+    console.log('blog liked');
     try {
-      const res = await fetch("http://localhost:5000/blog/blog-like", {
-        method: 'Post',
-        body: JSON.stringify({
-          blogId,
-          userId
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log(res);
-
-
+      const res = await axios.post("http://localhost:5000/blog/blog-like", {
+        blogId,
+        userId
+      })
+      console.log(res + 'like');
     } catch (error) {
-
+      console.log(error);
     }
   }
 
@@ -128,8 +121,7 @@ export default function Home() {
             {
               blogData.map((blog) => {
                 return <div className="container">
-                  {/* onClick={() => { viewBlog(blog?._id, currentUser?._id) }}  */}
-                  <Paper elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
+                  <Paper onClick={() => { viewBlog(blog?._id, currentUser?._id) }} elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
                     <Link href={`/singleblog?blogid=${blog._id}`}>
                       <div className="grid grid-cols-2">
                         <div className="mr-9">
@@ -153,6 +145,14 @@ export default function Home() {
                         </div>
                       </div>
                     </Link>
+                    <div className="inline-flex">
+                            <div className="mt-5">
+                              <ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" />
+                            </div>
+                            <div className="ms-5 mt-5">
+                              <Visibility fontSize="large" /><font className='font-bold ms-2'>{blog?.viewCount} Views</font>
+                            </div>
+                          </div>
                     <div>
                     </div>
                     {/* <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />*/}
