@@ -75,7 +75,6 @@ router.post("/blog-like", async (req, res) => {
         $pull : {likedBy: userId}
       }
     );
-    return res.status(400).json({ message: "Blog Already Liked by the user" });
   } else {
     try {
       const blogData = await blogModel.findById(blogId)
