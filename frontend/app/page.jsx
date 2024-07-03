@@ -15,7 +15,7 @@ export default function Home() {
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
-  // const [likes, setLikes] = useState(3000);
+  const [isliked, setIsLiked] = useState(false);
   const [viewCount, setViewCount] = useState(0);
 
 
@@ -58,6 +58,7 @@ export default function Home() {
         userId
       })
       console.log(res + 'like');
+      setIsLiked(true);
     } catch (error) {
       console.log(error);
     }
@@ -76,6 +77,22 @@ export default function Home() {
     }
   }
 
+  // const displayLike = () => {
+  //   if (!isliked) {
+  //     return (
+  //       <>
+  //         <ThumbUpOffAlt fontSize="large" />
+  //       </>
+  //     )
+  //   }
+  //   else {
+  //     return (
+  //       <>
+  //         <ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" color="blue" />
+  //       </>
+  //     )
+  //   }
+  // }
 
 
   const dsiplayData = () => {
@@ -146,13 +163,13 @@ export default function Home() {
                       </div>
                     </Link>
                     <div className="inline-flex">
-                            <div className="mt-5">
-                              <ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" />
-                            </div>
-                            <div className="ms-5 mt-5">
-                              <Visibility fontSize="large" /><font className='font-bold ms-2'>{blog?.viewCount} Views</font>
-                            </div>
-                          </div>
+                      <div className="mt-5">
+                        <font className='font-bold text-xl '>{blog?.likeCount}</font><ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" />
+                      </div>
+                      <div className="ms-5 mt-5">
+                        <Visibility fontSize="large" /><font className='font-bold ms-2'>{blog?.viewCount} Views</font>
+                      </div>
+                    </div>
                     <div>
                     </div>
                     {/* <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />*/}

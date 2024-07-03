@@ -1,16 +1,16 @@
 const express = require("express");
 const Model = require("../models/blogModel");
-const User = require("../models/userModel");
 const blogLikeModel = require("../models/blogLikeModel");
 const blogModel = require("../models/blogModel");
 const blogViewModel = require("../models/blogViewModel");
+const User = require("../models/userModel");
 
 const router = express.Router();
 
 router.post("/add", (req, res) => {
   console.log(req.body);
   new Model({
-    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0,
+    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0,likeCount: 0,
   }).save()
     .then((result) => {
       res.json(result);
@@ -44,50 +44,73 @@ router.get("/getall", (req, res) => {
     });
 });
 
-router.post("/blog-view", async(req, res) => {
-    const {userId, blogId} = req.body;
+router.post("/blog-view", async (req, res) => {
+  const { userId, blogId } = req.body;
 
-    let check = await blogViewModel.findOne({blogId : blogId, userId : userId})
-    if(check){
-      return res.status(400).json({message:"Blog Already Viewed by the user"});
-    }
-    else{
-      try {
-        const result = await blogViewModel.create({
-          blogId,
-          userId
-        })
-    
-        return res.status(200).json({message:"Blog Viewed.", data:result})
-        
-      } catch (error) {
-        return res.status(500).json({message:error.message})
-      }
-    }
-});
-
-router.post("/blog-like", async(req, res) => {
-  const {blogId, userId} = req.body;
-
-  let check = await blogLikeModel.findOne({blogId : blogId, userId : userId})
-  if(check){
-    return res.status(400).json({message:"Blog Already Liked by the user"});
-  }else{
+  let check = await blogViewModel.findOne({ blogId: blogId, userId: userId })
+  if (check) {
+    return res.status(400).json({ message: "Blog Already Viewed by the user" });
+  }
+  else {
     try {
-      const result = await blogLikeModel.create({
+      const result = await blogViewModel.create({
         blogId,
         userId
       })
-      return res.status(200).json({message:"Blog Liked", data:result})
+
+      return res.status(200).json({ message: "Blog Viewed.", data: result })
+
     } catch (error) {
-      return res.status(500).json({message:error.message})
+      return res.status(500).json({ message: error.message })
     }
   }
-})
+});
+
+router.post("/blog-like", async (req, res) => {
+  const { blogId, userId } = req.body;
+
+  let check = await blogLikeModel.findOne({ blogId: blogId, userId: userId })
+  if (check) {
+    return res.status(400).json({ message: "Blog Already Liked by the user" });
+  } else {
+    try {
+      const finalResult = await blogModel.findById(blogId)
+      const result = await blogLikeModel.create({
+        blogId,
+        userId
+      });
+      const likes = await blogModel.findByIdAndUpdate(
+        blogId,
+        {
+          likeCount: finalResult.likeCount + 1,
+        }
+      );
+      return res.status(200).json({ message: "Blog Liked", data: result, Likes: likes })
+    } catch (error) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+});
+
+// router.get("/get-blog-like/:id", async (req, res) => {
+//   const blogId = req.params.id;
+//   let check = await blogLikeModel.findOne({ blogId: blogId })
+//   if (check) {
+//     try {
+//       let finalResult = [];
+//       let i=0;
+//       for(i=0; i<)
+//       const likedBy = await blogLikeModel.find(blogId);
+//       res.json({ likedBy })
+//     } catch (error) {
+//       res.status(500).json(error);
+//     }
+//   }
+// });
 
 router.get("/getbyid/:id", (req, res) => {
   console.log(req.params.id);
-  Model.find({ userId: req.params.id })
+  blogModel.find({ userId: req.params.id })
     .then(async (result) => {
       let finalResult = [];
       let i = 0;
@@ -106,20 +129,20 @@ router.get("/getbyid/:id", (req, res) => {
     });
 });
 
-router.get("/getsingleblog/:id", async(req, res) => {
+router.get("/getsingleblog/:id", async (req, res) => {
   const blogId = req.params.id;
   console.log(blogId + "dwdfdf");
   try {
     const finalResult = await blogModel.findById(blogId)
     const userResult = await User.findById(finalResult.userId);
-    
+
     await blogModel.findByIdAndUpdate(
       blogId,
       {
-        viewCount : finalResult.viewCount + 1,
+        viewCount: finalResult.viewCount + 1,
       }
     );
-    res.json({finalResult,userResult});
+    res.json({ finalResult, userResult });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -127,7 +150,7 @@ router.get("/getsingleblog/:id", async(req, res) => {
 });
 
 router.put("/update/:id", (req, res) => {
-  Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  blogModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       res.json(result);
     }).catch((err) => {
@@ -137,7 +160,7 @@ router.put("/update/:id", (req, res) => {
 });
 
 router.delete("/delete/:id", (req, res) => {
-  Model.findByIdAndDelete(req.params.id)
+  blogModel.findByIdAndDelete(req.params.id)
     .then((result) => {
       res.json(result);
 

@@ -9,6 +9,7 @@ const mySchema = new Schema({
     updatedBy : String,
     blogFile : String,
     viewCount : Number,
+    likeCount : Number
 });
 
 module.exports =  model( 'blog', mySchema );
