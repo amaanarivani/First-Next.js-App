@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { model, Schema } = require('../connection');
 
 const mySchema = new Schema({
@@ -9,7 +10,8 @@ const mySchema = new Schema({
     updatedBy : String,
     blogFile : String,
     viewCount : Number,
-    likeCount : Number
+    likeCount : Number,
+    
 });
 
 module.exports =  model( 'blog', mySchema );

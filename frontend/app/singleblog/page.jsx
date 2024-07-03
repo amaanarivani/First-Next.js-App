@@ -1,6 +1,6 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { AccountCircle, Delete, Edit, EditNote, Event, Person, Update, Visibility } from "@mui/icons-material";
+import { AccountCircle, Delete, Edit, EditNote, Event, Person, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -35,7 +35,7 @@ function SingleBlog() {
     };
 
     useEffect(() => {
-        console.log(blogid);
+        // console.log(blogid);
         if (searchParams.get('blogid') && !singleBlog) {
             fetchSingleBlogData();
         }
@@ -74,13 +74,16 @@ function SingleBlog() {
         }
     }
 
+    // console.log(currentUser?._id + 'currentUser');
+    // console.log(singleBlog?.userId + 'blogUser');
+
     const deleteAndUpdateButton = () => {
-        if (currentUser?._id == singleBlog.userId) {
+        if (currentUser?._id == singleBlog?.userId) {
             return (
                 <>
                     <div className="">
                         <Button color="error" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="large" /></Button>
-                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog._id}`) }}><Edit fontSize="large" /></Button>
+                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="large" /></Button>
                     </div>
 
                 </>
@@ -105,6 +108,7 @@ function SingleBlog() {
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
                             <div className="float-right me-5 mt-5">
+                                <ThumbUpAlt fontSize='large' className="me-1" /><font className='font-bold me-3'>{singleBlog?.likeCount} Likes</font>
                                 <Visibility fontSize="large" /><font className='font-bold ms-2'>{singleBlog?.viewCount} Views</font>
                             </div>
                         </div>

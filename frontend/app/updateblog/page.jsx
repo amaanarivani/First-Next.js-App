@@ -1,6 +1,7 @@
 'use client'
 import UseAppContext from "@/component/UseContext"
 import { Box, Button, CircularProgress, Paper, TextField, TextareaAutosize, DatePicker } from "@mui/material";
+import axios from "axios";
 import { Form, Formik } from "formik";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
@@ -14,11 +15,31 @@ export default function UpdateBlog() {
     const blogid = searchParams.get('blogid');
     const router = useRouter();
     const [singleBlog, setSingleBlog] = useState(null);
+    const [blogUser, setBlogUser] = useState();
+
+    const fetchSingleBlogData = async () => {
+        try {
+            const res = await axios.get(`http://localhost:5000/blog/getsingleblog/${searchParams.get('blogid')}`);
+            let singleBlogdata = res.data.finalResult;
+            let userData = res.data.userResult;
+            console.log(singleBlogdata);
+            console.log(userData);
+            setSingleBlog(singleBlogdata);
+            setBlogUser(userData);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        fetchSingleBlogData();
+    }, [blogid]);
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'));
+        // console.log(user?._id);
+        console.log(singleBlog?.userId);
         // console.log(user, "inside use effect");
-        if (singleBlog && (user._id !== singleBlog?.userId || !user)) {
+        if (singleBlog && (user?._id !== singleBlog?.userId || !user)) {
             Swal.fire({
                 icon: 'error',
                 title: 'Not Permitted',
@@ -27,18 +48,6 @@ export default function UpdateBlog() {
             router.push("/")
         }
     }, [singleBlog])
-
-    const fetchSingleBlogData = async () => {
-        const res = await fetch(`http://localhost:5000/blog/getsingleblog/${blogid}`);
-        if (res.status === 200) {
-            const data = await res.json();
-            console.log(data);
-            setSingleBlog(data);
-        }
-    };
-    useEffect(() => {
-        fetchSingleBlogData();
-    }, [blogid]);
 
     const submitForm = async (values, { setSubmitting }) => {
         console.log(values);

@@ -15,10 +15,7 @@ export default function Home() {
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
-  const [isliked, setIsLiked] = useState(false);
-  const [viewCount, setViewCount] = useState(0);
-
-
+  const [isLikeLoading, setIsLikeLoading] = useState(false);
 
   const fetchBlogData = async () => {
     try {
@@ -51,14 +48,19 @@ export default function Home() {
   };
 
   const likeBlog = async (blogId, userId) => {
-    console.log('blog liked');
+    console.log(blogId,'blog liked');
+    setIsLikeLoading(true);
     try {
       const res = await axios.post("http://localhost:5000/blog/blog-like", {
         blogId,
         userId
       })
+      console.log(blogData+"blogdata");
+      setBlogData(previous=>previous.map(e =>{ if(e._id == blogId)  {
+        console.log(e,"finddddd");
+        return{...e, likeCount: e.likeCount+1 } } else{return e}}));
+        setIsLikeLoading(false);
       console.log(res + 'like');
-      setIsLiked(true);
     } catch (error) {
       console.log(error);
     }
@@ -76,23 +78,6 @@ export default function Home() {
       console.log(error);
     }
   }
-
-  // const displayLike = () => {
-  //   if (!isliked) {
-  //     return (
-  //       <>
-  //         <ThumbUpOffAlt fontSize="large" />
-  //       </>
-  //     )
-  //   }
-  //   else {
-  //     return (
-  //       <>
-  //         <ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" color="blue" />
-  //       </>
-  //     )
-  //   }
-  // }
 
 
   const dsiplayData = () => {
@@ -136,8 +121,8 @@ export default function Home() {
           <Box className='grid grid-cols-1 gap-y-10'>
 
             {
-              blogData.map((blog) => {
-                return <div className="container">
+              blogData.map((blog, index) => {
+                return <div key={blog._id.toString()} className="container">
                   <Paper onClick={() => { viewBlog(blog?._id, currentUser?._id) }} elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
                     <Link href={`/singleblog?blogid=${blog._id}`}>
                       <div className="grid grid-cols-2">
@@ -146,10 +131,10 @@ export default function Home() {
                         </div>
                         <div className="">
                           <h3 className="text-3xl font-extrabold mb-5"><font>{blog.title}</font></h3>
-                          <p className="mb-2 text-lg"><Description /><font className='text-lg'>{blog.description}</font></p>
+                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2"/><font className='text-lg'>{blog.description}</font></p>
                           <div className="grid grid-cols-4 mt-4">
                             <div className="inline-flex">
-                              <img className="w-2/5 rounded-full" src={blog.userData.myFile} />
+                              <img className="w-2/5 rounded-full img-fluid" src={blog.userData.myFile} />
                               <p className="text-xl font-bold float-left mt-3"><font className='ms-4'>{blog.userData.firstname}</font></p>
                             </div>
                             <div className="col-span-2 mt-5">
@@ -164,20 +149,21 @@ export default function Home() {
                     </Link>
                     <div className="inline-flex">
                       <div className="mt-5">
-                        <font className='font-bold text-xl '>{blog?.likeCount}</font><ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" />
+                        <button  disabled={isLikeLoading} onClick={() => {likeBlog(blog?._id, currentUser?._id)}}  type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                        <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                            <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />
+                          </svg>
+                          <span class="sr-only">Icon description</span>
+                        </button>
+                        {/* <ThumbUpOffAlt onClick={() => {likeBlog(blog?._id, currentUser?._id)}} fontSize="large" /> */}
                       </div>
-                      <div className="ms-5 mt-5">
+                      <div className="ms-5 mt-8">
                         <Visibility fontSize="large" /><font className='font-bold ms-2'>{blog?.viewCount} Views</font>
                       </div>
                     </div>
                     <div>
                     </div>
-                    {/* <ThumbUp onClick={() => { likeBlog(blog?._id, blog?.userData?._id) }} />*/}
-                    {/* <div className="mt-4">
-                      <font>{likes}Likes</font><br />
-                      <Button variant="contained" onClick={() => {setLikes(likes+1)}}>Like</Button>
-                    </div> */}
-
                   </Paper>
                 </div>
               })

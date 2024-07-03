@@ -74,7 +74,7 @@ router.post("/blog-like", async (req, res) => {
     return res.status(400).json({ message: "Blog Already Liked by the user" });
   } else {
     try {
-      const finalResult = await blogModel.findById(blogId)
+      const blogData = await blogModel.findById(blogId)
       const result = await blogLikeModel.create({
         blogId,
         userId
@@ -82,7 +82,7 @@ router.post("/blog-like", async (req, res) => {
       const likes = await blogModel.findByIdAndUpdate(
         blogId,
         {
-          likeCount: finalResult.likeCount + 1,
+          likeCount: blogData.likeCount + 1,
         }
       );
       return res.status(200).json({ message: "Blog Liked", data: result, Likes: likes })
@@ -91,22 +91,6 @@ router.post("/blog-like", async (req, res) => {
     }
   }
 });
-
-// router.get("/get-blog-like/:id", async (req, res) => {
-//   const blogId = req.params.id;
-//   let check = await blogLikeModel.findOne({ blogId: blogId })
-//   if (check) {
-//     try {
-//       let finalResult = [];
-//       let i=0;
-//       for(i=0; i<)
-//       const likedBy = await blogLikeModel.find(blogId);
-//       res.json({ likedBy })
-//     } catch (error) {
-//       res.status(500).json(error);
-//     }
-//   }
-// });
 
 router.get("/getbyid/:id", (req, res) => {
   console.log(req.params.id);
