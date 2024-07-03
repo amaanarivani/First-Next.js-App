@@ -68,9 +68,13 @@ router.post("/blog-view", async (req, res) => {
 
 router.post("/blog-like", async (req, res) => {
   const { blogId, userId } = req.body;
-
   let check = await blogLikeModel.findOne({ blogId: blogId, userId: userId })
   if (check) {
+    await blogModel.findByIdAndUpdate(
+      blogId,{
+        $pull : {likedBy: userId}
+      }
+    );
     return res.status(400).json({ message: "Blog Already Liked by the user" });
   } else {
     try {
@@ -79,13 +83,14 @@ router.post("/blog-like", async (req, res) => {
         blogId,
         userId
       });
-      const likes = await blogModel.findByIdAndUpdate(
+      await blogModel.findByIdAndUpdate(
         blogId,
         {
           likeCount: blogData.likeCount + 1,
+          $push : {likedBy : userId},
         }
       );
-      return res.status(200).json({ message: "Blog Liked", data: result, Likes: likes })
+      return res.status(200).json({ message: "Blog Liked", data: result})
     } catch (error) {
       return res.status(500).json({ message: error.message })
     }

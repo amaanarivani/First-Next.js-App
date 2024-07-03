@@ -11,6 +11,10 @@ const mySchema = new Schema({
     blogFile : String,
     viewCount : Number,
     likeCount : Number,
+    likedBy : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "user"
+    }]
     
 });
 

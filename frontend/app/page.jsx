@@ -3,7 +3,6 @@ import { AccountCircle, Description, Event, Person, ThumbUp, ThumbUpOffAlt, Titl
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
-import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -16,6 +15,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
+
 
   const fetchBlogData = async () => {
     try {
@@ -57,22 +57,27 @@ export default function Home() {
       })
       console.log(blogData+"blogdata");
       setBlogData(previous=>previous.map(e =>{ if(e._id == blogId)  {
-        console.log(e,"finddddd");
-        return{...e, likeCount: e.likeCount+1 } } else{return e}}));
-        setIsLikeLoading(false);
+      console.log(e,"finddddd");
+      return{...e, likeCount: e.likeCount+1 } } else{return e}}));
+      setIsLikeLoading(false);
       console.log(res + 'like');
     } catch (error) {
       console.log(error);
+      setIsLikeLoading(false);
     }
   }
 
-  const viewBlog = async (blogId, userId) => {
+  const viewBlog = async (blogId, userId, Likes) => {
     console.log('view Blog');
     try {
       const res = await axios.post("http://localhost:5000/blog/blog-view", {
         blogId,
-        userId
+        userId,
+        Likes,
       })
+      setBlogData(previous=>previous.map(e =>{ if(e._id == blogId)  {
+      console.log(e,"finddddd");
+      return{...e, viewCount: e.viewCount+1 } } else{return e}}));
       console.log(res + 'view');
     } catch (error) {
       console.log(error);
@@ -149,7 +154,7 @@ export default function Home() {
                     </Link>
                     <div className="inline-flex">
                       <div className="mt-5">
-                        <button  disabled={isLikeLoading} onClick={() => {likeBlog(blog?._id, currentUser?._id)}}  type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                        <button style={{color: (blog.likedBy.includes(currentUser._id))? '#1A56DB':"grey"}} disabled={isLikeLoading} onClick={() => {likeBlog(blog?._id, currentUser?._id)}}  type="button" class="text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                         <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
                           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                             <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />

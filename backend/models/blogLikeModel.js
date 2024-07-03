@@ -9,7 +9,7 @@ const mySchema = new Schema({
     userId : {
         type : mongoose.Schema.Types.ObjectId,
         ref:'user'
-    }
+    },
 });
 
 module.exports = model('blogLike', mySchema)
