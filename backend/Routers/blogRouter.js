@@ -75,6 +75,14 @@ router.post("/blog-like", async (req, res) => {
   console.log(check);
   if (check) {
     console.log("in if");
+    const blogData = await blogModel.findById(blogId)
+    await blogModel.findByIdAndUpdate(
+      blogId,
+      {
+        likeCount: blogData.likeCount - 1,
+        $push: { likedBy: userId },
+      }
+    );
     await blogModel.findByIdAndUpdate(
       blogId, {
       $pull: { likedBy: userId }

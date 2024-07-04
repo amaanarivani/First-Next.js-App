@@ -54,17 +54,17 @@ export default function Home() {
   const likeBlog = async (blogId, userId) => {
     console.log(blogId, 'blog liked');
     setIsLikeLoading(true);
-    // if (currentUser == null) {
-    //   return Swal.fire({
-    //     icon: 'error',
-    //     title: 'Not Permitted!',
-    //     text: 'Please Login to continue.',
-    //   })
-    //     .then(() => {
-    //       router.push('/login');
+    if (currentUser == null) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Not Permitted!',
+        text: 'Please Login to continue.',
+      })
+        .then(() => {
+          router.push('/login');
 
-    //     })
-    // }
+        })
+    }
     try {
       const res = await axios.post("http://localhost:5000/blog/blog-like", {
         blogId,
@@ -74,13 +74,19 @@ export default function Home() {
       setBlogData(previous => previous.map(e => {
         if (e._id == blogId) {
           console.log(e, "finddddd");
-          return { ...e, likeCount: e.likeCount + 1 }
+          // let newlikedByList = [e.likedBy]
+          return { ...e, likeCount: e.likeCount + 1, likedBy : currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
         } else { return e }
       }));
       setIsLikeLoading(false);
       console.log(res + 'like');
     } catch (error) {
-      console.log(error + "unlike")
+      setBlogData(previous => previous.map(e => {
+        if (e._id == blogId) {
+          console.log(e, "finddddd");
+          return { ...e, likeCount: e.likeCount - 1,  likedBy : currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy}
+        } else { return e }
+      }));
       setIsLikeLoading(false);
     }
   }
