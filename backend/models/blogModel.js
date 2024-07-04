@@ -12,8 +12,7 @@ const mySchema = new Schema({
     viewCount : Number,
     likeCount : Number,
     likedBy : [{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "user"
+        type : String,
     }]
     
 });

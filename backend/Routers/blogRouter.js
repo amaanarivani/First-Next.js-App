@@ -4,13 +4,14 @@ const blogLikeModel = require("../models/blogLikeModel");
 const blogModel = require("../models/blogModel");
 const blogViewModel = require("../models/blogViewModel");
 const User = require("../models/userModel");
+var mongoose = require('mongoose');
 
 const router = express.Router();
 
 router.post("/add", (req, res) => {
   console.log(req.body);
   new Model({
-    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0,likeCount: 0,
+    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0, likeCount: 0,
   }).save()
     .then((result) => {
       res.json(result);
@@ -46,8 +47,9 @@ router.get("/getall", (req, res) => {
 
 router.post("/blog-view", async (req, res) => {
   const { userId, blogId } = req.body;
-
-  let check = await blogViewModel.findOne({ blogId: blogId, userId: userId })
+  var id = new mongoose.Types.ObjectId(userId);
+  console.log(id);
+  let check = await blogModel.findOne({ likedBy: { $in: [id] } })
   if (check) {
     return res.status(400).json({ message: "Blog Already Viewed by the user" });
   }
@@ -68,14 +70,19 @@ router.post("/blog-view", async (req, res) => {
 
 router.post("/blog-like", async (req, res) => {
   const { blogId, userId } = req.body;
-  let check = await blogLikeModel.findOne({ blogId: blogId, userId: userId })
+  console.log(req.body);
+  let check = await blogModel.findOne({ _id : blogId, likedBy: { $in: [userId] } }).countDocuments();
+  console.log(check);
   if (check) {
+    console.log("in if");
     await blogModel.findByIdAndUpdate(
-      blogId,{
-        $pull : {likedBy: userId}
-      }
+      blogId, {
+      $pull: { likedBy: userId }
+    }
     );
+    return res.status(400).json({ message: "Blog Already Liked by the user" });
   } else {
+    console.log("else");
     try {
       const blogData = await blogModel.findById(blogId)
       const result = await blogLikeModel.create({
@@ -86,10 +93,10 @@ router.post("/blog-like", async (req, res) => {
         blogId,
         {
           likeCount: blogData.likeCount + 1,
-          $push : {likedBy : userId},
+          $push: { likedBy: userId },
         }
       );
-      return res.status(200).json({ message: "Blog Liked", data: result})
+      return res.status(200).json({ message: "Blog Liked", data: result })
     } catch (error) {
       return res.status(500).json({ message: error.message })
     }
