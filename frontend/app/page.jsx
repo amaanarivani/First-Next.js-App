@@ -75,7 +75,7 @@ export default function Home() {
         if (e._id == blogId) {
           console.log(e, "finddddd");
           // let newlikedByList = [e.likedBy]
-          return { ...e, likeCount: e.likeCount + 1, likedBy : currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
+          return { ...e, likeCount: e.likeCount + 1, likedBy: currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
         } else { return e }
       }));
       setIsLikeLoading(false);
@@ -84,7 +84,7 @@ export default function Home() {
       setBlogData(previous => previous.map(e => {
         if (e._id == blogId) {
           console.log(e, "finddddd");
-          return { ...e, likeCount: e.likeCount - 1,  likedBy : currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy}
+          return { ...e, likeCount: e.likeCount - 1, likedBy: currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy }
         } else { return e }
       }));
       setIsLikeLoading(false);
@@ -180,11 +180,19 @@ export default function Home() {
                       </div>
                     </Link>
                     <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className="mt-4 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-                      <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
-                      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                        <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />
-                      </svg>
-                      <span class="sr-only">Icon description</span>
+                      {
+                        isLikeLoading ? (
+                          <>
+                            <CircularProgress size='1.5rem'/>
+                          </>
+                        ) :
+                          <>
+                            <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                              <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />
+                            </svg>
+                          </>
+                      }
                     </button>
                     <Visibility fontSize="large" /><font className='mt-4 font-bold ms-2'>{blog?.viewCount} Views</font>
                     <div>
