@@ -11,6 +11,7 @@ const mySchema = new Schema({
     blogFile : String,
     viewCount : Number,
     likeCount : Number,
+    commentCount : Number,
     likedBy : [{
         type : String,
     }],

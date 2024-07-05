@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/add", (req, res) => {
   console.log(req.body);
   new Model({
-    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0, likeCount: 0,
+    ...req.body.values, userId: req.body.userId, createdAt: Date.now(), updatedAt: Date.now(), viewCount: 0, likeCount: 0, commentCount: 0,
   }).save()
     .then((result) => {
       res.json(result);
@@ -49,6 +49,7 @@ router.get("/getall", (req, res) => {
 router.post("/blog-comment", async(req, res) => {
   const {commentOn, commentBy, comment} = req.body;
   console.log(req.body);
+  const blogData = await blogModel.findById(commentOn);
   try {
     const result = await blogCommentModel.create({
       commentOn,
@@ -57,6 +58,12 @@ router.post("/blog-comment", async(req, res) => {
       createdAt: Date.now(),
       updatedAt: Date.now(),
     })
+    await blogModel.findByIdAndUpdate(
+      commentOn,
+      {
+        commentCount: blogData.commentCount + 1,
+      }
+    );
     return res.status(200).json({message : "Comment Done", data : result });
   } catch (error) {
     return res.status(500).json({ message: error.message })
