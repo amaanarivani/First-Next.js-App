@@ -14,6 +14,7 @@ function SingleBlog() {
 
     const { loggedIn, logout, currentUser } = UseAppContext();
     const [userComment, setUserComment] = useState("");
+    const [isCommenting, setIsCommenting] = useState(false);
     console.log(currentUser);
 
     const searchParams = useSearchParams()
@@ -21,6 +22,9 @@ function SingleBlog() {
     const router = useRouter();
 
     const [singleBlog, setSingleBlog] = useState();
+    const [blogCommentData, setblogCommentData] = useState([]);
+    const [blogCommentUser, setblogCommentUser] = useState([]);
+
     const [blogUser, setBlogUser] = useState();
     const fetchSingleBlogData = async () => {
         try {
@@ -42,34 +46,25 @@ function SingleBlog() {
             fetchSingleBlogData();
         }
     }, [searchParams, singleBlog]);
-    //     initialValues: {
-    //         blogId : singleBlog._id,
-    //         userId : currentUser._id,
-    //         comment: '',
-    //     },
-    //     onSubmit: async (values, { setSubmitting }) => {
-    //         setSubmitting(true);
-    //         setTimeout(() => {
-    //             console.log(values);
-    //             setSubmitting(false);
-    //         }, 3000);
 
-    //         // send the data to the server
-    //         const res = await axios.post("http://localhost:5000/blog/blog-comment", {
-    //             blogId,
-    //             userId,
-    //             comment
-    //         })
+    const fetchCommentData = async () => {
+        try {
+            const res = await axios.get(`http://localhost:5000/blog/get-comment/${searchParams.get('blogid')}`);
+            console.log(res);
+            let commentData = res.data.finalResult;
+            let userData = res.data.finalResult[0].userResult;
+            console.log(commentData);
+            console.log(userData);
+            setblogCommentData(commentData);
+            setblogCommentUser(userData);
 
-    //         console.log(res.status);
-    //         if (res.status === 200) {
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: 'Comment Added Successfully',
-    //             })
-    //         }
-    //     },
-    // });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        fetchCommentData()
+    }, []);
 
     const deleteBlog = async () => {
         try {
@@ -89,20 +84,6 @@ function SingleBlog() {
     }
     console.log(loggedIn);
 
-    const displayAvatar = () => {
-        if (blogUser?.myFile !== undefined) {
-            return <>
-                <div className="inline-flex">
-                    <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
-                    <font className="font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
-                </div>
-            </>
-        } else {
-            return <>
-                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
-            </>
-        }
-    }
 
     const deleteAndUpdateButton = () => {
         if (currentUser?._id == singleBlog?.userId) {
@@ -119,6 +100,7 @@ function SingleBlog() {
     }
 
     const blogComment = async (commentOn, commentBy, comment) => {
+        setIsCommenting(true);
         try {
             const res = await axios.post("http://localhost:5000/blog/blog-comment", {
                 commentOn,
@@ -132,9 +114,11 @@ function SingleBlog() {
                 });
                 // router.push(`/singleblog?blogid=${blogid}`);
             }
+            setIsCommenting(false);
             console.log(res + "comment done");
         } catch (error) {
             console.log(error);
+            setIsCommenting(false);
         }
     }
 
@@ -164,8 +148,19 @@ function SingleBlog() {
                                         <>
                                             <div className="ms-4 w-3/5">
                                                 <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
-                                                <textarea onChange={(e) => { setUserComment(e.target.value) }} name="comment" id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." />
-                                                <button onClick={() => { blogComment(singleBlog._id, currentUser._id, userComment) }} type="button" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">Comment <Telegram /></button>
+                                                <textarea  onChange={(e) => { setUserComment(e.target.value) }} name="comment" id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." required  />
+                                                <button disabled={isCommenting} onClick={() => { blogComment(singleBlog._id, currentUser._id, userComment) }} type="button" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
+                                                    {
+                                                        isCommenting ? (
+                                                            <>
+                                                                <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
+                                                            </>
+                                                        ) :
+                                                            <>
+                                                                <font>Comment</font><Telegram />
+                                                            </>
+                                                    }
+                                                </button>
                                             </div>
                                         </>
                                     ) : ""
@@ -176,7 +171,14 @@ function SingleBlog() {
                         <div className="ml-5">
                             <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
                             <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
-                            <div className="mt-8">{displayAvatar()}</div>
+                            <div className="mt-8 inline-flex">
+                                {
+                                    blogUser.myFile ? (
+                                        <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
+                                    ) : <Person fontSize="large" />
+                                }
+                                <font className="ms-3 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
+                            </div>
                             <div className="mt-5">
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { AccountCircle, Description, Person, ThumbUpAlt, Visibility } from "@mui/icons-material";
+import { AccountCircle, Description, Person, Telegram, ThumbUpAlt, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -34,25 +34,7 @@ export default function MyBlogs() {
 
     // console.log(currentUser?.myFile);
 
-    const displayAvatar = () => {
-        if (currentUser?.myFile !== undefined) {
-            return <>
-                <div className="grid grid-cols-3">
-                    <div className="">
-                        <img className="w-14 h-14 rounded-full" src={currentUser?.myFile} />
-                    </div>
-                    <div className="col-span-2 mt-2">
-                        <h2 className="font-bold text-xl">{currentUser?.firstname + currentUser?.lastname}</h2>
-                    </div>
-                </div>
-
-            </>
-        } else {
-            return <>
-                <Person fontSize="large" /><font className=" ms-4 font-bold text-xl">{currentUser?.name}</font>
-            </>
-        }
-    }
+   
 
     const displayData = () => {
         if (!isLoading) {
@@ -64,15 +46,22 @@ export default function MyBlogs() {
                             return <div>
                                 <Link href={`/singleblog?blogid=${myblog._id}`}>
                                     <Paper elevation={16} className="p-10">
+                                        <h3 className="text-xl font-bold mb-2">{myblog?.title}</h3>
                                         <img src={myblog.blogFile} alt="" className="object-cover w-full h-44" />
-                                        <div className="mt-3 float-right">
-                                            <ThumbUpAlt fontSize='' className="me-1"/><font className='font-bold'>{myblog?.likeCount} Likes</font>
-                                            <Visibility fontSize="" className="ms-2" /><font className='font-bold ms-1'>{myblog?.viewCount} Views</font>
+                                        <div className="my-4">
+                                            <ThumbUpAlt fontSize="medium" className="me-1" /><font className='font-medium'>{myblog?.likeCount} Likes</font>
+                                            <Telegram fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} Comments</font>
+                                            <Visibility fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.viewCount} Views</font>
                                         </div>
-                                        <h3 className="text-xl my-3 font-bold">{myblog.title.substring(0, 10)}......</h3>
                                         <p className="mb-2 text-large"><Description /><font className='ms-4'>{myblog.description.substring(0, 30)}......</font></p>
-                                        <div className="mt-5">
-                                            {displayAvatar()}
+                                        <div className="mt-4 inline-flex">
+                                            {
+                                                currentUser?.myFile ? (
+                                                    <img className="w-10 h-10 rounded-full" src={currentUser?.myFile} alt="" />
+
+                                                ) : <Person fontSize="medium" />
+                                            }
+                                            <font className="font-bold ms-2">{currentUser.firstname + currentUser.lastname}</font>
                                         </div>
                                     </Paper>
                                 </Link>

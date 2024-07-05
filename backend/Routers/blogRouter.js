@@ -157,6 +157,24 @@ router.get("/getbyid/:id", (req, res) => {
     });
 });
 
+router.get("/get-comment/:id", async(req, res) => {
+  const blogId = req.params.id;
+  console.log(blogId + "blogId");
+  const result = await blogCommentModel.find({commentOn : blogId});
+  let finalResult = [];
+  let i = 0;
+  try {
+    for ( i=0; i<result.length; i++){
+      let currentData = result[i];
+      let fetchUserData = await User.findById(currentData.commentBy);
+      finalResult.push({...currentData._doc, userResult : fetchUserData}) 
+    }
+    res.status(200).json({finalResult});
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.get("/getsingleblog/:id", async (req, res) => {
   const blogId = req.params.id;
   console.log(blogId + "dwdfdf");

@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircle, Description, Event, Person, ThumbUp, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
+import { AccountCircle, Description, Event, Person, Telegram, ThumbUp, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -166,11 +166,14 @@ export default function Home() {
                           <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>
                           <div className="grid grid-cols-4 mt-4">
                             <div className="inline-flex">
-                              <img className="w-2/5 rounded-full img-fluid" src={blog.userData.myFile} />
+                              {
+                                blog?.userData?.myFile ? (
+                                  <img className="w-2/5 rounded-full img-fluid" src={blog.userData.myFile} />
+                                ) : <Person fontSize="large" className="mt-2 w-2/5 rounded-full img-fluid" />
+                              }
                               <p className="text-xl font-bold float-left mt-3"><font className='ms-4'>{blog.userData.firstname}</font></p>
                             </div>
                             <div className="col-span-2 mt-5">
-
                             </div>
                             <div className="mt-5">
                               <Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(blog?.createdAt).toLocaleDateString()}</font>
@@ -179,11 +182,11 @@ export default function Home() {
                         </div>
                       </div>
                     </Link>
-                    <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className="mt-4 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                    <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className="mt-7 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                       {
                         isLikeLoading ? (
                           <>
-                            <CircularProgress size='1.5rem'/>
+                            <CircularProgress size='1.5rem' />
                           </>
                         ) :
                           <>
@@ -194,6 +197,7 @@ export default function Home() {
                           </>
                       }
                     </button>
+                    <Telegram fontSize="large" /><font className='mt-4 font-bold mx-2'>{blog?.commentCount} Comments</font>
                     <Visibility fontSize="large" /><font className='mt-4 font-bold ms-2'>{blog?.viewCount} Views</font>
                     <div>
                     </div>
