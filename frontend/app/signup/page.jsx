@@ -18,7 +18,7 @@ export default function Signup() {
             email: '',
             password: '',
             confirmpassword: '',
-            myFile: ''
+            myFile: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
         },
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
@@ -134,7 +134,8 @@ export default function Signup() {
                         <label className="text-lg">Confirm Password</label>
                         <TextField name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
                         <label className="text-lg">Avatar</label><br />
-                        <input type="file" onChange={uploadFile} />
+                        <input type="file" onChange={uploadFile}/>
+
                         <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                             {
                                 signupform.isSubmitting ? (

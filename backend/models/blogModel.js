@@ -13,6 +13,9 @@ const mySchema = new Schema({
     likeCount : Number,
     likedBy : [{
         type : String,
+    }],
+    comment : [{
+        type : String,
     }]
     
 });

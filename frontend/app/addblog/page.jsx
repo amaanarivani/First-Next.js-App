@@ -33,7 +33,7 @@ export default function AddBlog() {
         initialValues: {
             title: '',
             description: '',
-            blogFile : '',
+            blogFile: '',
         },
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
@@ -66,7 +66,7 @@ export default function AddBlog() {
 
                     }).catch((err) => {
 
-                    });
+                });
             }
         },
     });
@@ -79,38 +79,38 @@ export default function AddBlog() {
         console.log(converted);
         // console.log(file, 'abc');
         setSelFile(converted);
-        
+
 
         const fd = new FormData();
         fd.append('blogFile', converted);
 
         const res = await fetch('http://localhost:5000/utils/uploadfile', {
             method: 'POST',
-            body: JSON.stringify({blogFile: converted}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            body: JSON.stringify({ blogFile: converted }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         console.log(res.status);
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
         });
-      };
-      const handleFileUpload = async (e) => {
+    };
+    const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setSelFile({ ...selFile, blogFile: base64 });
         // uploadFile();
-      };
+    };
     return <div className="signup-login-body pt-20">
         <Box className='w-1/2 p-8 m-auto'>
             <Paper elevation={16} className="p-10">

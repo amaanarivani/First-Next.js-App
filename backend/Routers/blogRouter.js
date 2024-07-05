@@ -3,6 +3,7 @@ const Model = require("../models/blogModel");
 const blogLikeModel = require("../models/blogLikeModel");
 const blogModel = require("../models/blogModel");
 const blogViewModel = require("../models/blogViewModel");
+const blogCommentModel = require("../models/blogCommentModel");
 const User = require("../models/userModel");
 var mongoose = require('mongoose');
 
@@ -43,6 +44,23 @@ router.get("/getall", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.post("/blog-comment", async(req, res) => {
+  const {commentOn, commentBy, comment} = req.body;
+  console.log(req.body);
+  try {
+    const result = await blogCommentModel.create({
+      commentOn,
+      commentBy,
+      comment,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    })
+    return res.status(200).json({message : "Comment Done", data : result });
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
 });
 
 router.post("/blog-view", async (req, res) => {
