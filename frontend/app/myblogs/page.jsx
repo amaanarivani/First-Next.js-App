@@ -48,12 +48,6 @@ export default function MyBlogs() {
                                     <Paper elevation={16} className="p-10">
                                         <h3 className="text-xl font-bold mb-2">{myblog?.title}</h3>
                                         <img src={myblog.blogFile} alt="" className="object-cover w-full h-44" />
-                                        <div className="my-4">
-                                            <ThumbUpAlt fontSize="medium" className="me-1" /><font className='font-medium'>{myblog?.likeCount} Likes</font>
-                                            <Telegram fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} Comments</font>
-                                            <Visibility fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.viewCount} Views</font>
-                                        </div>
-                                        <p className="mb-2 text-large"><Description /><font className='ms-4'>{myblog.description.substring(0, 30)}......</font></p>
                                         <div className="mt-4 inline-flex">
                                             {
                                                 currentUser?.myFile ? (
@@ -61,8 +55,12 @@ export default function MyBlogs() {
 
                                                 ) : <Person fontSize="medium" />
                                             }
-                                            <font className="font-bold ms-2">{currentUser.firstname + currentUser.lastname}</font>
+                                            <font className="font-bold mx-2">{currentUser.firstname}</font>
+                                            <ThumbUpAlt fontSize="medium" className="me-1" /><font className='font-medium'>{myblog?.likeCount} </font>
+                                            <Telegram fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} </font>
+                                            <Visibility fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.viewCount} </font>
                                         </div>
+                                        <p className="my-2 text-large"><Description /><font className='ms-4'>{myblog.description.substring(0, 30)}......</font></p>
                                     </Paper>
                                 </Link>
                             </div>

@@ -16,7 +16,8 @@ export default function Home() {
     JSON.parse(sessionStorage.getItem('user'))
   );
 
-  const [blogData, setBlogData] = useState([]);
+  const [
+    blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);

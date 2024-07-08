@@ -240,6 +240,7 @@ router.delete("/delete-comment/:id", async(req, res) => {
     if(isExist){
       const result= await blogCommentModel.findByIdAndDelete(commentId);
     res.status(200).json({message : "Comment Deleted", data : result})
+    
     }
     else{
       res.status(400).json({message: "comment not found"})
