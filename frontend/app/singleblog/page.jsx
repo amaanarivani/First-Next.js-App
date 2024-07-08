@@ -1,7 +1,7 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Comment, Delete, Edit, EditNote, Event, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
-import { Button, CircularProgress, } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -22,8 +22,10 @@ function SingleBlog() {
     const router = useRouter();
 
     const [singleBlog, setSingleBlog] = useState();
+    // const [isLoading, setIsLoading] = useState(false);
+    const [isLikeLoading, setIsLikeLoading] = useState(false);
     const [blogCommentData, setblogCommentData] = useState([]);
-    const [blogCommentUser, setblogCommentUser] = useState([]);
+
 
     const [blogUser, setBlogUser] = useState();
     const fetchSingleBlogData = async () => {
@@ -52,12 +54,8 @@ function SingleBlog() {
             const res = await axios.get(`http://localhost:5000/blog/get-comment/${searchParams.get('blogid')}`);
             console.log(res);
             let commentData = res.data.finalResult;
-            let userData = res.data.finalResult[0].userResult;
             console.log(commentData);
-            console.log(userData);
             setblogCommentData(commentData);
-            setblogCommentUser(userData);
-
         } catch (error) {
             console.log(error);
         }
@@ -120,7 +118,46 @@ function SingleBlog() {
             console.log(error);
             setIsCommenting(false);
         }
-    }
+    };
+    const likeBlog = async (blogId, userId) => {
+        console.log(blogId, 'blog liked');
+        setIsLikeLoading(true);
+        if (currentUser == null) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Not Permitted!',
+                text: 'Please Login to continue.',
+            })
+                .then(() => {
+                    router.push('/login');
+
+                })
+        }
+        try {
+            const res = await axios.post("http://localhost:5000/blog/blog-like", {
+                blogId,
+                userId
+            })
+            console.log(blogData + "blogdata");
+            setSingleBlog(previous => { previous }, (e => {
+                if (e._id == blogId) {
+                    console.log(e, "finddddd");
+                    // let newlikedByList = [e.likedBy]
+                    return { ...e, likeCount: e.likeCount + 1, likedBy: currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
+                } else { return e }
+            }));
+            setIsLikeLoading(false);
+            console.log(res + 'like');
+        } catch (error) {
+            setSingleBlog(previous => { previous }, (e => {
+                if (e._id == blogId) {
+                    console.log(e, "finddddd");
+                    return { ...e, likeCount: e.likeCount - 1, likedBy: currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy }
+                } else { return e }
+            }));
+            setIsLikeLoading(false);
+        }
+    };
 
     const displayData = () => {
         if (singleBlog) {
@@ -138,49 +175,99 @@ function SingleBlog() {
                     <div className="grid grid-cols-2 mt-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
-                            <div className="mt-5 inline-flex w-full">
-                                <div className="">
-                                    <ThumbUpAlt fontSize='large' className="me-1" /><font className='font-bold me-3'>{singleBlog?.likeCount} Likes</font>
-                                    <Visibility fontSize="large" /><font className='font-bold ms-2'>{singleBlog?.viewCount} Views</font>
+                            <div className="mt-1 inline-flex w-full">
+                                <div className="mt-3 inline-flex">
+                                    {
+                                        blogUser.myFile ? (
+                                            <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
+                                        ) : <Person fontSize="large" />
+                                    }
+                                    <font className="ms-2 mt-1 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
                                 </div>
-                                {
-                                    currentUser ? (
-                                        <>
-                                            <div className="ms-4 w-3/5">
-                                                <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
-                                                <textarea  onChange={(e) => { setUserComment(e.target.value) }} name="comment" id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." required  />
-                                                <button disabled={isCommenting} onClick={() => { blogComment(singleBlog._id, currentUser._id, userComment) }} type="button" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
-                                                    {
-                                                        isCommenting ? (
-                                                            <>
-                                                                <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
-                                                            </>
-                                                        ) :
-                                                            <>
-                                                                <font>Comment</font><Telegram />
-                                                            </>
-                                                    }
-                                                </button>
-                                            </div>
-                                        </>
-                                    ) : ""
-                                }
+                                <div className="ms-3">
+
+                                    <button style={{ color: (singleBlog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(singleBlog?._id, currentUser?._id) }} type="button" className="text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                                        {
+                                            isLikeLoading ? (
+                                                <>
+                                                    <CircularProgress size='1.5rem' />
+                                                </>
+                                            ) :
+                                                <>
+                                                    <font className='font-bold text-xl me-2 mt-1'>{singleBlog?.likeCount}</font>
+                                                    <ThumbUpAlt fontSize="large" />
+                                                </>
+                                        }
+                                    </button>
+
+
+                                    <button type="button" className="focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                                        <font className='font-bold text-xl me-1'>{singleBlog?.commentCount}</font>
+                                        <Telegram fontSize="large" />
+                                    </button>
+
+
+                                    <font className='font-bold text-xl me-2'>{singleBlog?.viewCount}</font>
+                                    <Visibility fontSize="large" className="mb-1" />
+                                    <Event fontSize='medium' className="ms-14" /> <font className='text-xl text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font>
+
+                                </div>
 
                             </div>
                         </div>
                         <div className="ml-5">
                             <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
-                            <p className="text-xl mt-10"><Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font></p>
-                            <div className="mt-8 inline-flex">
-                                {
-                                    blogUser.myFile ? (
-                                        <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
-                                    ) : <Person fontSize="large" />
-                                }
-                                <font className="ms-3 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
-                            </div>
-                            <div className="mt-5">
-                            </div>
+                            {/* <div className="grid grid-cols-4 mt-4">
+                                <div className="col-span-3"> */}
+                            <Box className='p-8 m-auto'>
+                                <Paper elevation={12} className="p-5 w-full">
+                                    <h1 className="mt-4 text-xl font-bold text-center">Comments</h1>
+                                    {
+                                        blogCommentData.map((blogComment) => {
+                                            return <div className="">
+                                                {
+                                                    blogComment?.userResult.myFile ? (
+                                                        <>
+                                                            <img src={blogComment?.userResult.myFile} className="inline-flex rounded-full w-12 h-12" alt="" />
+                                                        </>
+                                                    ) : <>
+                                                        <Person fontSize="large" className="" />
+                                                    </>
+                                                }
+
+                                                <p className="inline-flex ms-2">{blogComment?.userResult?.firstname}</p>
+                                                <p className="mb-7 ms-12 text-lg">{blogComment?.comment}</p>
+                                            </div>
+                                        })
+                                    }
+                                    {
+                                        currentUser ? (
+                                            <>
+                                                <div className="ms-4 w-4/5">
+                                                    <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
+                                                    <textarea onChange={(e) => { setUserComment(e.target.value) }} name="comment" id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." required />
+                                                    <button disabled={isCommenting} onClick={() => { blogComment(singleBlog._id, currentUser._id, userComment) }} type="button" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
+                                                        {
+                                                            isCommenting ? (
+                                                                <>
+                                                                    <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
+                                                                </>
+                                                            ) :
+                                                                <>
+                                                                    <font>Comment</font><Telegram />
+                                                                </>
+                                                        }
+                                                    </button>
+                                                </div>
+                                            </>
+                                        ) : ""
+                                    }
+                                </Paper>
+                            </Box>
+                            {/* </div> */}
+                            {/* <div className="">
+                                </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

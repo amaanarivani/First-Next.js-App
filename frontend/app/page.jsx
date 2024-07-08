@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircle, Description, Event, Person, Telegram, ThumbUp, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
+import { AccountCircle, Description, Event, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import Link from "next/link";
@@ -17,8 +17,8 @@ export default function Home() {
 
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [blogList, setBlogList] = useState([]);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
+  const [blogList, setBlogList] = useState([]);
 
 
   const fetchBlogData = async () => {
@@ -162,44 +162,39 @@ export default function Home() {
                           <img src={blog.blogFile} alt="" className="img-fluid" />
                         </div>
                         <div className="">
-                          <h3 className="text-3xl font-extrabold mb-5"><font>{blog.title}</font></h3>
-                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>
-                          <div className="grid grid-cols-4 mt-4">
-                            <div className="inline-flex">
-                              {
-                                blog?.userData?.myFile ? (
-                                  <img className="w-2/5 rounded-full img-fluid" src={blog.userData.myFile} />
-                                ) : <Person fontSize="large" className="mt-2 w-2/5 rounded-full img-fluid" />
-                              }
-                              <p className="text-xl font-bold float-left mt-3"><font className='ms-4'>{blog.userData.firstname}</font></p>
-                            </div>
-                            <div className="col-span-2 mt-5">
-                            </div>
-                            <div className="mt-5">
-                              <Event fontSize='large' className="me-3" /> <font className='text-gray-900'>{new Date(blog?.createdAt).toLocaleDateString()}</font>
-                            </div>
+                          <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog.title}</h3>
+                          <div className="float-right">
+                          <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{new Date(blog?.createdAt).toLocaleDateString()}</font>
                           </div>
+                          
+                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>
                         </div>
                       </div>
                     </Link>
-                    <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className="mt-7 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-                      {
-                        isLikeLoading ? (
-                          <>
-                            <CircularProgress size='1.5rem' />
-                          </>
-                        ) :
-                          <>
-                            <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
-                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                              <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />
-                            </svg>
-                          </>
+                    <div className="">
+                    {
+                        blog?.userData?.myFile ? (
+                          <img className="mt-2 inline-flex w-14 h-14 rounded-full" src={blog.userData.myFile} />
+                        ) : <Person fontSize="large" className="inline-flex rounded-full" />
                       }
-                    </button>
-                    <Telegram fontSize="large" /><font className='mt-4 font-bold mx-2'>{blog?.commentCount} Comments</font>
-                    <Visibility fontSize="large" /><font className='mt-4 font-bold ms-2'>{blog?.viewCount} Views</font>
-                    <div>
+                      <font className="text-xl font-bold mt-3 ms-2">{blog?.userData?.firstname}</font>
+                      <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className=" ms-4 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                        {
+                          isLikeLoading ? (
+                            <>
+                              <CircularProgress size='1.5rem' />
+                            </>
+                          ) :
+                            <>
+                              <font className='font-bold text-xl me-2'>{blog?.likeCount}</font>
+                              <ThumbUpAlt fontSize="large" />
+                            </>
+                        }
+                      </button>
+                      <font className='font-bold text-xl me-1'>{blog?.commentCount} </font>
+                      <Telegram className="mb-1" fontSize="large" />
+                      <font className='font-bold text-xl mx-2'>{blog?.viewCount} </font>
+                      <Visibility fontSize="large" />
                     </div>
                   </Paper>
                 </div>

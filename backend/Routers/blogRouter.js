@@ -46,6 +46,26 @@ router.get("/getall", (req, res) => {
     });
 });
 
+router.get("/getsingleblog/:id", async (req, res) => {
+  const blogId = req.params.id;
+  console.log(blogId + "dwdfdf");
+  try {
+    const finalResult = await blogModel.findById(blogId)
+    const userResult = await User.findById(finalResult.userId);
+
+    await blogModel.findByIdAndUpdate(
+      blogId,
+      {
+        viewCount: finalResult.viewCount + 1,
+      }
+    );
+    res.json({ finalResult, userResult });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
 router.post("/blog-comment", async(req, res) => {
   const {commentOn, commentBy, comment} = req.body;
   console.log(req.body);
@@ -171,26 +191,6 @@ router.get("/get-comment/:id", async(req, res) => {
     }
     res.status(200).json({finalResult});
   } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-router.get("/getsingleblog/:id", async (req, res) => {
-  const blogId = req.params.id;
-  console.log(blogId + "dwdfdf");
-  try {
-    const finalResult = await blogModel.findById(blogId)
-    const userResult = await User.findById(finalResult.userId);
-
-    await blogModel.findByIdAndUpdate(
-      blogId,
-      {
-        viewCount: finalResult.viewCount + 1,
-      }
-    );
-    res.json({ finalResult, userResult });
-  } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 });
