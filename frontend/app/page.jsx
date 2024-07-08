@@ -2,6 +2,7 @@
 import { AccountCircle, Description, Event, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
+import { DateTime } from "luxon";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
@@ -164,7 +165,8 @@ export default function Home() {
                         <div className="">
                           <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog.title}</h3>
                           <div className="float-right">
-                          <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{new Date(blog?.createdAt).toLocaleDateString()}</font>
+                          {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
+                          <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
                           </div>
                           
                           <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>

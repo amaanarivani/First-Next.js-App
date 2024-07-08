@@ -16,7 +16,7 @@ export default function UpdateBlog() {
     const router = useRouter();
     const [singleBlog, setSingleBlog] = useState(null);
     const [blogUser, setBlogUser] = useState();
-
+    
     const fetchSingleBlogData = async () => {
         try {
             const res = await axios.get(`http://localhost:5000/blog/getsingleblog/${searchParams.get('blogid')}`);

@@ -4,6 +4,7 @@ import { AccountCircle, Comment, Delete, Edit, EditNote, Event, Person, Telegram
 import { Box, Button, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
+import { DateTime } from "luxon";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
@@ -163,15 +164,20 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="pt-10">
                 <div className="ms-20">
-                    <h1 className="text-center font-bold text-3xl">Blog Details</h1>
-                    <div className="grid grid-cols-3 w-1/2">
-                        <div>
-                            <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
-                        </div>
-                        <div className="col-span-2 mt-2">
-                            {deleteAndUpdateButton()}
-                        </div>
+                    <h1 className="text-center font-bold text-3xl mb-4">Blog Details</h1>
+                    {/* <div className="grid grid-cols-3 w-1/2"> */}
+                    <div className="inline-flex">
+                        <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                     </div>
+                    <div className="inline-flex">
+                        {deleteAndUpdateButton()}
+                    </div>
+                    <div className="inline-flex ms-12">
+                    {/* <Event fontSize='medium' className="mt-3" />*/}
+                    <font className='mt-4 text-xl font-bold text-gray-900'>{DateTime.fromISO(singleBlog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
+                    <Event className="mt-3 ms-2 " fontSize="large"/>
+                    </div>
+                    {/* </div> */}
                     <div className="grid grid-cols-2 mt-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
@@ -185,8 +191,7 @@ function SingleBlog() {
                                     <font className="ms-2 mt-1 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
                                 </div>
                                 <div className="ms-3">
-
-                                    <button style={{ color: (singleBlog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(singleBlog?._id, currentUser?._id) }} type="button" className="text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                                    <button style={{ color: (singleBlog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(singleBlog?._id, currentUser?._id) }} type="button" className="ms-2 text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                                         {
                                             isLikeLoading ? (
                                                 <>
@@ -194,7 +199,7 @@ function SingleBlog() {
                                                 </>
                                             ) :
                                                 <>
-                                                    <font className='font-bold text-xl me-2 mt-1'>{singleBlog?.likeCount}</font>
+                                                    <font className='font-bold text-xl mt-1'>{singleBlog?.likeCount}</font>
                                                     <ThumbUpAlt fontSize="large" />
                                                 </>
                                         }
@@ -207,21 +212,16 @@ function SingleBlog() {
                                     </button>
 
 
-                                    <font className='font-bold text-xl me-2'>{singleBlog?.viewCount}</font>
+                                    <font className='font-bold text-xl mx-2'>{singleBlog?.viewCount}</font>
                                     <Visibility fontSize="large" className="mb-1" />
-                                    <Event fontSize='medium' className="ms-14" /> <font className='text-xl text-gray-900'>{new Date(singleBlog?.createdAt).toLocaleDateString()}</font>
-
                                 </div>
-
                             </div>
+                            <p className="mt-5 text-xl text-gray-900">{singleBlog?.description}</p>
                         </div>
-                        <div className="ml-5">
-                            <p className="text-xl"><font className='font-bold'>Description :</font> <font className='text-gray-900'>{singleBlog?.description}</font></p>
-                            {/* <div className="grid grid-cols-4 mt-4">
-                                <div className="col-span-3"> */}
-                            <Box className='p-8 m-auto'>
+                        <div className="">
+                            <Box className='px-5'>
                                 <Paper elevation={12} className="p-5 w-full">
-                                    <h1 className="mt-4 text-xl font-bold text-center">Comments</h1>
+                                    <h1 className="text-xl font-bold text-center">Comments</h1>
                                     {
                                         blogCommentData.map((blogComment) => {
                                             return <div className="">
@@ -236,7 +236,7 @@ function SingleBlog() {
                                                 }
 
                                                 <p className="inline-flex ms-2">{blogComment?.userResult?.firstname}</p>
-                                                <p className="mb-7 ms-12 text-lg">{blogComment?.comment}</p>
+                                                <p className="mb-7 ms-12 text-medium">{blogComment?.comment}</p>
                                             </div>
                                         })
                                     }

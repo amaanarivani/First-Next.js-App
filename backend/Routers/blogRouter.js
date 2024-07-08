@@ -205,6 +205,23 @@ router.put("/update/:id", (req, res) => {
     });
 });
 
+router.put("/update-comment/:id", async(req, res) => {
+  const commentId = req.params.id;
+  const {comment} = req.body;
+  try {
+    const isExist = await blogCommentModel.findById(commentId);
+    if(isExist){
+      const result = await blogCommentModel.findByIdAndUpdate(commentId, {comment}, {new : true})
+      res.status(200).json({message : "Comment Updated", data : result})
+    }
+    else{
+      res.status(400).json({message: "comment not found"})
+    }
+  } catch (error) {
+    res.status(500).json({message : error})
+  }
+});
+
 router.delete("/delete/:id", (req, res) => {
   blogModel.findByIdAndDelete(req.params.id)
     .then((result) => {
@@ -214,6 +231,22 @@ router.delete("/delete/:id", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.delete("/delete-comment/:id", async(req, res) => {
+  const commentId = req.params.id;
+  try {
+    const isExist = await blogCommentModel.findById(commentId);
+    if(isExist){
+      const result= await blogCommentModel.findByIdAndDelete(commentId);
+    res.status(200).json({message : "Comment Deleted", data : result})
+    }
+    else{
+      res.status(400).json({message: "comment not found"})
+    }
+  } catch (error) {
+    res.status(500).json({message : error})
+  }
 });
 
 // router.post("/blog-like", async (req, res) => {
