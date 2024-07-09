@@ -24,26 +24,48 @@ router.post("/add", (req, res) => {
     });
 });
 
-router.get("/getall", (req, res) => {
-  Model.find({})
-    .then(async (result) => {
-      let finalResult = [];
-      let i = 0;
-      for (i = 0; i < result.length; i++) {
-        let currentData = result[i];
-        let fetchUserData = await User.findById(currentData.userId);
-        // console.log(fetchUserData);
-        if (fetchUserData) {
-          finalResult.push({ ...currentData._doc, userData: fetchUserData });
-        }
-      }
-      res.json(finalResult);
-    })
-    .catch((err) => {
-      console.log("catch");
-      console.log(err);
-      res.status(500).json(err);
-    });
+router.get("/getall/:page", async (req, res) => {
+  try {
+    const page = req.params.page;
+    const perPage = 5;
+    const skip = (page - 1) * perPage;
+
+    const result = await blogModel.find({})
+        .skip(skip)
+
+        .limit(perPage)
+        let finalResult = [];
+            for (let i = 0; i < result.length; i++) {
+              let currentData = result[i];
+              let fetchUserData = await User.findById(currentData.userId);
+              if (fetchUserData) {
+                finalResult.push({ ...currentData._doc, userData: fetchUserData });
+              }
+            }
+    const count = await blogModel.find({}).countDocuments();
+    res.status(200).json({ message: "Blog fetch Successfully !!", data : finalResult, totalpages : Math.ceil(count/5) });
+} catch (err) {
+    return res.status(500).json({ message: err.message });
+}
+  // Model.find({})
+  //   .then(async (result) => {
+  //     let finalResult = [];
+  //     let i = 0;
+  //     for (i = 0; i < result.length; i++) {
+  //       let currentData = result[i];
+  //       let fetchUserData = await User.findById(currentData.userId);
+  //       // console.log(fetchUserData);
+  //       if (fetchUserData) {
+  //         finalResult.push({ ...currentData._doc, userData: fetchUserData });
+  //       }
+  //     }
+  //     res.json(finalResult);
+  //   })
+  //   .catch((err) => {
+  //     console.log("catch");
+  //     console.log(err);
+  //     res.status(500).json(err);
+  //   });
 });
 
 router.get("/getsingleblog/:id", async (req, res) => {

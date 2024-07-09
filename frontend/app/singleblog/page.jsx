@@ -1,8 +1,9 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { AccountCircle, Comment, Delete, Edit, EditNote, Event, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
+import { AccountCircle, Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
+import { Dropdown } from "flowbite-react";
 import { useFormik } from "formik";
 import { DateTime } from "luxon";
 import Link from "next/link";
@@ -103,20 +104,20 @@ function SingleBlog() {
         initialValues: {
             comment: ''
         },
-        onSubmit: async (comment, { setSubmitting , resetForm}) => {
+        onSubmit: async (comment, { setSubmitting, resetForm }) => {
             setSubmitting(true);
             setTimeout(() => {
                 console.log(comment);
                 setSubmitting(false);
-            }, 3000);
+            }, 5000);
 
             try {
                 const res = await axios.post("http://localhost:5000/blog/blog-comment", {
 
                     commentOn: singleBlog._id,
-                    commentBy : currentUser._id,
+                    commentBy: currentUser._id,
                     comment
-                    
+
                 })
                 if (res.status === 200) {
                     Swal.fire({
@@ -124,15 +125,9 @@ function SingleBlog() {
                         title: 'Comment Recorded Successfully',
                     });
                     resetForm();
-                    // router.push(`/singleblog?blogid=${blogid}`);
                 }
                 setblogCommentData((e => {
-                    // if (e._id == singleBlog._id) {
-                    //     console.log(e, "finddddd");
-                    //     // let newlikedByList = [e.likedBy]
-                    //     return { ...e, comment : e.comment}
-                    // } else { return e }
-                    return[...e, res.data.data];
+                    return [...e, res.data.data];
                 }));
                 setIsCommenting(false);
                 console.log(res + "comment done");
@@ -142,6 +137,31 @@ function SingleBlog() {
             }
         }
     });
+
+    const deleteComment = async (commentId, commentBy) => {
+        console.log(commentId + " comment id");
+        console.log(commentBy + " commentBy");
+        if (currentUser?._id == commentBy) {
+            try {
+                const res = await axios.delete(`http://localhost:5000/blog/delete-comment/${commentId}`)
+                if (res.status === 200) {
+                    return Swal.fire({
+                        icon: 'success',
+                        title: 'Comment Deleted'
+                    })
+                }
+                console.log('comment deleted');
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        else {
+            return Swal.fire({
+                icon: 'error',
+                title: 'You cannot delete someone else comment'
+            })
+        }
+    }
 
     const likeBlog = async (blogId, userId) => {
         console.log(blogId, 'blog liked');
@@ -185,7 +205,7 @@ function SingleBlog() {
 
     const displayData = () => {
         if (singleBlog) {
-            return <div className="pt-10">
+            return <div className="">
                 <div className="ms-20">
                     <h1 className="text-center font-bold text-3xl mb-4">Blog Details</h1>
                     {/* <div className="grid grid-cols-3 w-1/2"> */}
@@ -258,69 +278,20 @@ function SingleBlog() {
                                                     </>
                                                 }
 
-                                                <p className="inline-flex ms-2">{blogComment?.userResult?.firstname}</p>
-                                                <div className="inline-flex">
-                                                    <button
-                                                        id="dropdownMenuIconButton"
-                                                        data-dropdown-toggle="dropdownDots"
-                                                        className=" ms-2 inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                                                        type="button"
-                                                    >
-                                                        <svg
-                                                            className="w-4 h-4"
-                                                            aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 4 15"
-                                                        >
-                                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                                                        </svg>
-                                                    </button>
-                                                    {/* Dropdown menu */}
-                                                    <div
-                                                        id="dropdownDots"
-                                                        className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-                                                    >
-                                                        <ul
-                                                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                                            aria-labelledby="dropdownMenuIconButton"
-                                                        >
-                                                            <li>
-                                                                <a
-                                                                    href="#"
-                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                                >
-                                                                    Dashboard
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a
-                                                                    href="#"
-                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                                >
-                                                                    Settings
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a
-                                                                    href="#"
-                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                                >
-                                                                    Earnings
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                        <div className="py-2">
-                                                            <a
-                                                                href="#"
-                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                            >
-                                                                Separated link
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                                <p className="inline-flex text-lg ms-2">{blogComment?.userResult?.firstname}</p>
+                                                {
+                                                    (currentUser?._id == blogComment?.commentBy) ? (
+                                                        <>
+                                                            <div className="inline-flex">
+                                                                <Dropdown label={<MoreVert fontSize="small" className="mt-2" />} arrowIcon={false} inline >
+                                                                    <Dropdown.Item onClick={() => { deleteComment(blogComment?._id, currentUser?._id, blogComment?.commentBy) }}>Delete</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => { editComment(blogComment?._id) }}>Edit</Dropdown.Item>
+                                                                </Dropdown>
+                                                            </div>
+                                                        </>
+                                                    ) : <>
+                                                    </>
+                                                }
                                                 <p className="mb-7 ms-12 text-medium">{blogComment?.comment}</p>
                                             </div>
                                         })
@@ -368,7 +339,7 @@ function SingleBlog() {
     }
 
 
-    return <div className="py-20">
+    return <div className="py-10">
         <div>
             {displayData()}
         </div>

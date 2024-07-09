@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Pagination } from "flowbite-react";
+
 
 export default function Home() {
 
@@ -16,25 +18,37 @@ export default function Home() {
     JSON.parse(sessionStorage.getItem('user'))
   );
 
-  const [
-    blogData, setBlogData] = useState([]);
+  const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = async (page) => {
+    setIsLoading(true);
+    const res = await axios.get("http://localhost:5000/blog/getall/"+page)
+    setBlogData(res.data.data);
+    console.log("totapages "+res.data.totalpages);
+    setTotalPages(res.data.totalpages);
+    console.log(page);
+    setCurrentPage(page);
+    setIsLoading(false);
+  }
 
 
   const fetchBlogData = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('http://localhost:5000/blog/getall');
+      const res = await axios.get('http://localhost:5000/blog/getall/1' );
       console.log(res);
 
       if (res.status === 200) {
         setIsLoading(false);
-        const data = await res.json();
-        console.log(data);
-        setBlogData(data);
-        setBlogList(data);
+        console.log("blog data - "+res.data.data);
+        setTotalPages(res.data.totalpages);
+        setBlogData(res.data.data);
+        setBlogList(res.data.data);
         setIsLoading(false);
       }
     } catch (error) {
@@ -116,7 +130,7 @@ export default function Home() {
 
   const dsiplayData = () => {
     if (!isLoading) {
-      return <main className="flex min-h-screen flex-col items-center justify-between pt-20">
+      return <main className="flex min-h-screen flex-col items-center justify-between pt-10">
         <svg
           className="background--custom"
           id="demo"
@@ -148,7 +162,7 @@ export default function Home() {
             style={{ animation: "path3 15.625s linear infinite alternate" }}
           />
         </svg>
-        <div className="mt-5 w-11/12">
+        <div className="w-11/12">
           <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
           <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
@@ -166,16 +180,16 @@ export default function Home() {
                         <div className="">
                           <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog.title}</h3>
                           <div className="float-right">
-                          {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
-                          <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
+                            {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
+                            <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
                           </div>
-                          
+
                           <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>
                         </div>
                       </div>
                     </Link>
                     <div className="">
-                    {
+                      {
                         blog?.userData?.myFile ? (
                           <img className="mt-2 inline-flex w-14 h-14 rounded-full" src={blog.userData.myFile} />
                         ) : <Person fontSize="large" className="inline-flex rounded-full" />
@@ -215,7 +229,11 @@ export default function Home() {
   }
 
   return (
-    <div>{dsiplayData()}</div>
+    <div>{dsiplayData()}
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      </div>
+    </div>
 
   );
 }
