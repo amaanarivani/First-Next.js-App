@@ -84,7 +84,8 @@ router.post("/blog-comment", async(req, res) => {
         commentCount: blogData.commentCount + 1,
       }
     );
-    return res.status(200).json({message : "Comment Done", data : result });
+    let fetchUserData = await User.findById(commentBy);
+    return res.status(200).json({message : "Comment Done", data : {...result._doc, userResult : fetchUserData}, });
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }

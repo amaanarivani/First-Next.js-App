@@ -126,13 +126,14 @@ function SingleBlog() {
                     resetForm();
                     // router.push(`/singleblog?blogid=${blogid}`);
                 }
-                // setblogCommentData(previous => { previous }, (e => {
-                //     if (e._id == singleBlog._id) {
-                //         console.log(e, "finddddd");
-                //         // let newlikedByList = [e.likedBy]
-                //         return { ...e, comment : e.comment}
-                //     } else { return e }
-                // }));
+                setblogCommentData((e => {
+                    // if (e._id == singleBlog._id) {
+                    //     console.log(e, "finddddd");
+                    //     // let newlikedByList = [e.likedBy]
+                    //     return { ...e, comment : e.comment}
+                    // } else { return e }
+                    return[...e, res.data.data];
+                }));
                 setIsCommenting(false);
                 console.log(res + "comment done");
             } catch (error) {
@@ -248,7 +249,7 @@ function SingleBlog() {
                                         blogCommentData.map((blogComment) => {
                                             return <div className="">
                                                 {
-                                                    blogComment?.userResult.myFile ? (
+                                                    blogComment?.userResult?.myFile ? (
                                                         <>
                                                             <img src={blogComment?.userResult.myFile} className="inline-flex rounded-full w-12 h-12" alt="" />
                                                         </>
@@ -262,11 +263,11 @@ function SingleBlog() {
                                                     <button
                                                         id="dropdownMenuIconButton"
                                                         data-dropdown-toggle="dropdownDots"
-                                                        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                                        className=" ms-2 inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                                         type="button"
                                                     >
                                                         <svg
-                                                            className="w-5 h-5"
+                                                            className="w-4 h-4"
                                                             aria-hidden="true"
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor"
@@ -330,7 +331,7 @@ function SingleBlog() {
                                                 <div className="ms-4 w-4/5">
                                                     <form onSubmit={blogComment.handleSubmit} className="">
                                                         <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
-                                                        <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment.values.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." />
+                                                        <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment.values.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comment here..." />
                                                         <button disabled={blogComment.isSubmitting} type="submit" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
                                                             {
                                                                 blogComment.isSubmitting ? (
