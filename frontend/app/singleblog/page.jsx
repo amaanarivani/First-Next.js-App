@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
+import { comment } from "postcss";
 import { Suspense, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -98,28 +99,49 @@ function SingleBlog() {
         }
     }
 
-    const blogComment = async (commentOn, commentBy, comment) => {
-        setIsCommenting(true);
-        try {
-            const res = await axios.post("http://localhost:5000/blog/blog-comment", {
-                commentOn,
-                commentBy,
-                comment
-            })
-            if (res.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Comment Recorded Successfully',
-                });
-                // router.push(`/singleblog?blogid=${blogid}`);
+    const blogComment = useFormik({
+        initialValues: {
+            comment: ''
+        },
+        onSubmit: async (comment, { setSubmitting , resetForm}) => {
+            setSubmitting(true);
+            setTimeout(() => {
+                console.log(comment);
+                setSubmitting(false);
+            }, 3000);
+
+            try {
+                const res = await axios.post("http://localhost:5000/blog/blog-comment", {
+
+                    commentOn: singleBlog._id,
+                    commentBy : currentUser._id,
+                    comment
+                    
+                })
+                if (res.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Comment Recorded Successfully',
+                    });
+                    resetForm();
+                    // router.push(`/singleblog?blogid=${blogid}`);
+                }
+                // setblogCommentData(previous => { previous }, (e => {
+                //     if (e._id == singleBlog._id) {
+                //         console.log(e, "finddddd");
+                //         // let newlikedByList = [e.likedBy]
+                //         return { ...e, comment : e.comment}
+                //     } else { return e }
+                // }));
+                setIsCommenting(false);
+                console.log(res + "comment done");
+            } catch (error) {
+                console.log(error);
+                setIsCommenting(false);
             }
-            setIsCommenting(false);
-            console.log(res + "comment done");
-        } catch (error) {
-            console.log(error);
-            setIsCommenting(false);
         }
-    };
+    });
+
     const likeBlog = async (blogId, userId) => {
         console.log(blogId, 'blog liked');
         setIsLikeLoading(true);
@@ -173,9 +195,9 @@ function SingleBlog() {
                         {deleteAndUpdateButton()}
                     </div>
                     <div className="inline-flex ms-12">
-                    {/* <Event fontSize='medium' className="mt-3" />*/}
-                    <font className='mt-4 text-xl font-bold text-gray-900'>{DateTime.fromISO(singleBlog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
-                    <Event className="mt-3 ms-2 " fontSize="large"/>
+                        {/* <Event fontSize='medium' className="mt-3" />*/}
+                        <font className='mt-4 text-xl font-bold text-gray-900'>{DateTime.fromISO(singleBlog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
+                        <Event className="mt-3 ms-2 " fontSize="large" />
                     </div>
                     {/* </div> */}
                     <div className="grid grid-cols-2 mt-5">
@@ -236,6 +258,68 @@ function SingleBlog() {
                                                 }
 
                                                 <p className="inline-flex ms-2">{blogComment?.userResult?.firstname}</p>
+                                                <div className="inline-flex">
+                                                    <button
+                                                        id="dropdownMenuIconButton"
+                                                        data-dropdown-toggle="dropdownDots"
+                                                        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                                        type="button"
+                                                    >
+                                                        <svg
+                                                            className="w-5 h-5"
+                                                            aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 4 15"
+                                                        >
+                                                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                                        </svg>
+                                                    </button>
+                                                    {/* Dropdown menu */}
+                                                    <div
+                                                        id="dropdownDots"
+                                                        className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+                                                    >
+                                                        <ul
+                                                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                                            aria-labelledby="dropdownMenuIconButton"
+                                                        >
+                                                            <li>
+                                                                <a
+                                                                    href="#"
+                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                >
+                                                                    Dashboard
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    href="#"
+                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                >
+                                                                    Settings
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    href="#"
+                                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                >
+                                                                    Earnings
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <div className="py-2">
+                                                            <a
+                                                                href="#"
+                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                            >
+                                                                Separated link
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <p className="mb-7 ms-12 text-medium">{blogComment?.comment}</p>
                                             </div>
                                         })
@@ -244,20 +328,22 @@ function SingleBlog() {
                                         currentUser ? (
                                             <>
                                                 <div className="ms-4 w-4/5">
-                                                    <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
-                                                    <textarea onChange={(e) => { setUserComment(e.target.value) }} name="comment" id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." required />
-                                                    <button disabled={isCommenting} onClick={() => { blogComment(singleBlog._id, currentUser._id, userComment) }} type="button" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
-                                                        {
-                                                            isCommenting ? (
-                                                                <>
-                                                                    <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
-                                                                </>
-                                                            ) :
-                                                                <>
-                                                                    <font>Comment</font><Telegram />
-                                                                </>
-                                                        }
-                                                    </button>
+                                                    <form onSubmit={blogComment.handleSubmit} className="">
+                                                        <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
+                                                        <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment.values.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comments here..." />
+                                                        <button disabled={blogComment.isSubmitting} type="submit" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
+                                                            {
+                                                                blogComment.isSubmitting ? (
+                                                                    <>
+                                                                        <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
+                                                                    </>
+                                                                ) :
+                                                                    <>
+                                                                        <font>Comment</font><Telegram />
+                                                                    </>
+                                                            }
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </>
                                         ) : ""
