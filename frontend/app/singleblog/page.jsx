@@ -150,6 +150,10 @@ function SingleBlog() {
                         title: 'Comment Deleted'
                     })
                 }
+                setblogCommentData((e => {
+                    e.filter(e._id != commentId)
+                    return []
+                }));
                 console.log('comment deleted');
             } catch (error) {
                 console.log(error);

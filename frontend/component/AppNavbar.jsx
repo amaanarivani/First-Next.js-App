@@ -3,7 +3,7 @@ import { AppBar, Box, IconButton, Toolbar, MenuIcon, Typography } from "@mui/mat
 import { useState } from "react";
 import UseAppContext from "./UseContext";
 import Link from "next/link";
-import { Person } from "@mui/icons-material";
+import { ExitToApp, Person } from "@mui/icons-material";
 import Image from "next/image";
 import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
 export default function AppNavbar() {
@@ -43,12 +43,13 @@ export default function AppNavbar() {
         <Avatar alt="User settings" img={currentUser?.myFile} rounded className="me-3" />
       }
     >
-      <Dropdown.Header>
-        <span className="block text-sm text-center">{currentUser?.firstname + currentUser?.lastname}</span>
+      <Dropdown.Header className="p-4">
+        <span className="block text-lg text-center">Hi, {currentUser?.firstname}</span>
+        <span className="block text-sm">{currentUser?.email}</span>
         {/* <span className="block truncate text-sm">{currentUser?.email}</span> */}
       </Dropdown.Header>
       <Dropdown.Item>
-      <div className="block m-auto"><Button className="float-center" color="blue" size='sm' onClick={logout}>Logout</Button></div>
+      <div className="block m-auto"><Button className="float-center" color="blue" size='sm' onClick={logout}><ExitToApp className='me-2'/>Logout</Button></div>
       </Dropdown.Item>
     </Dropdown>
         </>
