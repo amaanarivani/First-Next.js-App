@@ -24,7 +24,7 @@ export default function Home() {
   const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1); 
 
   const onPageChange = async (page) => {
     setIsLoading(true);
@@ -49,7 +49,7 @@ export default function Home() {
         console.log("blog data - " + res.data.data);
         setTotalPages(res.data.totalpages);
         setBlogData(res.data.data);
-        setBlogList(res.data.data);
+        // setBlogList(res.data.data);
         setIsLoading(false);
       }
     } catch (error) {
@@ -62,10 +62,20 @@ export default function Home() {
     fetchBlogData();
   }, [])
 
-  const searchBlog = (e) => {
-    const search = e.target.value;
-    const result = blogList.filter((blog) => { return blog.title.toLowerCase().includes(search.toLowerCase()) })
-    setBlogData(result);
+  const searchBlog = async(searchText) => {
+    try {
+      const res = await axios.post("http://localhost:5000/blog/blog-search", {
+        text: searchText
+      })
+      console.log(res.data.finalResult);
+      if(searchText){
+        setBlogData(res.data.finalResult);
+      }else{
+        fetchBlogData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const likeBlog = async (blogId, userId) => {
@@ -164,7 +174,7 @@ export default function Home() {
           />
         </svg>
         <div className="w-11/12">
-          <TextInput onChange={searchBlog} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
+          <TextInput onChange={(e) => { searchBlog(e.target.value) }} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
           <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
           <Box className='grid grid-cols-1 gap-y-10'>

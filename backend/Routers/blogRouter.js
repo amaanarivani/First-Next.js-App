@@ -218,8 +218,25 @@ router.get("/get-comment/:id", async(req, res) => {
   }
 });
 
-router.put("/update/:id", (req, res) => {
-  blogModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+router.post("/blog-search", async(req, res) => {
+  const {text} = req.body;
+  let pattern = new RegExp(text, "i");
+  console.log(text + " text search");
+  const result = await blogModel.find({title : {$regex : pattern}});
+  const finalResult = [];
+  try {
+    for(let i=0; i<result.length; i++){
+      let currentData = result[i];
+      finalResult.push({...currentData._doc})
+    }
+    res.status(200).json({finalResult});
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.put("/update/:id", async(req, res) => {
+  await blogModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       res.json(result);
     }).catch((err) => {
@@ -245,8 +262,8 @@ router.put("/update-comment/:id", async(req, res) => {
   }
 });
 
-router.delete("/delete/:id", (req, res) => {
-  blogModel.findByIdAndDelete(req.params.id)
+router.delete("/delete/:id", async(req, res) => {
+  await blogModel.findByIdAndDelete(req.params.id)
     .then((result) => {
       res.json(result);
 
