@@ -278,7 +278,16 @@ router.delete("/delete-comment/:id", async(req, res) => {
   try {
     const isExist = await blogCommentModel.findById(commentId);
     if(isExist){
-      const result= await blogCommentModel.findByIdAndDelete(commentId);
+    const result= await blogCommentModel.findByIdAndDelete(commentId);
+    console.log(result.commentOn + "blog id of comment");
+    const blogId = result.commentOn;
+    const blogData = await blogModel.findById(blogId);
+    await blogModel.findByIdAndUpdate(
+      blogId,
+      {
+        commentCount: blogData.commentCount - 1
+      }
+    );
     res.status(200).json({message : "Comment Deleted", data : result})
     
     }

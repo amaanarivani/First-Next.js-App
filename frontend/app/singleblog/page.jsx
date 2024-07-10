@@ -1,9 +1,9 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
-import { Box, Button, CircularProgress, Paper, } from "@mui/material";
+import { Box, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
-import { Dropdown } from "flowbite-react";
+import { Dropdown, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import { DateTime } from "luxon";
 import Link from "next/link";
@@ -12,12 +12,15 @@ import { useRouter } from 'next/navigation';
 import { comment } from "postcss";
 import { Suspense, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Button } from "flowbite-react";
 
 function SingleBlog() {
 
     const { loggedIn, logout, currentUser } = UseAppContext();
-    const [userComment, setUserComment] = useState("");
     const [isCommenting, setIsCommenting] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [editCommentId, setEditCommentId] = useState();
+    const [editedComment, setEditedComment] = useState("");
     console.log(currentUser);
 
     const searchParams = useSearchParams()
@@ -90,9 +93,9 @@ function SingleBlog() {
         if (currentUser?._id == singleBlog?.userId) {
             return (
                 <>
-                    <div className="">
-                        <Button color="error" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="large" /></Button>
-                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="large" /></Button>
+                    <div className="inline-flex">
+                        <Button className="mx-3" color="failure" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="medium" />Delete Blog</Button>
+                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="medium" />Update Blog</Button>
                     </div>
 
                 </>
@@ -151,7 +154,6 @@ function SingleBlog() {
                     })
                 }
                 setblogCommentData(e => {
-                    console.log(e);
                     return e.filter(singleComment => singleComment._id != commentId)
                 });
                 console.log('comment deleted');
@@ -164,6 +166,29 @@ function SingleBlog() {
                 icon: 'error',
                 title: 'You cannot delete someone else comment'
             })
+        }
+    }
+
+    const editComment = async (commentId, editedComment) => {
+        try {
+            const res = await axios.put(`http://localhost:5000/blog/update-comment/${commentId}`, {
+                comment: editedComment
+            })
+            if (res.status == 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Comment Updated'
+                })
+                setIsEdit(false);
+                setblogCommentData(e => e.map((singleComment) => {
+                    if (singleComment._id == commentId) {
+                        return {...singleComment , comment : editedComment}
+                    } else { return singleComment }
+                }));
+                console.log(res + " updated comment");
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -189,15 +214,13 @@ function SingleBlog() {
             console.log(blogData + "blogdata");
             setSingleBlog((e => {
                 if (e._id == blogId) {
-                    console.log(e, "finddddd");
-                    // let newlikedByList = [e.likedBy]
                     return { ...e, likeCount: e.likeCount + 1, likedBy: currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
                 } else { return e }
             }));
             setIsLikeLoading(false);
             console.log(res + 'like');
         } catch (error) {
-            setSingleBlog((e => {
+            setSingleBlog(previous => { previous }, (e => {
                 if (e._id == blogId) {
                     console.log(e, "finddddd");
                     return { ...e, likeCount: e.likeCount - 1, likedBy: currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy }
@@ -211,7 +234,7 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="">
                 <div className="ms-20">
-                    <h1 className="text-center font-bold text-3xl mb-4">Blog Details</h1>
+                    <h1 className="text-center font-bold text-3xl mb-6">Blog Details</h1>
                     {/* <div className="grid grid-cols-3 w-1/2"> */}
                     <div className="inline-flex">
                         <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
@@ -289,14 +312,26 @@ function SingleBlog() {
                                                             <div className="inline-flex">
                                                                 <Dropdown label={<MoreVert fontSize="small" className="mt-2" />} arrowIcon={false} inline >
                                                                     <Dropdown.Item onClick={() => { deleteComment(blogComment?._id, currentUser?._id, blogComment?.commentBy) }}>Delete</Dropdown.Item>
-                                                                    <Dropdown.Item onClick={() => { editComment(blogComment?._id) }}>Edit</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => { setIsEdit(true), setEditCommentId(blogComment?._id) }}>Edit</Dropdown.Item>
                                                                 </Dropdown>
                                                             </div>
                                                         </>
                                                     ) : <>
                                                     </>
                                                 }
-                                                <p className="mb-7 ms-12 text-medium">{blogComment?.comment}</p>
+                                                {
+                                                    (isEdit && (currentUser?._id == blogComment?.commentBy) && (blogComment._id == editCommentId)) ? (
+                                                        <>
+                                                            <div className="">
+                                                                <TextInput className='w-1/2 my-2 ms-4 inline-flex' onChange={(e) => setEditedComment(e.target.value)} />
+                                                                <Button className="ms-2 inline-flex" color="blue" onClick={() => editComment(editCommentId, editedComment)}>Edit</Button>
+                                                            </div>
+                                                        </>
+                                                    ) : <>
+                                                        <p className="mb-7 ms-12 text-medium">{blogComment?.comment}</p>
+                                                    </>
+                                                }
+
                                             </div>
                                         })
                                     }
