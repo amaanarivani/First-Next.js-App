@@ -145,15 +145,15 @@ function SingleBlog() {
             try {
                 const res = await axios.delete(`http://localhost:5000/blog/delete-comment/${commentId}`)
                 if (res.status === 200) {
-                    return Swal.fire({
+                    Swal.fire({
                         icon: 'success',
                         title: 'Comment Deleted'
                     })
                 }
-                setblogCommentData((e => {
-                    e.filter(e._id != commentId)
-                    return []
-                }));
+                setblogCommentData(e => {
+                    console.log(e);
+                    return e.filter(singleComment => singleComment._id != commentId)
+                });
                 console.log('comment deleted');
             } catch (error) {
                 console.log(error);
@@ -187,7 +187,7 @@ function SingleBlog() {
                 userId
             })
             console.log(blogData + "blogdata");
-            setSingleBlog(previous => { previous }, (e => {
+            setSingleBlog((e => {
                 if (e._id == blogId) {
                     console.log(e, "finddddd");
                     // let newlikedByList = [e.likedBy]
@@ -197,7 +197,7 @@ function SingleBlog() {
             setIsLikeLoading(false);
             console.log(res + 'like');
         } catch (error) {
-            setSingleBlog(previous => { previous }, (e => {
+            setSingleBlog((e => {
                 if (e._id == blogId) {
                     console.log(e, "finddddd");
                     return { ...e, likeCount: e.likeCount - 1, likedBy: currentUser?._id ? e.likedBy.filter(sId => (sId != currentUser._id)) : e.likedBy }
