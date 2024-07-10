@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircle, Description, Event, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility } from "@mui/icons-material";
+import { AccountCircle, Description, Email, Event, GitHub, Instagram, LinkedIn, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility, X } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import { DateTime } from "luxon";
@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { Pagination } from "flowbite-react";
+import { Pagination, TextInput } from "flowbite-react";
+import { Footer } from "flowbite-react";
 
 
 export default function Home() {
@@ -27,9 +28,9 @@ export default function Home() {
 
   const onPageChange = async (page) => {
     setIsLoading(true);
-    const res = await axios.get("http://localhost:5000/blog/getall/"+page)
+    const res = await axios.get("http://localhost:5000/blog/getall/" + page)
     setBlogData(res.data.data);
-    console.log("totapages "+res.data.totalpages);
+    console.log("totapages " + res.data.totalpages);
     setTotalPages(res.data.totalpages);
     console.log(page);
     setCurrentPage(page);
@@ -40,12 +41,12 @@ export default function Home() {
   const fetchBlogData = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get('http://localhost:5000/blog/getall/1' );
+      const res = await axios.get('http://localhost:5000/blog/getall/1');
       console.log(res);
 
       if (res.status === 200) {
         setIsLoading(false);
-        console.log("blog data - "+res.data.data);
+        console.log("blog data - " + res.data.data);
         setTotalPages(res.data.totalpages);
         setBlogData(res.data.data);
         setBlogList(res.data.data);
@@ -163,7 +164,7 @@ export default function Home() {
           />
         </svg>
         <div className="w-11/12">
-          <TextField onChange={searchBlog} id="outlined" variant="outlined" placeholder='Search Blogs' size="large" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
+          <TextInput onChange={searchBlog} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
           <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
 
           <Box className='grid grid-cols-1 gap-y-10'>
@@ -232,6 +233,36 @@ export default function Home() {
     <div>{dsiplayData()}
       <div className="flex overflow-x-auto sm:justify-center">
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      </div>
+      <div>
+        <Footer container>
+          <div className="w-full text-center">
+            <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
+              <Footer.Brand
+                src="./blog logo white.png"
+                alt="Blog App Logo"
+                className="w-full h-14"
+              />
+              <Footer.LinkGroup>
+                <Footer.Link href="https://github.com/amaan7355" target="blank"><GitHub /></Footer.Link>
+                <Footer.Link href="https://www.linkedin.com/in/amaan-alam-86b821241?original_referer=https%3A%2F%2Famaan7355.github.io%2F" target="blank"><LinkedIn/></Footer.Link>
+                <Footer.Link href="mailto:alamamaan334@gmail.com" ><Email/></Footer.Link>
+                <Footer.Link href="https://www.instagram.com/iamaanalam/" target="blank"><Instagram/></Footer.Link>
+              </Footer.LinkGroup>
+            </div>
+            <Footer.Divider />
+            <Footer.Copyright  by="Amaan Alam™" year={2024} />
+          </div>
+        </Footer>
+        {/* <Footer container>
+          <Footer.LinkGroup>
+          <Footer.Link href="https://github.com/amaan7355" target="blank"><GitHub className="me-3"/></Footer.Link>
+                <Footer.Link href="https://www.linkedin.com/in/amaan-alam-86b821241?original_referer=https%3A%2F%2Famaan7355.github.io%2F" target="blank"><LinkedIn className="me-3"/></Footer.Link>
+                <Footer.Link href="mailto:alamamaan334@gmail.com" ><Email className="me-3"/></Footer.Link>
+                <Footer.Link href="https://www.instagram.com/iamaanalam/" target="blank"><Instagram/></Footer.Link>
+          </Footer.LinkGroup>
+          <Footer.Copyright href="" by="Amaan Alam™" year={2024} />
+        </Footer> */}
       </div>
     </div>
 

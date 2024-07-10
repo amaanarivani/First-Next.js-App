@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 // import { motion } from 'framer-motion';
 import UseAppContext from "@/component/UseContext";
 import { useRouter } from 'next/navigation';
+import { HowToReg, LockOpen } from "@mui/icons-material";
 
 
 export default function Login() {
@@ -77,8 +78,8 @@ export default function Login() {
                         <TextField onChange={loginForm.handleChange} value={loginForm.values.email} required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" type="email" name="email" />
                         <label className="text-lg">Password</label>
                         <TextField onChange={loginForm.handleChange} value={loginForm.values.password} required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" name="password" />
-                        <Button fullWidth type="submit" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem', marginBottom: '1rem' }}>Submit</Button>
-                        <font className="mt-5">Did You Forgot your Password?<Button href="/forgotpassword">Reset Password</Button></font>
+                        <Button fullWidth type="submit" style={{ backgroundColor: '#1E40AF', color: 'white', marginTop: '2rem', marginBottom: '1rem' }}><LockOpen className="me-2"/>Submit</Button>
+                        <font className="mt-5">Don't have an account yet?<Button href="/signup">Register</Button></font>
                     </form>
                 </Paper>
             </Box>

@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import { HowToReg } from "@mui/icons-material";
 
 export default function Signup() {
 
@@ -136,13 +137,15 @@ export default function Signup() {
                         <label className="text-lg">Avatar</label><br />
                         <input type="file" onChange={uploadFile}/>
 
-                        <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2" style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
+                        <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2 hover:bg-blue-800" style={{ backgroundColor: '#1E40AF', hover:"#1E3A8A", color: 'white', marginTop: '2rem' }}>
                             {
                                 signupform.isSubmitting ? (
                                     <>
                                         Loading...
                                     </>
-                                ) : 'Submit'
+                                ) : <>
+                                <HowToReg className="me-2"/> Submit
+                                </>
                             }
                         </Button>
                         <p className="mt-3">Already have an account?<Button href="http://localhost:3000/login">Login</Button></p>

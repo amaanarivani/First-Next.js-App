@@ -3,7 +3,7 @@ import { AppBar, Box, IconButton, Toolbar, MenuIcon, Typography } from "@mui/mat
 import { useState } from "react";
 import UseAppContext from "./UseContext";
 import Link from "next/link";
-import { ExitToApp, Person } from "@mui/icons-material";
+import { ExitToApp, HowToReg, LockOpen, Person } from "@mui/icons-material";
 import Image from "next/image";
 import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
 export default function AppNavbar() {
@@ -29,8 +29,8 @@ export default function AppNavbar() {
   }
 
   return <Navbar fluid rounded>
-  <Navbar.Brand href="https://flowbite-react.com">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/2560px-Nextjs-logo.svg.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+  <Navbar.Brand href="/">
+    <img src="./blog logo white.png" className="mr-3 w-full h-14" alt="Blog App Logo" />
   </Navbar.Brand>
   <div className="flex md:order-2">
     {
@@ -57,14 +57,14 @@ export default function AppNavbar() {
       <button type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mx-3">
             <Link className="" href="/login">
-              Login
+              <LockOpen className="me-2"/>Login
             </Link>
           </button>
 
           <button type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ms-3">
             <Link className="" href="/signup">
-              Signup
+              <HowToReg className="me-2"/>Signup
             </Link>
           </button>
       </>
