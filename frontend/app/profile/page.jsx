@@ -69,8 +69,8 @@ export default function Profile() {
         }
         setSubmitting(false);
     }
-
-    return <div className="" style={{ backgroundColor: '#e2e8f0', height: '100vh' }}>
+    // style={{ backgroundColor: '#e2e8f0', height: '100vh' }}
+    return <div className="bg-body" >
         <div className="grid grid-cols-3">
             <div className="m-10 p-5">
                 <Card>

@@ -47,25 +47,24 @@ router.get("/getall/:page", async (req, res) => {
 } catch (err) {
     return res.status(500).json({ message: err.message });
 }
-  // Model.find({})
-  //   .then(async (result) => {
-  //     let finalResult = [];
-  //     let i = 0;
-  //     for (i = 0; i < result.length; i++) {
-  //       let currentData = result[i];
-  //       let fetchUserData = await User.findById(currentData.userId);
-  //       // console.log(fetchUserData);
-  //       if (fetchUserData) {
-  //         finalResult.push({ ...currentData._doc, userData: fetchUserData });
-  //       }
-  //     }
-  //     res.json(finalResult);
-  //   })
-  //   .catch((err) => {
-  //     console.log("catch");
-  //     console.log(err);
-  //     res.status(500).json(err);
-  //   });
+});
+
+router.post("/blog-search", async(req, res) => {
+  const {text} = req.body;
+  let pattern = new RegExp(text, "i");
+  console.log(text + " text search");
+  const result = await blogModel.find({title : {$regex : pattern}});
+  const finalResult = [];
+  try {
+    for(let i=0; i<result.length; i++){
+      let currentData = result[i];
+      let fetchUserData = await User.findById(currentData.userId);
+      finalResult.push({...currentData._doc, userData: fetchUserData})
+    }
+    res.status(200).json({finalResult});
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 router.get("/getsingleblog/:id", async (req, res) => {

@@ -111,7 +111,7 @@ export default function AddBlog() {
         setSelFile({ ...selFile, blogFile: base64 });
         // uploadFile();
     };
-    return <div className="signup-login-body pt-20">
+    return <div className="bg-body">
         <Box className='w-1/2 p-8 m-auto'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Add your Blogs here!</h1>

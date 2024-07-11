@@ -183,26 +183,26 @@ export default function Home() {
               blogData.map((blog, index) => {
                 return <div key={blog._id.toString()} className="container">
                   <Paper onClick={() => { viewBlog(blog?._id, currentUser?._id) }} elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
-                    <Link href={`/singleblog?blogid=${blog._id}`}>
+                    <Link href={`/singleblog?blogid=${blog?._id}`}>
                       <div className="grid grid-cols-2">
                         <div className="mr-9">
-                          <img src={blog.blogFile} alt="" className="img-fluid" />
+                          <img src={blog?.blogFile} alt="" className="img-fluid" />
                         </div>
                         <div className="">
-                          <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog.title}</h3>
+                          <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog?.title}</h3>
                           <div className="float-right">
                             {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
-                            <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
+                            <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
                           </div>
 
-                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog.description}</font></p>
+                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog?.description}</font></p>
                         </div>
                       </div>
                     </Link>
                     <div className="">
                       {
                         blog?.userData?.myFile ? (
-                          <img className="mt-2 inline-flex w-14 h-14 rounded-full" src={blog.userData.myFile} />
+                          <img className="mt-2 inline-flex w-14 h-14 rounded-full" src={blog?.userData?.myFile} />
                         ) : <Person fontSize="large" className="inline-flex rounded-full" />
                       }
                       <font className="text-xl font-bold mt-3 ms-2">{blog?.userData?.firstname}</font>

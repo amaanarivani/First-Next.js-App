@@ -3,7 +3,7 @@ import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
-import { Dropdown, TextInput } from "flowbite-react";
+import { Card, Dropdown, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import { DateTime } from "luxon";
 import Link from "next/link";
@@ -234,7 +234,7 @@ function SingleBlog() {
         if (singleBlog) {
             return <div className="">
                 <div className="ms-20">
-                    <h1 className="text-center font-bold text-3xl mb-6">Blog Details</h1>
+                    <h1 className="text-center font-bold text-3xl py-8">Blog Details</h1>
                     {/* <div className="grid grid-cols-3 w-1/2"> */}
                     <div className="inline-flex">
                         <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
@@ -248,7 +248,7 @@ function SingleBlog() {
                         <Event className="mt-3 ms-2 " fontSize="large" />
                     </div>
                     {/* </div> */}
-                    <div className="grid grid-cols-2 mt-5">
+                    <div className="grid grid-cols-2 my-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
                             <div className="mt-1 inline-flex w-full">
@@ -290,7 +290,7 @@ function SingleBlog() {
                         </div>
                         <div className="">
                             <Box className='px-5'>
-                                <Paper elevation={12} className="p-5 w-full">
+                                <Card className="p-5 w-full" style={{backgroundColor: '#EEEEEE'}}>
                                     <h1 className="text-xl font-bold text-center">Comments</h1>
                                     {
                                         blogCommentData.map((blogComment) => {
@@ -307,7 +307,7 @@ function SingleBlog() {
 
                                                 <p className="inline-flex text-lg ms-2">{blogComment?.userResult?.firstname}</p>
                                                 {
-                                                    (currentUser?._id == blogComment?.commentBy) ? (
+                                                    ((currentUser?._id == blogComment?.commentBy) || (currentUser?._id == singleBlog?.userId)) ? (
                                                         <>
                                                             <div className="inline-flex">
                                                                 <Dropdown label={<MoreVert fontSize="small" className="mt-2" />} arrowIcon={false} inline >
@@ -359,7 +359,7 @@ function SingleBlog() {
                                             </>
                                         ) : ""
                                     }
-                                </Paper>
+                                </Card>
                             </Box>
                             {/* </div> */}
                             {/* <div className="">
@@ -378,7 +378,7 @@ function SingleBlog() {
     }
 
 
-    return <div className="py-10">
+    return <div className="">
         <div>
             {displayData()}
         </div>
