@@ -1,10 +1,11 @@
 'use client'
-import { Card, Paper, Button, Box, TextField } from "@mui/material";
+import { Paper, Box,  } from "@mui/material";
 import { useFormik } from "formik";
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { HowToReg } from "@mui/icons-material";
+import { Button, TextInput } from "flowbite-react";
 
 export default function Signup() {
 
@@ -19,7 +20,7 @@ export default function Signup() {
             email: '',
             password: '',
             confirmpassword: '',
-            myFile: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+            myFile: ''
         },
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
@@ -113,31 +114,31 @@ export default function Signup() {
         // uploadFile();
     };
     return (
-        <div className="signup-login-body pt-20">
+        <div className="signup-login-body pt-10">
             <Box className='w-1/2 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="font-bold text-3xl text-center">Signup Here</h1>
                     <form onSubmit={signupform.handleSubmit}>
-                        <div className="grid grid-cols-2 mt-3">
+                        <div className="grid grid-cols-2 gap-5 mt-3">
                             <div>
                                 <label className="text-lg">First Name</label>
-                                <TextField name="firstname" required className="w-75 margin-vt" id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.firstname} />
+                                <TextInput name="firstname" required className="w-75 margin-vt"  label="Enter Name"  size="small" onChange={signupform.handleChange} value={signupform.values.firstname} />
                             </div>
                             <div>
                                 <label className="text-lg">Last Name</label>
-                                <TextField name="lastname"  className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
+                                <TextInput name="lastname"  className="margin-vt" label="Enter Name"  size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
                             </div>
                         </div>
                         <label className="text-lg">Email</label>
-                        <TextField type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={signupform.handleChange} value={signupform.values.email} />
+                        <TextInput type="email" name="email" required className="margin-vt"  label="Enter Email"  size="small" onChange={signupform.handleChange} value={signupform.values.email} />
                         <label className="text-lg">Password</label>
-                        <TextField name="password" required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
+                        <TextInput name="password" required label="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
                         <label className="text-lg">Confirm Password</label>
-                        <TextField name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
+                        <TextInput name="confirmpassword" required label="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
                         <label className="text-lg">Avatar</label><br />
-                        <input type="file" onChange={uploadFile}/>
+                        <input type="file" onChange={uploadFile} className="mb-4"/>
 
-                        <Button disabled={signupform.isSubmitting} fullWidth type="submit" className="mt-2 hover:bg-blue-800" style={{ backgroundColor: '#1E40AF', hover:"#1E3A8A", color: 'white', marginTop: '2rem' }}>
+                        <Button disabled={signupform.isSubmitting} type="submit" className="my-3 w-full" color="purple" >
                             {
                                 signupform.isSubmitting ? (
                                     <>

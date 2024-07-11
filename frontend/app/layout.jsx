@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         <AppNavbar/>
         {children}
         </AppProvider>
-        <AppFooter/>
+        {/* <AppFooter/> */}
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.js"/>
         <Script src="../path/to/flowbite/dist/flowbite.min.js"/>
       </body> 

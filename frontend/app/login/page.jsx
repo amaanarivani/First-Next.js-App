@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Paper, TextField } from "@mui/material";
+import { Box, Paper, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import Swal from "sweetalert2";
@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import UseAppContext from "@/component/UseContext";
 import { useRouter } from 'next/navigation';
 import { HowToReg, LockOpen } from "@mui/icons-material";
+import { Button, TextInput } from "flowbite-react";
 
 
 export default function Login() {
@@ -69,16 +70,16 @@ export default function Login() {
         },
     });
     return (
-        <div className="signup-login-body p-20">
+        <div className="signup-login-body pt-10">
             <Box className='w-1/2 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="text-center font-bold text-3xl">Login Here</h1>
                     <form onSubmit={loginForm.handleSubmit}>
                         <label className="text-lg">Email</label>
-                        <TextField onChange={loginForm.handleChange} value={loginForm.values.email} required className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" type="email" name="email" />
+                        <TextInput onChange={loginForm.handleChange} value={loginForm.values.email} required className="margin-vt"  label="Enter Name" size="small" type="email" name="email" />
                         <label className="text-lg">Password</label>
-                        <TextField onChange={loginForm.handleChange} value={loginForm.values.password} required fullWidth id="outlined-password-input" label="Enter Password" type="password" size="small" className="margin-vt" name="password" />
-                        <Button fullWidth type="submit" style={{ backgroundColor: '#1E40AF', color: 'white', marginTop: '2rem', marginBottom: '1rem' }}><LockOpen className="me-2"/>Submit</Button>
+                        <TextInput onChange={loginForm.handleChange} value={loginForm.values.password} required label="Enter Password" type="password" size="small" className="margin-vt" name="password" />
+                        <Button className="w-full my-3" type="submit" color="purple"><LockOpen className="me-2"/>Submit</Button>
                         <font className="mt-5">Don't have an account yet?<Button href="/signup">Register</Button></font>
                     </form>
                 </Paper>

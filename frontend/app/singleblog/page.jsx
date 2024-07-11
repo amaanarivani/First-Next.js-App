@@ -23,7 +23,7 @@ function SingleBlog() {
     const [editedComment, setEditedComment] = useState("");
     console.log(currentUser);
 
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     const blogid = searchParams.get('blogid');
     const router = useRouter();
 
@@ -323,7 +323,7 @@ function SingleBlog() {
                                                     (isEdit && (currentUser?._id == blogComment?.commentBy) && (blogComment._id == editCommentId)) ? (
                                                         <>
                                                             <div className="">
-                                                                <TextInput className='w-1/2 my-2 ms-4 inline-flex' onChange={(e) => setEditedComment(e.target.value)} />
+                                                                <TextInput className='w-1/2 my-2 ms-4 inline-flex' onChange={(e) => setEditedComment(e.target.value)}  placeholder={blogComment?.comment}/>
                                                                 <Button className="ms-2 inline-flex" color="blue" onClick={() => editComment(editCommentId, editedComment)}>Edit</Button>
                                                             </div>
                                                         </>
