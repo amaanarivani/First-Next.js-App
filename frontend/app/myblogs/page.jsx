@@ -1,5 +1,6 @@
 'use client'
 
+import UseAppContext from "@/component/UseContext";
 import { AccountCircle, Description, Person, Telegram, ThumbUpAlt, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper } from "@mui/material";
 import Link from "next/link";
@@ -8,16 +9,14 @@ import { useEffect, useState } from "react";
 
 export default function MyBlogs() {
 
-    const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('user'))
-    );
+    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     console.log(currentUser);
 
     const [myblogData, setMyblogData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const fetchMyblogData = async () => {
         // console.log(id);
-        const res = await fetch(`http://localhost:5000/blog/getbyid/${currentUser._id}`);
+        const res = await fetch(`http://localhost:5000/blog/getbyid/${currentUser?._id}`);
         console.log(res.status);
 
         if (res.status === 200) {

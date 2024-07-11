@@ -258,7 +258,7 @@ function SingleBlog() {
                                             <img className="w-12 h-12 rounded-full me-3" src={blogUser?.myFile} />
                                         ) : <Person fontSize="large" />
                                     }
-                                    <font className="ms-2 mt-1 font-bold text-xl">{blogUser?.firstname + blogUser?.lastname}</font>
+                                    <font className="ms-2 mt-1 font-bold text-xl">{blogUser?.firstname + " " + blogUser?.lastname}</font>
                                 </div>
                                 <div className="ms-3">
                                     <button style={{ color: (singleBlog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(singleBlog?._id, currentUser?._id) }} type="button" className="ms-2 text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">

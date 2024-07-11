@@ -35,7 +35,15 @@ export default function Profile() {
     }, []);
 
     const submitForm = async (values, { setSubmitting }) => {
-
+        if (values.password != values.confirmpassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'oops!!',
+                text: 'Password Not Matched'
+            })
+            return;
+        }
+        sessionStorage.removeItem('user');
         console.log(values);
         const res = await fetch(`http://localhost:5000/user/update/${currentUser?._id}`, {
             method: 'PUT',
@@ -53,6 +61,10 @@ export default function Profile() {
                 icon: 'success',
                 title: 'User Details Updated Successfully',
             });
+            const data = await res.json();
+            console.log(data);
+            sessionStorage.setItem('user', JSON.stringify(data));
+            setCurrentUser(data);
             router.back()
         }
         setSubmitting(false);
