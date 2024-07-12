@@ -1,12 +1,12 @@
 'use client'
 import { Paper, Box,  } from "@mui/material";
 import { useFormik } from "formik";
-import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { HowToReg } from "@mui/icons-material";
 import { Button, TextInput } from "flowbite-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function Signup() {
 
@@ -33,16 +33,9 @@ export default function Signup() {
             }, 3000);
 
             if (values.password != values.confirmpassword) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'oops!!',
-                    text: 'Password Not Matched'
-                })
+                toast.error("Password Not Matched");
                 return;
             }
-
-
-
             //send data to the server
             const res = await fetch("http://localhost:5000/user/add", {
                 method: 'Post',
@@ -53,24 +46,13 @@ export default function Signup() {
             });
             console.log(res.status);
             if (res.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Nice',
-                    text: 'You have signed up successfully'
-                })
-                    .then((result) => {
-                        //navigate('http://localhost:3000/login');
-                        router.push('http://localhost:3000/login', { scroll: false })
-
-                    }).catch((err) => {
-
-                    });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'oops!!',
-                    text: 'Something went wrong'
-                })
+                toast.success("You have signed up successfully")
+                router.push('/login')
+            }else if(res.status === 400){
+                toast.error("Email Already Registered")
+            }
+            else {
+                toast.error("Something went wrong")
             }
         },
     });

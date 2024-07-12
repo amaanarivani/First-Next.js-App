@@ -6,7 +6,7 @@ import { Form, Formik } from "formik";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 export default function UpdateBlog() {
     const { currentUser } = UseAppContext();
     console.log(currentUser);
@@ -36,16 +36,12 @@ export default function UpdateBlog() {
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'));
-        // console.log(user?._id);
+
         console.log(singleBlog?.userId);
-        // console.log(user, "inside use effect");
+
         if (singleBlog && (user?._id !== singleBlog?.userId || !user)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Not Permitted',
-                text: 'You can only update your created blogs'
-            });
-            router.push("/")
+            toast.error("You can only update your created blogs")
+            router.back()
         }
     }, [singleBlog])
 
@@ -62,16 +58,13 @@ export default function UpdateBlog() {
         console.log(res.status);
 
         if (res.status === 200) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Task Updated Successfully',
-            });
+            toast.success("Blog Updated Successfully")
             router.back()
         }
         setSubmitting(false);
     }
 
-    return <div className="signup-login-body pt-20">
+    return <div className="bg-body">
         <Box className='w-1/2 p-8 m-auto'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Update your Blogs here!</h1>

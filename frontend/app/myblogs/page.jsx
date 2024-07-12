@@ -16,7 +16,7 @@ export default function MyBlogs() {
     const [myblogData, setMyblogData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const fetchMyblogData = async () => {
-        // console.log(id);
+
         const res = await fetch(`http://localhost:5000/blog/getbyid/${currentUser?._id}`);
         console.log(res.status);
 
@@ -32,14 +32,9 @@ export default function MyBlogs() {
         fetchMyblogData();
     }, []);
 
-    // console.log(currentUser?.myFile);
-
-   
-
     const displayData = () => {
         if (!isLoading) {
             return <div className="p-5">
-                {/* <h1 className="text-center font-bold text-3xl pt-8">Here are Your Blogs</h1> */}
                 <Box className='grid grid-cols-3 gap-6 p-3'>
                     {
                         myblogData.map((myblog) => {

@@ -6,8 +6,8 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { Pagination, TextInput } from "flowbite-react";
+import toast from "react-hot-toast";
 
 
 
@@ -82,15 +82,9 @@ export default function Home() {
     console.log(blogId, 'blog liked');
     setIsLikeLoading(true);
     if (currentUser == null) {
-      return Swal.fire({
-        icon: 'error',
-        title: 'Not Permitted!',
-        text: 'Please Login to continue.',
-      })
-        .then(() => {
-          router.push('/login');
-
-        })
+      toast.error("Please Login to continue")
+      router.push("/login")
+      return;
     }
     try {
       const res = await axios.post("http://localhost:5000/blog/blog-like", {

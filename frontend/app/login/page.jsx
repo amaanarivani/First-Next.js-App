@@ -2,13 +2,13 @@
 import { Box, Paper, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
-import Swal from "sweetalert2";
-// import { motion } from 'framer-motion';
 import UseAppContext from "@/component/UseContext";
 import { useRouter } from 'next/navigation';
-import { HowToReg, LockOpen } from "@mui/icons-material";
+import {LockOpen } from "@mui/icons-material";
 import { Button, TextInput } from "flowbite-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
+
 
 
 export default function Login() {
@@ -37,36 +37,19 @@ export default function Login() {
             console.log(res.status);
 
             if (res.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Login Successfull',
-                })
-                    .then((result) => {
-                        router.push('/');
-
-                    }).catch((err) => {
-
-                    });
-
+                toast.success('Login Successfull!');
+                router.push('/');
                 const data = await res.json();
                 console.log(data);
                 sessionStorage.setItem('user', JSON.stringify(data));
                 setLoggedIn(true);
                 setCurrentUser(data);
             }
-            else if (res.status === 401) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Email or Password is incorrect'
-                })
+            else if (res.status === 400) {
+                toast.error("Email or Password is incorrect");
             }
             else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Something went wrong'
-                })
+                toast.error("Something went wrong");
             }
         },
     });

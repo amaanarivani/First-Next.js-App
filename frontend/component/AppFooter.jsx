@@ -4,7 +4,7 @@ import { Footer, Label, Textarea } from "flowbite-react";
 
 export default function AppFooter() {
   return <div>
-    <div className="fixed bottom-0 w-full">
+    <div className="bottom-0 w-full">
       <Footer container>
         <div className="w-full text-center">
           <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">

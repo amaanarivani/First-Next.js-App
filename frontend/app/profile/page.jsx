@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { Edit, PeopleAlt, Person } from "@mui/icons-material";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import Swal from "sweetalert2";
 import { useRouter } from 'next/navigation';
 import { Formik } from "formik";
+import toast from "react-hot-toast";
 
 export default function Profile() {
 
@@ -36,14 +36,9 @@ export default function Profile() {
 
     const submitForm = async (values, { setSubmitting }) => {
         if (values.password != values.confirmpassword) {
-            Swal.fire({
-                icon: 'error',
-                title: 'oops!!',
-                text: 'Password Not Matched'
-            })
+            toast.error("Password Not Matched")
             return;
         }
-        sessionStorage.removeItem('user');
         console.log(values);
         const res = await fetch(`http://localhost:5000/user/update/${currentUser?._id}`, {
             method: 'PUT',
@@ -56,20 +51,23 @@ export default function Profile() {
         console.log(res.status);
 
         if (res.status === 200) {
+            sessionStorage.removeItem('user');
             fetchUserData()
-            Swal.fire({
-                icon: 'success',
-                title: 'User Details Updated Successfully',
-            });
+            toast.success("User Details Updated Successfully")
             const data = await res.json();
             console.log(data);
             sessionStorage.setItem('user', JSON.stringify(data));
             setCurrentUser(data);
             router.back()
         }
+        else if(res.status === 400){
+            toast.error("Email already registered")
+        }
+        else{
+            toast.error("Something went wrong")
+        }
         setSubmitting(false);
     }
-    // style={{ backgroundColor: '#e2e8f0', height: '100vh' }}
     return <div className="bg-body" >
         <div className="grid grid-cols-3">
             <div className="m-10 p-5">

@@ -1,18 +1,16 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { AccountCircle, Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
+import { Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
 import { Card, Dropdown, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import { DateTime } from "luxon";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { useRouter } from 'next/navigation';
-import { comment } from "postcss";
 import { Suspense, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { Button } from "flowbite-react";
+import toast from "react-hot-toast";
 
 function SingleBlog() {
 
@@ -74,10 +72,7 @@ function SingleBlog() {
         try {
             const res = await fetch(`http://localhost:5000/blog/delete/${blogid}`, { method: 'DELETE' });
             if (res.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Blog deleted Successfully',
-                });
+                toast.success("Blog deleted Successfully")
                 router.back();
                 console.log('task deleted');
                 fetchSingleBlogData();
@@ -123,10 +118,7 @@ function SingleBlog() {
 
                 })
                 if (res.status === 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Comment Recorded Successfully',
-                    });
+                    toast.success("Comment Added")
                     resetForm();
                 }
                 setblogCommentData((e => {
@@ -148,10 +140,7 @@ function SingleBlog() {
             try {
                 const res = await axios.delete(`http://localhost:5000/blog/delete-comment/${commentId}`)
                 if (res.status === 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Comment Deleted'
-                    })
+                    toast.success("Comment Deleted")
                 }
                 setblogCommentData(e => {
                     return e.filter(singleComment => singleComment._id != commentId)
@@ -162,10 +151,7 @@ function SingleBlog() {
             }
         }
         else {
-            return Swal.fire({
-                icon: 'error',
-                title: 'You cannot delete someone else comment'
-            })
+            toast.error("You cannot delete someone else comment")
         }
     }
 
@@ -175,10 +161,7 @@ function SingleBlog() {
                 comment: editedComment
             })
             if (res.status == 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Comment Updated'
-                })
+                toast.success("Comment Updated")
                 setIsEdit(false);
                 setblogCommentData(e => e.map((singleComment) => {
                     if (singleComment._id == commentId) {
@@ -196,15 +179,8 @@ function SingleBlog() {
         console.log(blogId, 'blog liked');
         setIsLikeLoading(true);
         if (currentUser == null) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Not Permitted!',
-                text: 'Please Login to continue.',
-            })
-                .then(() => {
-                    router.push('/login');
-
-                })
+            toast.success("Please Login to continue")
+            router.push('/login');
         }
         try {
             const res = await axios.post("http://localhost:5000/blog/blog-like", {
@@ -235,7 +211,6 @@ function SingleBlog() {
             return <div className="">
                 <div className="ms-20">
                     <h1 className="text-center font-bold text-3xl py-8">Blog Details</h1>
-                    {/* <div className="grid grid-cols-3 w-1/2"> */}
                     <div className="inline-flex">
                         <h1 className="mt-3 font-bold text-3xl"><font className='text-gray-700'>{singleBlog?.title}</font></h1>
                     </div>
@@ -243,11 +218,9 @@ function SingleBlog() {
                         {deleteAndUpdateButton()}
                     </div>
                     <div className="inline-flex ms-12">
-                        {/* <Event fontSize='medium' className="mt-3" />*/}
                         <font className='mt-4 text-xl font-bold text-gray-900'>{DateTime.fromISO(singleBlog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
                         <Event className="mt-3 ms-2 " fontSize="large" />
                     </div>
-                    {/* </div> */}
                     <div className="grid grid-cols-2 my-5">
                         <div>
                             <img src={singleBlog?.blogFile} alt="" className="img-fluid" />
@@ -361,10 +334,6 @@ function SingleBlog() {
                                     }
                                 </Card>
                             </Box>
-                            {/* </div> */}
-                            {/* <div className="">
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -2,8 +2,8 @@
 import { useFormik } from "formik";
 import { Box, Button, Paper, TextField, TextareaAutosize, Textarea } from '@mui/material';
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { useRouter } from 'next/navigation'
+import toast from "react-hot-toast";
 
 
 export default function AddBlog() {
@@ -18,13 +18,8 @@ export default function AddBlog() {
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'));
-        // console.log(user, "inside use effect");
         if (!user) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Not Permitted!',
-                text: 'Please Login to continue.'
-            });
+            toast.error("Please Login to continue")
             router.push("/login")
         }
     }, [])
@@ -57,16 +52,8 @@ export default function AddBlog() {
 
             console.log(res.status);
             if (res.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Blog Added Successfully',
-                })
-                    .then((result) => {
-                        router.push('http://localhost:3000/', { scroll: false })
-
-                    }).catch((err) => {
-
-                });
+                toast.success("Blog Added Successfully")
+                router.push("/")
             }
         },
     });
