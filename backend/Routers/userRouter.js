@@ -26,27 +26,24 @@ router.post("/add", async(req, res) => {
   }
 });
 
-router.put("/update/:id", async(req, res) => {
-  console.log(req.body);
-  const email = req.body.email;
-  const check = await Model.find({email}).countDocuments();
-  console.log(check);
-  if(check){
-    return res.status(400).json({message : 'Email Already registered'})
-  }
+router.post("/update", async(req, res) => {
+  const {result, userId} = req.body;
   try {
-    const result = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    res.status(200).json({message : "User Details Updated", result})
+    console.log("oijuoijuoijuoi");
+    const data = await Model.findByIdAndUpdate(
+      userId, 
+      {
+        firstname: result.firstname,
+        lastname: result.lastname,
+        email: result.email,
+        password: result.password,
+        confirmpassword: result.confirmpassword
+      } , { new: true })
+      console.log(data+"datatatatatatat");
+    res.status(200).json({message : "User Details Updated", data : data})
   } catch (error) {
-    console.log(error);
+    res.status(500).json({message : error.message});
   }
-  // Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
-  //   .then((result) => {
-  //     res.json(result);
-  //   }).catch((err) => {
-  //     console.log(err);
-  //     res.status(500).json(err);
-  //   });
 });
 
 
@@ -103,7 +100,9 @@ router.delete("/delete/:id", (req, res) => {
 router.post('/authenticate', (req, res) => {
   Model.findOne(req.body)
     .then((result) => {
-      if (result !== null) res.json(result);
+      if (result !== null){
+        res.json(result);
+      } 
       else res.status(400).json({ message: 'login failed' })
     }).catch((err) => {
       console.log(err);

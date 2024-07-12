@@ -55,7 +55,7 @@ export default function MyBlogs() {
                                             <Telegram fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} </font>
                                             <Visibility fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.viewCount} </font>
                                         </div>
-                                        <p className="my-2 text-large"><Description /><font className='ms-4'>{myblog.description.substring(0, 30)}......</font></p>
+                                        <p className="my-2 text-large"><Description /><font className='ms-4'>{myblog?.description.substring(0, 30)}......</font></p>
                                     </Card>
                                 </Link>
                             </div>

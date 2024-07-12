@@ -25,6 +25,8 @@ export default function Profile() {
                 console.log(res.data + "userData");
                 setUserData(res.data);
                 setCurrentUser(res.data);
+                sessionStorage.setItem('user', JSON.stringify(res.data));
+
             }
         } catch (error) {
             console.log(error);
@@ -40,33 +42,30 @@ export default function Profile() {
             return;
         }
         console.log(values);
-        const res = await fetch(`http://localhost:5000/user/update/${currentUser?._id}`, {
-            method: 'PUT',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
+        try {
+            const res = await axios.post(`http://localhost:5000/user/update`, {
+                result: values,
+                userId: currentUser?._id
+            });
+
+            console.log("response  =======" + res.data.data);
+
+            if (res.status == 200) {
+                sessionStorage.removeItem('user');
+                fetchUserData()
+                toast.success("User Details Updated Successfully")
+
+                console.log(res.data.data);
+                setCurrentUser(res.data.data);
+                router.back()
             }
-        });
+            setSubmitting(false);
 
-        console.log(res.status);
-
-        if (res.status === 200) {
-            sessionStorage.removeItem('user');
-            fetchUserData()
-            toast.success("User Details Updated Successfully")
-            const data = await res.json();
-            console.log(data);
-            sessionStorage.setItem('user', JSON.stringify(data));
-            setCurrentUser(data);
-            router.back()
+        } catch (error) {
+            if(error.response.data.message){
+                toast.error(error.response.data.message)
+            }
         }
-        else if(res.status === 400){
-            toast.error("Email already registered")
-        }
-        else{
-            toast.error("Something went wrong")
-        }
-        setSubmitting(false);
     }
     return <div className="bg-body" >
         <div className="grid grid-cols-3">
@@ -109,7 +108,7 @@ export default function Profile() {
                                                 </div>
                                             </div>
                                             <label className="text-lg">Email</label>
-                                            <TextInput type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
+                                            <TextInput disabled type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
                                             <label className="text-lg">Password</label>
                                             <TextInput name="password" required fullWidth id="outlined-password-input" label="Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.password} />
                                             <label className="text-lg">Confirm Password</label>

@@ -38,7 +38,7 @@ export default function AppNavbar() {
                 <Avatar alt="User settings" img={currentUser?.myFile} rounded className="me-3">
                   <div className="space-y-1 font-medium dark:text-white">
                     <div>{currentUser?.firstname}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{currentUser?.email}...</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{currentUser?.email.substring(0, 10)}...</div>
                   </div>
                 </Avatar>
               }
