@@ -55,7 +55,7 @@ export default function Login() {
     });
     return (
         <div className="bg-body py-16">
-            <Box className='w-1/2 p-8 m-auto'>
+            <Box className='md:w-1/2 sm:w-4/5 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="text-center font-bold text-3xl">Login Here</h1>
                     <form onSubmit={loginForm.handleSubmit}>

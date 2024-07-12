@@ -89,8 +89,8 @@ function SingleBlog() {
             return (
                 <>
                     <div className="inline-flex">
-                        <Button className="mx-3" color="failure" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="medium" />Delete Blog</Button>
-                        <Button color="success" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="medium" />Update Blog</Button>
+                        <Button className="mx-3" outline gradientDuoTone="purpleToPink" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="medium" />Delete Blog</Button>
+                        <Button outline gradientDuoTone="purpleToPink" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="medium" />Update Blog</Button>
                     </div>
 
                 </>

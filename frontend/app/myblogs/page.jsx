@@ -40,7 +40,7 @@ export default function MyBlogs() {
                         myblogData.map((myblog) => {
                             return <div>
                                 <Link href={`/singleblog?blogid=${myblog._id}`}>
-                                    <Card className="p-5" style={{backgroundColor: "#EEEDEB"}}>
+                                    <Card className="p-5" style={{backgroundColor: "#EEEEEE"}}>
                                         <h3 className="text-xl font-bold mb-2">{myblog?.title}</h3>
                                         <img src={myblog.blogFile} alt="" className="object-cover w-full h-44" />
                                         <div className="mt-4 inline-flex">
