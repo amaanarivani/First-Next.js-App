@@ -62,15 +62,15 @@ export default function Profile() {
             setSubmitting(false);
 
         } catch (error) {
-            if(error.response.data.message){
+            if (error.response.data.message) {
                 toast.error(error.response.data.message)
             }
         }
     }
     return <div className="bg-body" >
-        <div className="grid grid-cols-3">
-            <div className="m-10 p-5">
-                <Card>
+        <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-x-8">
+            <div className="my-12">
+                <Card className="w-4/5 ms-8">
                     <div>
                         {
                             currentUser?.myFile ? (
@@ -89,8 +89,8 @@ export default function Profile() {
                     </div>
                 </Card>
             </div>
-            <div className="col-span-2 m-10 p-5">
-                <Card>
+            <div className="md:col-span-2 sm:w-4/5 my-6">
+                <Card className="w-4/5 ms-8">
                     {
                         isUserEdit ? (
                             <>
@@ -127,8 +127,8 @@ export default function Profile() {
                                 </Formik>
                             </>
                         ) : <>
-                            <div>
-                                <Table>
+                            <div className="w-4/5">
+                                <Table className="sm:w-4/5">
                                     <Table.Head className="">
                                         <Table.HeadCell className="text-2xl">
                                             <PeopleAlt className="me-3" fontSize="large" />Profile Details
@@ -155,12 +155,12 @@ export default function Profile() {
                                                 </>
                                             }</Table.Cell>
                                         </Table.Row>
-                                        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                        {/* <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                             <Table.Cell className="whitespace-nowrap text-lg text-gray-900 dark:text-white">
                                                 {'Email'}
                                             </Table.Cell>
                                             <Table.Cell className="text-base">{userData?.email}</Table.Cell>
-                                        </Table.Row>
+                                        </Table.Row> */}
                                         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                             <Table.Cell className="whitespace-nowrap text-lg text-gray-900 dark:text-white">
                                                 {'Password'}
