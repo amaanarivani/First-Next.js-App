@@ -6,9 +6,11 @@ import Link from "next/link";
 import { ExitToApp, HowToReg, LockOpen, PeopleAlt, Person } from "@mui/icons-material";
 import Image from "next/image";
 import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
+import { usePathname } from "next/navigation";
 export default function AppNavbar() {
 
   const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
+  const pathname = usePathname();
 
   console.log(currentUser?.name);
   // console.log(currentUser?.myFile);
@@ -24,11 +26,11 @@ export default function AppNavbar() {
   }
 
   return <Navbar fluid rounded>
-    <Navbar.Brand href="/" className="">
+    <Link href='/'>
     <div className="inline-flex">
       <img src="./blog logo white.png" className="w-full h-14" alt="Blog App Logo" />
     </div>
-    </Navbar.Brand>
+    </Link>
     <div className="flex md:order-2">
       {
         loggedIn ? (
@@ -80,11 +82,11 @@ export default function AppNavbar() {
       <Navbar.Toggle />
     </div>
     <Navbar.Collapse>
-      <Link className="nav-item" href="/" >
+      <Link className={pathname=='/' ? 'active' : ""} href="/" >
         <font className='text-lg'>Home</font>
       </Link>
-      <Link className="nav-item" href="/addblog"><font className='text-lg'>Add Blog</font></Link>
-      <Link className="nav-item" href="/myblogs"><font className=''>{displayMyBlog()}</font></Link>
+      <Link className={pathname=='/addblog' ? 'active' : ""} href="/addblog"><font className='text-lg'>Add Blog</font></Link>
+      <Link className={pathname=='/myblogs' ? 'active' : ""} href="/myblogs"><font className=''>{displayMyBlog()}</font></Link>
     </Navbar.Collapse>
   </Navbar>
 

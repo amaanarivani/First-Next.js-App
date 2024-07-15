@@ -172,7 +172,7 @@ export default function Home() {
             <h1 className="text-3xl font-extrabold text-center mb-5">You can Browse all the Blogs here</h1>
             </div>
             <div className="sm:mb-2">
-            <TextInput onChange={(e) => { searchBlog(e.target.value) }} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
+            <TextInput onChange={(e) => {  setTimeout(() => {searchBlog(e.target.value)},1000) }} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
             </div>
           </div>
           <Box className='grid grid-cols-1 gap-y-10'>

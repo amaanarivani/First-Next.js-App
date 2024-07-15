@@ -7,7 +7,7 @@ path {
   transform-origin: 50% 0%;
 }
 
-.nav-item .active{
+.active{
   font-weight: bold;
   border-bottom: 2px solid blueviolet;
   color: blueviolet !important;
