@@ -1,5 +1,5 @@
 'use client'
-import { AccountCircle, Description, Email, Event, GitHub, Instagram, LinkedIn, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility, X } from "@mui/icons-material";
+import { AccountCircle, Comment, Description, Email, Event, GitHub, Instagram, LinkedIn, Person, Telegram, ThumbUp, ThumbUpAlt, ThumbUpOffAlt, Title, Visibility, X } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import { DateTime } from "luxon";
@@ -223,7 +223,7 @@ export default function Home() {
                         }
                       </button>
                       <font className='font-bold text-xl me-1'>{blog?.commentCount} </font>
-                      <Telegram className="mb-1" fontSize="large" />
+                      <Comment className="mb-1" fontSize="large" />
                       <font className='font-bold text-xl mx-2'>{blog?.viewCount} </font>
                       <Visibility fontSize="large" />
                     </div>

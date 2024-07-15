@@ -1,6 +1,6 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
+import { Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
 import { Card, Dropdown, TextInput } from "flowbite-react";
@@ -251,7 +251,7 @@ function SingleBlog() {
 
                                 <button type="button" className="focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                                     <font className='font-bold text-xl me-1'>{singleBlog?.commentCount}</font>
-                                    <Telegram fontSize="large" />
+                                    <Comment fontSize="large" />
                                 </button>
 
 
@@ -323,11 +323,11 @@ function SingleBlog() {
                                                         {
                                                             blogComment.isSubmitting ? (
                                                                 <>
-                                                                    <CircularProgress color="inherit" size='1.3rem' className="" /><font className='ms-3'>Comment</font><Telegram />
+                                                                    <CircularProgress color="inherit" size='1.3rem' className="" /><font className='mx-3'>Comment</font><Comment />
                                                                 </>
                                                             ) :
                                                                 <>
-                                                                    <font>Comment</font><Telegram />
+                                                                    <font className='me-2'>Comment</font><Comment />
                                                                 </>
                                                         }
                                                     </button>

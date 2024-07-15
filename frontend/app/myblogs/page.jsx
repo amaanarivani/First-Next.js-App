@@ -1,7 +1,7 @@
 'use client'
 
 import UseAppContext from "@/component/UseContext";
-import { Description, Person, Telegram, ThumbUpAlt, Visibility } from "@mui/icons-material";
+import { Comment, Description, Person, Telegram, ThumbUpAlt, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress } from "@mui/material";
 import { Card } from "flowbite-react";
 import Link from "next/link";
@@ -52,7 +52,7 @@ export default function MyBlogs() {
                                             }
                                             <font className="font-bold mx-2">{currentUser?.firstname}</font>
                                             <ThumbUpAlt fontSize="medium" className="me-1" /><font className='font-medium'>{myblog?.likeCount} </font>
-                                            <Telegram fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} </font>
+                                            <Comment fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.commentCount} </font>
                                             <Visibility fontSize="medium" className="ms-2" /><font className='font-medium ms-1'>{myblog?.viewCount} </font>
                                         </div>
                                         <p className="my-2 text-large"><Description /><font className='ms-4'>{myblog?.description.substring(0, 30)}......</font></p>
