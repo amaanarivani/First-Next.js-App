@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 import { Pagination, TextInput } from "flowbite-react";
 import toast from "react-hot-toast";
+import UseAppContext from "@/component/UseContext";
 
 
 
@@ -15,16 +16,14 @@ export default function Home() {
 
   const router = useRouter();
 
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(sessionStorage.getItem('user'))
-  );
+  const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
 
   const [blogData, setBlogData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1); 
+  const [currentPage, setCurrentPage] = useState(1);
 
   const onPageChange = async (page) => {
     setIsLoading(true);
@@ -62,15 +61,15 @@ export default function Home() {
     fetchBlogData();
   }, [])
 
-  const searchBlog = async(searchText) => {
+  const searchBlog = async (searchText) => {
     try {
       const res = await axios.post("http://localhost:5000/blog/blog-search", {
         text: searchText
       })
       console.log(res.data.finalResult);
-      if(searchText){
+      if (searchText) {
         setBlogData(res.data.finalResult);
-      }else{
+      } else {
         fetchBlogData();
       }
     } catch (error) {
@@ -81,7 +80,7 @@ export default function Home() {
   const likeBlog = async (blogId, userId) => {
     console.log(blogId, 'blog liked');
     setIsLikeLoading(true);
-    if (currentUser == null) {
+    if (!currentUser) {
       toast.error("Please Login to continue")
       router.push("/login")
       return;
@@ -168,39 +167,49 @@ export default function Home() {
           />
         </svg>
         <div className="w-11/12">
-          <TextInput onChange={(e) => { searchBlog(e.target.value) }} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
-          <h1 className="text-3xl font-extrabold text-center mb-10">Welcome! You can Browse all the Blogs here</h1>
-
+          <div className="grid md:grid-cols-2 sm:grid-cols-1">
+            <div>
+            <h1 className="text-3xl font-extrabold text-center mb-5">You can Browse all the Blogs here</h1>
+            </div>
+            <div className="sm:mb-2">
+            <TextInput onChange={(e) => { searchBlog(e.target.value) }} placeholder='Search Blogs' sizing="lg" className="float-right rounded-none border-none" style={{ backgroundColor: 'white' }} />
+            </div>
+          </div>
           <Box className='grid grid-cols-1 gap-y-10'>
 
             {
               blogData.map((blog, index) => {
                 return <div key={blog._id.toString()} className="container">
-                  <Paper onClick={() => { viewBlog(blog?._id, currentUser?._id) }} elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-10 mb-3">
+                  <Paper onClick={() => { viewBlog(blog?._id, currentUser?._id) }} elevation={16} style={{ backgroundColor: '#ffffff8b' }} className="p-5 my-3">
                     <Link href={`/singleblog?blogid=${blog?._id}`}>
-                      <div className="grid grid-cols-2">
-                        <div className="mr-9">
-                          <img src={blog?.blogFile} alt="" className="img-fluid" />
+                      <div className="grid md:grid-cols-2 sm:grid-cols-1">
+                        <div className="md:mr-9">
+                          <div className="grid grid-cols-2">
+                            <div className="mb-2">
+                              {
+                                blog?.userData?.myFile ? (
+                                  <img className="mt-1 inline-flex w-8 h-8 rounded-full" src={blog?.userData?.myFile} />
+                                ) : <Person fontSize="large" className="inline-flex rounded-full" />
+                              }
+                              <font className="text-lg font-bold mt-3 ms-2">{blog?.userData?.firstname}</font>
+                            </div>
+                            <div className="float-right my-2">
+                              {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
+                              <Event fontSize='medium' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog?.createdAt).toFormat('LLL dd, yyyy')}</font>
+                            </div>
+                          </div>
+                          <img src={blog?.blogFile} alt="" className="img-fluid block m-auto" />
                         </div>
                         <div className="">
-                          <h3 className="inline-flex text-3xl font-extrabold mb-5">{blog?.title}</h3>
-                          <div className="float-right">
-                            {/* DateTime.fromISO('2014-08-06T13:07:04.054').toFormat('yyyy LLL dd'); */}
-                            <Event fontSize='large' className="me-3" /><font className='text-gray-900'>{DateTime.fromISO(blog?.createdAt).toFormat('LLL dd, yyyy, HH:mm')}</font>
+                          <div>
+                            <h3 className="text-3xl font-extrabold mt-2">{blog?.title}</h3>
                           </div>
-
-                          <p className="mb-2 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog?.description}</font></p>
+                          <p className="mt-4 text-lg"><Description fontSize="large" className="me-2" /><font className='text-lg'>{blog?.description}</font></p>
                         </div>
                       </div>
                     </Link>
-                    <div className="">
-                      {
-                        blog?.userData?.myFile ? (
-                          <img className="mt-2 inline-flex w-14 h-14 rounded-full" src={blog?.userData?.myFile} />
-                        ) : <Person fontSize="large" className="inline-flex rounded-full" />
-                      }
-                      <font className="text-xl font-bold mt-3 ms-2">{blog?.userData?.firstname}</font>
-                      <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className=" ms-4 text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                    <div className="mt-3">
+                      <button style={{ color: (blog.likedBy.includes(currentUser?._id)) ? '#1A56DB' : "grey" }} disabled={isLikeLoading} onClick={() => { likeBlog(blog?._id, currentUser?._id) }} type="button" className="text-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                         {
                           isLikeLoading ? (
                             <>
@@ -235,8 +244,8 @@ export default function Home() {
 
   return (
     <div>{dsiplayData()}
-      <div className="flex overflow-x-auto sm:justify-center">
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      <div className="flex overflow-x-auto sm:justify-center ms-8 my-5">
+        <Pagination className="flex justify-center" currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       </div>
     </div>
 

@@ -98,7 +98,7 @@ export default function Signup() {
     };
     return (
         <div className="bg-body">
-            <Box className='md:w-3/5 sm:11/12 p-8 m-auto'>
+            <Box className='md:w-3/5 sm:w-11/12 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="font-bold text-3xl text-center">Signup Here</h1>
                     <form onSubmit={signupform.handleSubmit}>

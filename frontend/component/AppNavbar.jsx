@@ -24,8 +24,10 @@ export default function AppNavbar() {
   }
 
   return <Navbar fluid rounded>
-    <Navbar.Brand href="/">
-      <img src="./blog logo white.png" className="mr-3 w-full h-14" alt="Blog App Logo" />
+    <Navbar.Brand href="/" className="">
+    <div className="inline-flex">
+      <img src="./blog logo white.png" className="w-full h-14" alt="Blog App Logo" />
+    </div>
     </Navbar.Brand>
     <div className="flex md:order-2">
       {
@@ -61,17 +63,18 @@ export default function AppNavbar() {
             </Dropdown>
           </>
         ) : <>
-          <Button color="purple" className="me-3">
-            <Link className="" href="/login">
-              <LockOpen className="me-2" />Login
-            </Link>
-          </Button>
-
-          <Button color="purple">
-            <Link className="" href="/signup">
-              <HowToReg className="me-2" />Signup
-            </Link>
-          </Button>
+          <div>
+            <Button color="purple" className="me-3 inline-flex">
+              <Link className="" href="/login">
+                <LockOpen className="me-2" />Login
+              </Link>
+            </Button>
+            {/* <Button color="purple" >
+              <Link className="" href="/signup">
+                <HowToReg className="me-2" />Signup
+              </Link>
+            </Button> */}
+          </div>
         </>
       }
       <Navbar.Toggle />

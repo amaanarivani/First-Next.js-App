@@ -35,12 +35,12 @@ export default function MyBlogs() {
     const displayData = () => {
         if (!isLoading) {
             return <div className="p-5">
-                <Box className='grid grid-cols-3 gap-6 p-3'>
+                <Box className='w-full grid md:grid-cols-3 sm:grid-cols-1 gap-x-8 p-3'>
                     {
                         myblogData.map((myblog) => {
                             return <div>
                                 <Link href={`/singleblog?blogid=${myblog._id}`}>
-                                    <Card className="p-5" style={{backgroundColor: "#EEEEEE"}}>
+                                    <Card className="mb-5" style={{backgroundColor: "#EEEEEE"}}>
                                         <h3 className="text-xl font-bold mb-2">{myblog?.title}</h3>
                                         <img src={myblog.blogFile} alt="" className="object-cover w-full h-44" />
                                         <div className="mt-4 inline-flex">
@@ -70,7 +70,7 @@ export default function MyBlogs() {
             </div>
         }
     }
-    return <div>
+    return <div className="container">
         {displayData()}
     </div>
 

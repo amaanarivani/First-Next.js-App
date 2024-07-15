@@ -65,7 +65,7 @@ export default function UpdateBlog() {
     }
 
     return <div className="bg-body">
-        <Box className='w-1/2 p-8 m-auto'>
+        <Box className='md:w-1/2 sm:w-4/5 p-8 m-auto'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Update your Blogs here!</h1>
                 {
