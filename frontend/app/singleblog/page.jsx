@@ -312,7 +312,6 @@ function SingleBlog() {
                                         </div>
                                     })
                                 }
-                                
                                 {
                                     currentUser ? (
                                         <>
