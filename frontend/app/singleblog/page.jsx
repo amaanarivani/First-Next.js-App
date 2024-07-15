@@ -315,11 +315,11 @@ function SingleBlog() {
                                 {
                                     currentUser ? (
                                         <>
-                                            <div className="ms-4 w-4/5">
+                                            <div className="w-full">
                                                 <form onSubmit={blogComment.handleSubmit} className="">
                                                     <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
                                                     <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment.values.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comment here..." />
-                                                    <button disabled={blogComment.isSubmitting} type="submit" className="p-2 rounded mt-2 text-white bg-blue-700 hover:bg-blue-800">
+                                                    <button disabled={blogComment.isSubmitting} type="submit" className="p-2 rounded mt-4 text-white bg-blue-700 hover:bg-blue-800">
                                                         {
                                                             blogComment.isSubmitting ? (
                                                                 <>
