@@ -67,10 +67,10 @@ export default function Profile() {
             }
         }
     }
-    return <div className="bg-body" >
-        <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-x-8">
-            <div className="my-12">
-                <Card className="w-4/5 ms-8">
+    return <div className="bg-body ">
+        <div className="grid md:grid-cols-3 sm:grid-cols-1 pb-36">
+            <div className="mt-12">
+                <Card className="w-3/5 m-auto">
                     <div>
                         {
                             currentUser?.myFile ? (
@@ -89,8 +89,8 @@ export default function Profile() {
                     </div>
                 </Card>
             </div>
-            <div className="md:col-span-2 sm:w-4/5 my-6">
-                <Card className="w-4/5 ms-8">
+            <div className="md:col-span-2 mt-12">
+                <Card className="w-4/5 m-auto">
                     {
                         isUserEdit ? (
                             <>
@@ -128,7 +128,7 @@ export default function Profile() {
                             </>
                         ) : <>
                             <div className="w-4/5">
-                                <Table className="sm:w-4/5">
+                                <Table className="">
                                     <Table.Head className="">
                                         <Table.HeadCell className="text-2xl">
                                             <PeopleAlt className="me-3" fontSize="large" />Profile Details
@@ -168,7 +168,7 @@ export default function Profile() {
                                             <Table.Cell className="text-base">{userData?.password}</Table.Cell>
                                         </Table.Row>
                                     </Table.Body>
-                                    <Button color='purple' className="ms-3" onClick={() => { setIsUserEdit(true) }}><Edit className='me-3' />Edit</Button>
+                                    <Button color='purple' className="ms-3 mt-5" onClick={() => { setIsUserEdit(true) }}><Edit className='me-3' />Edit</Button>
                                 </Table>
                             </div>
                         </>
