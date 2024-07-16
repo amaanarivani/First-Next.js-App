@@ -6,8 +6,12 @@ import Swal from "sweetalert2";
 const UserAuth = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('user'))
     );
+
+    useEffect(() => {
+        setCurrentUser(JSON.parse(sessionStorage.getItem('user')))
+    },[]);
+    
     console.log(currentUser);
     if (currentUser) {
         return children;

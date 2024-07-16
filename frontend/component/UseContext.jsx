@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 const AppContext = createContext();
@@ -7,8 +7,11 @@ const AppContext = createContext();
 export const AppProvider = ({children}) => {
 
     const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('user'))
     );
+
+    useEffect(() => {
+        setCurrentUser(JSON.parse(sessionStorage.getItem('user')))
+    },[]);
 
     const router = useRouter();
 

@@ -1,7 +1,7 @@
 'use client'
 import { Button, Card, Table, TextInput } from "flowbite-react";
 import UseAppContext from "@/component/UseContext";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Edit, PeopleAlt, Person } from "@mui/icons-material";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Formik } from "formik";
 import toast from "react-hot-toast";
 
-export default function Profile() {
+function Profile() {
 
     const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     const [userData, setUserData] = useState();
@@ -178,3 +178,9 @@ export default function Profile() {
         </div>
     </div>
 }
+
+export default function RenderedPage(){
+    return <Suspense>
+        <Profile/>
+    </Suspense>
+};

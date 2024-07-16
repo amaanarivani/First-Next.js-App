@@ -5,9 +5,10 @@ import axios from "axios";
 import { Form, Formik } from "formik";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-export default function UpdateBlog() {
+
+function UpdateBlog() {
     const { currentUser } = UseAppContext();
     console.log(currentUser);
 
@@ -96,3 +97,9 @@ export default function UpdateBlog() {
         </Box>
     </div>
 }
+
+export default function RenderedPage(){
+    return <Suspense>
+        <UpdateBlog/>
+    </Suspense>
+};

@@ -4,6 +4,7 @@ import { Box, Button, Paper, TextField, TextareaAutosize, Textarea } from '@mui/
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import toast from "react-hot-toast";
+import UseAppContext from "@/component/UseContext";
 
 const AddBlog = () => {
     const router = useRouter();
