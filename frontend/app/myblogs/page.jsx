@@ -66,7 +66,7 @@ export default function MyBlogs() {
         } else {
             return <div>
                 <h1 className="pt-36 text-center font-bold text-3xl">Loading</h1>
-                <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
+                <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='md:w-1/3 sm:1/2  block m-auto pt-20' />
             </div>
         }
     }

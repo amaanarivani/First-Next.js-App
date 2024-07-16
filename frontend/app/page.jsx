@@ -213,7 +213,7 @@ export default function Home() {
                         {
                           isLikeLoading ? (
                             <>
-                              <CircularProgress size='1.5rem' />
+                              <CircularProgress size='1.5rem'  />
                             </>
                           ) :
                             <>
@@ -235,17 +235,17 @@ export default function Home() {
         </div >
       </main >
     } else {
-      return <div>
+      return <div className="pb-64">
         <h1 className="pt-36 text-center font-bold text-4xl">Loading</h1>
-        <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
+        <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='md:w-1/3 sm:1/2 block m-auto pt-20' />
       </div>
     }
   }
 
   return (
     <div>{dsiplayData()}
-      <div className="flex overflow-x-auto sm:justify-center ms-8 my-5">
-        <Pagination className="flex justify-center" currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      <div className="flex overflow-x-auto sm:justify-center my-5">
+        <Pagination className="m-auto" currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       </div>
     </div>
 
