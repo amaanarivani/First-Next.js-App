@@ -10,10 +10,13 @@ const AddBlog = () => {
     const [selFile, setSelFile] = useState('');
     const [convertedFile, setConvertedFile] = useState('');
 
-    const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('user'))
-    );
+    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     console.log(currentUser);
+
+    // const [currentUser, setCurrentUser] = useState(
+    //     JSON.parse(sessionStorage.getItem('user'))
+    // );
+    // console.log(currentUser);
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'));
