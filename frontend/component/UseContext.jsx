@@ -6,11 +6,13 @@ const AppContext = createContext();
 
 export const AppProvider = ({children}) => {
 
-    const [currentUser, setCurrentUser] = useState(
+    const [currentUser, setCurrentUser] = useState( null
     );
 
     useEffect(() => {
+        console.log(JSON.parse(sessionStorage.getItem('user')), " wefjifmkl");
         setCurrentUser(JSON.parse(sessionStorage.getItem('user')))
+        setLoggedIn(JSON.parse(sessionStorage.getItem('user'))? true: false)
     },[]);
 
     const router = useRouter();
@@ -23,7 +25,7 @@ export const AppProvider = ({children}) => {
         router.push('/login');
     }
 
-    const [loggedIn, setLoggedIn] = useState(currentUser!==null);
+    const [loggedIn, setLoggedIn] = useState(currentUser ? true: false);
 
     return <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser}}>
         {children}
