@@ -43,7 +43,7 @@ const AddBlog = () => {
             }, 3000);
 
             // send the data to the server
-            const res = await fetch('http://localhost:5000/blog/add', {
+            const res = await fetch(`${process.env.backend}/blog/add`, {
                 method: 'POST',
                 body: JSON.stringify({
                     values, userId: currentUser._id
@@ -74,7 +74,7 @@ const AddBlog = () => {
         const fd = new FormData();
         fd.append('blogFile', converted);
 
-        const res = await fetch('http://localhost:5000/utils/uploadfile', {
+        const res = await fetch(`${process.env.backend}/utils/uploadfile`, {
             method: 'POST',
             body: JSON.stringify({ blogFile: converted }),
             headers: {

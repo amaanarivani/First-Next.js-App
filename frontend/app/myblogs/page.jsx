@@ -17,7 +17,7 @@ export default function MyBlogs() {
     const [isLoading, setIsLoading] = useState(true);
     const fetchMyblogData = async () => {
 
-        const res = await fetch(`http://localhost:5000/blog/getbyid/${currentUser?._id}`);
+        const res = await fetch(`${process.env.backend}/blog/getbyid/${currentUser?._id}`);
         console.log(res.status);
 
         if (res.status === 200) {

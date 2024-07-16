@@ -19,7 +19,7 @@ function Profile() {
 
     const fetchUserData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/user/getbyid/${currentUser?._id}`);
+            const res = await axios.get(`${process.env.backend}/user/getbyid/${currentUser?._id}`);
             console.log(res.status);
             if (res.status === 200) {
                 console.log(res.data + "userData");
@@ -43,7 +43,7 @@ function Profile() {
         }
         console.log(values);
         try {
-            const res = await axios.post(`http://localhost:5000/user/update`, {
+            const res = await axios.post(`${process.env.backend}/user/update`, {
                 result: values,
                 userId: currentUser?._id
             });

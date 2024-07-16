@@ -37,7 +37,7 @@ export default function Signup() {
                 return;
             }
             //send data to the server
-            const res = await fetch("http://localhost:5000/user/add", {
+            const res = await fetch(`${process.env.backend}/user/add`, {
                 method: 'Post',
                 body: JSON.stringify(values),
                 headers: {
@@ -69,7 +69,7 @@ export default function Signup() {
         const fd = new FormData();
         fd.append('myfile', converted);
 
-        const res = await fetch('http://localhost:5000/utils/uploadfile', {
+        const res = await fetch(`${process.env.backend}/utils/uploadfile`, {
             method: 'POST',
             body: JSON.stringify({ myFile: converted }),
             headers: {

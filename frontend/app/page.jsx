@@ -27,7 +27,7 @@ export default function Home() {
 
   const onPageChange = async (page) => {
     setIsLoading(true);
-    const res = await axios.get("http://localhost:5000/blog/getall/" + page)
+    const res = await axios.get(`${process.env.backend}/blog/getall/` + page)
     setBlogData(res.data.data);
     console.log("totapages " + res.data.totalpages);
     setTotalPages(res.data.totalpages);
@@ -40,7 +40,7 @@ export default function Home() {
   const fetchBlogData = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get('http://localhost:5000/blog/getall/1');
+      const res = await axios.get(`${process.env.backend}/blog/getall/1`);
       console.log(res);
 
       if (res.status === 200) {
@@ -63,7 +63,7 @@ export default function Home() {
 
   const searchBlog = async (searchText) => {
     try {
-      const res = await axios.post("http://localhost:5000/blog/blog-search", {
+      const res = await axios.post(`${process.env.backend}/blog/blog-search`, {
         text: searchText
       })
       console.log(res.data.finalResult);
@@ -86,7 +86,7 @@ export default function Home() {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:5000/blog/blog-like", {
+      const res = await axios.post(`${process.env.backend}/blog/blog-like`, {
         blogId,
         userId
       })
@@ -114,7 +114,7 @@ export default function Home() {
   const viewBlog = async (blogId, userId, Likes) => {
     console.log('view Blog');
     try {
-      const res = await axios.post("http://localhost:5000/blog/blog-view", {
+      const res = await axios.post(`${process.env.backend}/blog/blog-view`, {
         blogId,
         userId,
         Likes,

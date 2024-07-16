@@ -20,7 +20,7 @@ function UpdateBlog() {
     
     const fetchSingleBlogData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/blog/getsingleblog/${searchParams.get('blogid')}`);
+            const res = await axios.get(`${process.env.backend}/blog/getsingleblog/${searchParams.get('blogid')}`);
             let singleBlogdata = res.data.finalResult;
             let userData = res.data.userResult;
             console.log(singleBlogdata);
@@ -48,7 +48,7 @@ function UpdateBlog() {
 
     const submitForm = async (values, { setSubmitting }) => {
         console.log(values);
-        const res = await fetch(`http://localhost:5000/blog/update/${blogid}`, {
+        const res = await fetch(`${process.env.backend}/blog/update/${blogid}`, {
             method: 'PUT',
             body: JSON.stringify(values),
             headers: {

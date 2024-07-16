@@ -34,7 +34,7 @@ function SingleBlog() {
     const [blogUser, setBlogUser] = useState();
     const fetchSingleBlogData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/blog/getsingleblog/${searchParams.get('blogid')}`);
+            const res = await axios.get(`${process.env.backend}/blog/getsingleblog/${searchParams.get('blogid')}`);
             let singleBlogdata = res.data.finalResult;
             let userData = res.data.userResult
             console.log(singleBlogdata);
@@ -55,7 +55,7 @@ function SingleBlog() {
 
     const fetchCommentData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/blog/get-comment/${searchParams.get('blogid')}`);
+            const res = await axios.get(`${process.env.backend}/blog/get-comment/${searchParams.get('blogid')}`);
             console.log(res);
             let commentData = res.data.finalResult;
             console.log(commentData);
@@ -70,7 +70,7 @@ function SingleBlog() {
 
     const deleteBlog = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/blog/delete/${blogid}`, { method: 'DELETE' });
+            const res = await fetch(`${process.env.backend}/blog/delete/${blogid}`, { method: 'DELETE' });
             if (res.status === 200) {
                 toast.success("Blog deleted Successfully")
                 router.back();
@@ -110,7 +110,7 @@ function SingleBlog() {
             }, 5000);
 
             try {
-                const res = await axios.post("http://localhost:5000/blog/blog-comment", {
+                const res = await axios.post(`${process.env.backend}/blog/blog-comment`, {
 
                     commentOn: singleBlog._id,
                     commentBy: currentUser._id,
@@ -138,7 +138,7 @@ function SingleBlog() {
         console.log(commentBy + " commentBy");
         if (currentUser?._id == commentBy) {
             try {
-                const res = await axios.delete(`http://localhost:5000/blog/delete-comment/${commentId}`)
+                const res = await axios.delete(`${process.env.backend}/blog/delete-comment/${commentId}`)
                 if (res.status === 200) {
                     toast.success("Comment Deleted")
                 }
@@ -157,7 +157,7 @@ function SingleBlog() {
 
     const editComment = async (commentId, editedComment) => {
         try {
-            const res = await axios.put(`http://localhost:5000/blog/update-comment/${commentId}`, {
+            const res = await axios.put(`${process.env.backend}/blog/update-comment/${commentId}`, {
                 comment: editedComment
             })
             if (res.status == 200) {
@@ -183,7 +183,7 @@ function SingleBlog() {
             router.push('/login');
         }
         try {
-            const res = await axios.post("http://localhost:5000/blog/blog-like", {
+            const res = await axios.post(`${process.env.backend}/blog/blog-like`, {
                 blogId,
                 userId
             })
