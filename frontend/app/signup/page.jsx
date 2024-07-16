@@ -97,7 +97,7 @@ export default function Signup() {
         // uploadFile();
     };
     return (
-        <div className="bg-body">
+        <div className="bg-body pb-36">
             <Box className='md:w-3/5 sm:w-11/12 p-8 m-auto'>
                 <Paper elevation={16} className="p-10">
                     <h1 className="font-bold text-3xl text-center">Signup Here</h1>
