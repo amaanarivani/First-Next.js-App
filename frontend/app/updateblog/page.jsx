@@ -17,6 +17,7 @@ function UpdateBlog() {
     const router = useRouter();
     const [singleBlog, setSingleBlog] = useState(null);
     const [blogUser, setBlogUser] = useState();
+    const [selFile, setSelFile] = useState('');
 
     const fetchSingleBlogData = async () => {
         try {
@@ -27,6 +28,7 @@ function UpdateBlog() {
             console.log(userData);
             setSingleBlog(singleBlogdata);
             setBlogUser(userData);
+            setSelFile(singleBlog?.blogFile)
         } catch (error) {
             console.log(error);
         }
@@ -46,6 +48,28 @@ function UpdateBlog() {
         }
     }, [singleBlog])
 
+    const uploadFile = async (e) => {
+        if (!e.target.files) return;
+
+        let file = e.target.files[0];
+        let converted = await convertToBase64(file);
+        console.log(converted, " converted file");
+        setSelFile(converted);
+
+    }
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
     const submitForm = async (values, { setSubmitting }) => {
         console.log(values.title);
         console.log(values.description);
@@ -55,7 +79,8 @@ function UpdateBlog() {
             const res = await axios.post(`${process.env.backend}/blog/update`, {
                 Title: values.title,
                 Description: values.description,
-                blogId : singleBlog?._id
+                myFile: selFile,
+                blogId: singleBlog?._id
             });
             console.log(res.status);
             if (res.status === 200) {
@@ -67,21 +92,6 @@ function UpdateBlog() {
         } catch (error) {
             console.log(error);
         }
-        // const res = await fetch(`${process.env.backend}/blog/update/${blogid}`, {
-        //     method: 'PUT',
-        //     body: JSON.stringify(values),
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-
-        // console.log(res.status);
-
-        // if (res.status === 200) {
-        //     toast.success("Blog Updated Successfully")
-        //     router.back()
-        // }
-        // setSubmitting(false);
     }
 
     return <div className="bg-body">
@@ -97,8 +107,8 @@ function UpdateBlog() {
                                     <TextField required fullWidth className="margin-vt" name="title" label="Enter Title" variant="outlined" size="small" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
                                     <label className="text-lg mb-10">Description</label><br />
                                     <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
-                                    {/* <label className="text-lg">Date</label><br />
-                                <input type="date" name="createdAt" onChange={singleBlog.handleChange} value={singleBlog?.values?.createdAt} /> */}
+                                    <label className="text-lg">Blog Image</label><br />
+                                    <input type="file" onChange={uploadFile} className="mb-4" />
                                     <Button fullWidth disabled={singleBlog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                                         {
                                             singleBlog.isSubmitting ? (

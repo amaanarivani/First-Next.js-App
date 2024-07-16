@@ -14,6 +14,7 @@ function Profile() {
     const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     const [userData, setUserData] = useState();
     const [isUserEdit, setIsUserEdit] = useState(false);
+    const [selFile, setSelFile] = useState("");
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -25,6 +26,7 @@ function Profile() {
                 console.log(res.data + "userData");
                 setUserData(res.data);
                 setCurrentUser(res.data);
+                setSelFile(currentUser?.myFile);
                 sessionStorage.setItem('user', JSON.stringify(res.data));
 
             }
@@ -35,16 +37,40 @@ function Profile() {
     useEffect(() => {
         fetchUserData();
     }, []);
+    
+    const uploadFile = async (e) => {
+        if (!e.target.files) return;
+
+        let file = e.target.files[0];
+        let converted = await convertToBase64(file);
+        console.log(converted, " converted file");
+        setSelFile(converted);
+
+    }
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
 
     const submitForm = async (values, { setSubmitting }) => {
         if (values.password != values.confirmpassword) {
             toast.error("Password Not Matched")
             return;
         }
+
         console.log(values);
         try {
             const res = await axios.post(`${process.env.backend}/user/update`, {
                 result: values,
+                myFile: selFile,
                 userId: currentUser?._id
             });
 
@@ -113,6 +139,9 @@ function Profile() {
                                             <TextInput name="password" required fullWidth id="outlined-password-input" label="Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.password} />
                                             <label className="text-lg">Confirm Password</label>
                                             <TextInput name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.confirmpassword} />
+                                            <label className="text-lg">Avatar</label><br />
+                                            <input type="file" onChange={uploadFile} className="mb-4" />
+
                                             <Button fullWidth disabled={userData.isSubmitting} type='submit' color="purple" className="mt-3 w-full">
                                                 {
                                                     userData.isSubmitting ? (
@@ -179,8 +208,8 @@ function Profile() {
     </div>
 }
 
-export default function RenderedPage(){
+export default function RenderedPage() {
     return <Suspense>
-        <Profile/>
+        <Profile />
     </Suspense>
 };

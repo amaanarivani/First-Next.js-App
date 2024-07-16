@@ -27,7 +27,7 @@ router.post("/add", async(req, res) => {
 });
 
 router.post("/update", async(req, res) => {
-  const {result, userId} = req.body;
+  const {result, myFile, userId} = req.body;
   try {
     console.log("oijuoijuoijuoi");
     const data = await Model.findByIdAndUpdate(
@@ -37,7 +37,8 @@ router.post("/update", async(req, res) => {
         lastname: result.lastname,
         email: result.email,
         password: result.password,
-        confirmpassword: result.confirmpassword
+        confirmpassword: result.confirmpassword,
+        myFile: myFile
       } , { new: true })
       console.log(data+"datatatatatatat");
     res.status(200).json({message : "User Details Updated", data : data})
