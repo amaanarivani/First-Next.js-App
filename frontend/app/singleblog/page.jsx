@@ -323,7 +323,7 @@ function SingleBlog() {
                                                         {
                                                             blogComment.isSubmitting ? (
                                                                 <>
-                                                                    <CircularProgress color="inherit" size='1.3rem' className="" /><font className='mx-3'>Comment</font><Comment />
+                                                                    <font className='mx-3'>Comment....</font><Comment />
                                                                 </>
                                                             ) :
                                                                 <>
@@ -344,7 +344,7 @@ function SingleBlog() {
             </div>
         } else {
             return <div>
-                <h1 className="pt-20 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
+                <h1 className="pt-20 text-center font-bold text-3xl">Loading</h1>
                 <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
             </div>
         }

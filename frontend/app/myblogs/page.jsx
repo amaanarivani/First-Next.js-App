@@ -65,7 +65,7 @@ export default function MyBlogs() {
             </div>
         } else {
             return <div>
-                <h1 className="pt-36 text-center font-bold text-3xl">Loading <CircularProgress size='1.5rem' color='success' /></h1>
+                <h1 className="pt-36 text-center font-bold text-3xl">Loading</h1>
                 <img src="https://usagif.com/wp-content/uploads/loading-87.gif" alt="" className='w-1/3 block m-auto pt-20' />
             </div>
         }
