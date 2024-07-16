@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import toast from "react-hot-toast";
 
-
-export default function AddBlog() {
+const AddBlog = () => {
     const router = useRouter();
     const [selFile, setSelFile] = useState('');
     const [convertedFile, setConvertedFile] = useState('');
@@ -122,3 +121,4 @@ export default function AddBlog() {
         </Box>
     </div>
 }
+export default AddBlog;
