@@ -235,14 +235,30 @@ router.post("/blog-search", async(req, res) => {
   }
 });
 
-router.put("/update/:id", async(req, res) => {
-  await blogModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((result) => {
-      res.json(result);
-    }).catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+router.post("/update", async(req, res) => {
+  const {Title, Description, blogId} = req.body;
+  console.log(Title);
+  console.log(blogId, " blogid");
+  // const blogId = req.params.id;
+  try {
+    const data = await blogModel.findByIdAndUpdate(
+      blogId,{
+        title : Title,
+        description: Description,
+        createdAt: Date.now()
+      },{ new: true })
+      console.log(data, "qdwff");
+      res.status(200).json({message : "Blog Updated", data : data})
+  } catch (error) {
+    res.status(500).json({message : error.message});
+  }
+  // await blogModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  //   .then((result) => {
+  //     res.json(result);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //     res.status(500).json(err);
+  //   });
 });
 
 router.put("/update-comment/:id", async(req, res) => {

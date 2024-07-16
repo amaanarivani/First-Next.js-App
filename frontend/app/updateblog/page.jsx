@@ -17,7 +17,7 @@ function UpdateBlog() {
     const router = useRouter();
     const [singleBlog, setSingleBlog] = useState(null);
     const [blogUser, setBlogUser] = useState();
-    
+
     const fetchSingleBlogData = async () => {
         try {
             const res = await axios.get(`${process.env.backend}/blog/getsingleblog/${searchParams.get('blogid')}`);
@@ -47,22 +47,41 @@ function UpdateBlog() {
     }, [singleBlog])
 
     const submitForm = async (values, { setSubmitting }) => {
-        console.log(values);
-        const res = await fetch(`${process.env.backend}/blog/update/${blogid}`, {
-            method: 'PUT',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
+        console.log(values.title);
+        console.log(values.description);
+        console.log(singleBlog?._id);
+
+        try {
+            const res = await axios.post(`${process.env.backend}/blog/update`, {
+                Title: values.title,
+                Description: values.description,
+                blogId : singleBlog?._id
+            });
+            console.log(res.status);
+            if (res.status === 200) {
+                toast.success("Blog Updated Successfully")
+                router.back()
             }
-        });
+            setSubmitting(false);
 
-        console.log(res.status);
-
-        if (res.status === 200) {
-            toast.success("Blog Updated Successfully")
-            router.back()
+        } catch (error) {
+            console.log(error);
         }
-        setSubmitting(false);
+        // const res = await fetch(`${process.env.backend}/blog/update/${blogid}`, {
+        //     method: 'PUT',
+        //     body: JSON.stringify(values),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+
+        // console.log(res.status);
+
+        // if (res.status === 200) {
+        //     toast.success("Blog Updated Successfully")
+        //     router.back()
+        // }
+        // setSubmitting(false);
     }
 
     return <div className="bg-body">
@@ -74,32 +93,32 @@ function UpdateBlog() {
                         <Formik initialValues={singleBlog} onSubmit={submitForm}>
                             {(singleBlog) => (
                                 <form onSubmit={singleBlog.handleSubmit}>
-                                <label className="text-lg">Title</label>
-                                <TextField required fullWidth className="margin-vt" name="title" label="Enter Title" variant="outlined" size="small" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
-                                <label className="text-lg mb-10">Description</label><br />
-                                <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
-                                {/* <label className="text-lg">Date</label><br />
+                                    <label className="text-lg">Title</label>
+                                    <TextField required fullWidth className="margin-vt" name="title" label="Enter Title" variant="outlined" size="small" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
+                                    <label className="text-lg mb-10">Description</label><br />
+                                    <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
+                                    {/* <label className="text-lg">Date</label><br />
                                 <input type="date" name="createdAt" onChange={singleBlog.handleChange} value={singleBlog?.values?.createdAt} /> */}
-                                <Button fullWidth disabled={singleBlog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
-                                    {
-                                        singleBlog.isSubmitting ? (
-                                            <>
-                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ marginRight: '10px' }}></span>Loading...
-                                            </>
-                                        ) : 'Submit'
-                                    }</Button>
-                            </form>
+                                    <Button fullWidth disabled={singleBlog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
+                                        {
+                                            singleBlog.isSubmitting ? (
+                                                <>
+                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ marginRight: '10px' }}></span>Loading...
+                                                </>
+                                            ) : 'Submit'
+                                        }</Button>
+                                </form>
                             )}
                         </Formik>
-                    ) : <CircularProgress style={{float: 'center'}} size='1.5rem' color='success' />
+                    ) : <CircularProgress style={{ float: 'center' }} size='1.5rem' color='success' />
                 }
             </Paper>
         </Box>
     </div>
 }
 
-export default function RenderedPage(){
+export default function RenderedPage() {
     return <Suspense>
-        <UpdateBlog/>
+        <UpdateBlog />
     </Suspense>
 };
