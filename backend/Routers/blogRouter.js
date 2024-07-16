@@ -34,6 +34,7 @@ router.get("/getall/:page", async (req, res) => {
         .skip(skip)
 
         .limit(perPage)
+        .sort({createdAt: -1})
         let finalResult = [];
             for (let i = 0; i < result.length; i++) {
               let currentData = result[i];

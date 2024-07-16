@@ -78,8 +78,8 @@ function UpdateBlog() {
                                 <TextField required fullWidth className="margin-vt" name="title" label="Enter Title" variant="outlined" size="small" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
                                 <label className="text-lg mb-10">Description</label><br />
                                 <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
-                                <label className="text-lg">Date</label><br />
-                                <input type="date" name="createdAt" onChange={singleBlog.handleChange} value={singleBlog?.values?.createdAt} />
+                                {/* <label className="text-lg">Date</label><br />
+                                <input type="date" name="createdAt" onChange={singleBlog.handleChange} value={singleBlog?.values?.createdAt} /> */}
                                 <Button fullWidth disabled={singleBlog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                                     {
                                         singleBlog.isSubmitting ? (

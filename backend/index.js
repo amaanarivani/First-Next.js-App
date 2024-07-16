@@ -16,7 +16,12 @@ const port = 5000;
 app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
 app.use(express.json({limit: '20mb'}));
 app.use(cors({
-    origin: [ 'https://blog-p7zzudya4-amaanarivanis-projects.vercel.app', "https://blog-99eh1say4-amaanarivanis-projects.vercel.app" , "https://blog-app-orcin-seven.vercel.app", "http://localhost:3000"]
+    origin: [ 
+    "https://blog-p7zzudya4-amaanarivanis-projects.vercel.app",
+    "https://blog-99eh1say4-amaanarivanis-projects.vercel.app",
+    "https://blog-app-orcin-seven.vercel.app",
+    "http://localhost:3000"
+]
 }));
 
 app.use('/user', userRouter);

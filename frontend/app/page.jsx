@@ -36,10 +36,10 @@ export default function Home() {
     setIsLoading(false);
   }
 
-
   const fetchBlogData = async () => {
     try {
       setIsLoading(true);
+      // ${process.env.backend}
       const res = await axios.get(`${process.env.backend}/blog/getall/1`);
       console.log(res);
 
