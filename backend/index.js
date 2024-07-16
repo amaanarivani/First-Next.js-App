@@ -16,7 +16,7 @@ const port = 5000;
 app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
 app.use(express.json({limit: '20mb'}));
 app.use(cors({
-    origin: [ 'https://blog-p7zzudya4-amaanarivanis-projects.vercel.app']
+    origin: [ 'https://blog-p7zzudya4-amaanarivanis-projects.vercel.app', 'https://blog-app-git-main-amaanarivanis-projects.vercel.app/']
 }));
 
 app.use('/user', userRouter);
