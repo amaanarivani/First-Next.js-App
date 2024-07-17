@@ -137,9 +137,9 @@ function Profile() {
                                                 <label className="text-lg">Email</label>
                                                 <TextInput disabled type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
                                                 <label className="text-lg">Password</label>
-                                                <TextInput name="password" required fullWidth id="outlined-password-input" label="Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.password} />
+                                                <TextInput type="password" name="password" required fullWidth id="outlined-password-input" label="Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.password} />
                                                 <label className="text-lg">Confirm Password</label>
-                                                <TextInput name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.confirmpassword} />
+                                                <TextInput type="password" name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.confirmpassword} />
                                                 <label className="text-lg">Avatar</label><br />
                                                 <input type="file" onChange={uploadFile} className="mb-4" />
 
@@ -187,17 +187,11 @@ function Profile() {
                                                 </>
                                             }</Table.Cell>
                                         </Table.Row>
-                                        {/* <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                            <Table.Cell className="whitespace-nowrap text-lg text-gray-900 dark:text-white">
-                                                {'Email'}
-                                            </Table.Cell>
-                                            <Table.Cell className="text-base">{userData?.email}</Table.Cell>
-                                        </Table.Row> */}
                                         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                             <Table.Cell className="whitespace-nowrap text-lg text-gray-900 dark:text-white">
                                                 {'Password'}
                                             </Table.Cell>
-                                            <Table.Cell className="text-base">{userData?.password}</Table.Cell>
+                                            <Table.Cell className="text-base">{userData?.password.substring(0,10)}...</Table.Cell>
                                         </Table.Row>
                                     </Table.Body>
                                     <Button color='purple' className="ms-3 mt-5" onClick={() => { setIsUserEdit(true) }}><Edit className='me-3' />Edit</Button>

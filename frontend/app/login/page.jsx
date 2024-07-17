@@ -4,10 +4,11 @@ import { useFormik } from "formik";
 import React from "react";
 import UseAppContext from "@/component/UseContext";
 import { useRouter } from 'next/navigation';
-import {LockOpen } from "@mui/icons-material";
+import { LockOpen } from "@mui/icons-material";
 import { Button, TextInput } from "flowbite-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 
 
@@ -24,32 +25,22 @@ export default function Login() {
         },
 
         onSubmit: async (values) => {
-            console.log(values);
-
-            const res = await fetch(`${process.env.backend}/user/authenticate`, {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            });
-
-            console.log(res.status);
-
-            if (res.status === 200) {
+            console.log(values.email);
+            try {
+                const res = await axios.post(`${process.env.backend}/user/authenticate`, {
+                    email: values.email,
+                    password: values.password
+                })
                 toast.success('Login Successfull!');
                 router.push('/');
-                const data = await res.json();
-                console.log(data);
-                sessionStorage.setItem('user', JSON.stringify(data));
+                console.log(res.data.data);
+                sessionStorage.setItem('user', res.data.data);
                 setLoggedIn(true);
-                setCurrentUser(data);
-            }
-            else if (res.status === 400) {
-                toast.error("Email or Password is incorrect");
-            }
-            else {
-                toast.error("Something went wrong");
+                setCurrentUser(res.data.data);
+            } catch (error) {
+                if (error.response.data.message) {
+                    toast.error(error.response.data.message)
+                }
             }
         },
     });
@@ -63,8 +54,8 @@ export default function Login() {
                         <TextInput onChange={loginForm.handleChange} value={loginForm.values.email} required className="margin-vt" placeholder="Enter email" size="small" type="email" name="email" />
                         <label className="text-lg">Password</label>
                         <TextInput onChange={loginForm.handleChange} value={loginForm.values.password} required placeholder="Enter password" type="password" size="small" className="margin-vt" name="password" />
-                        <Button className="w-full my-3" type="submit" color="purple"><LockOpen className="me-2"/>Submit</Button>
-                        <font className="mt-5">Don't have an account yet?<Link href="/signup"><span className="ms-2" style={{color: 'blue'}}>Signup</span></Link></font>
+                        <Button className="w-full my-5" type="submit" color="purple"><LockOpen className="me-2" />Submit</Button>
+                        <font className="mt-5">Don't have an account yet?<Link href="/signup"><span className="ms-2" style={{ color: 'blue' }}>Signup</span></Link></font>
                     </form>
                 </Paper>
             </Box>

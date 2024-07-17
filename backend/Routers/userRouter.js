@@ -1,11 +1,14 @@
 const express = require("express");
 const Model = require('../models/userModel');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
 router.post("/add", async(req, res) => {
   console.log(req.body);
   const { firstname, lastname, email, password, confirmpassword, myFile } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 2);
+  console.log(hashedPassword, " hash");
   const check = await Model.find({email}).countDocuments();
   console.log(check);
   if(check){
@@ -16,8 +19,8 @@ router.post("/add", async(req, res) => {
       firstname,
       lastname,
       email,
-      password,
-      confirmpassword,
+      password : hashedPassword,
+      confirmpassword : hashedPassword,
       myFile
     });
     res.status(200).json({message: "signup successfull", result});
@@ -29,15 +32,16 @@ router.post("/add", async(req, res) => {
 router.post("/update", async(req, res) => {
   const {result, myFile, userId} = req.body;
   try {
-    console.log("oijuoijuoijuoi");
+    console.log(result.password, "oijuoijuoijuoi");
+    const hashedPassword = await bcrypt.hash(result.password, 2);
     const data = await Model.findByIdAndUpdate(
       userId, 
       {
         firstname: result.firstname,
         lastname: result.lastname,
         email: result.email,
-        password: result.password,
-        confirmpassword: result.confirmpassword,
+        password: hashedPassword,
+        confirmpassword: hashedPassword,
         myFile: myFile
       } , { new: true })
       console.log(data+"datatatatatatat");
@@ -98,17 +102,22 @@ router.delete("/delete/:id", (req, res) => {
     });
 });
 
-router.post('/authenticate', (req, res) => {
-  Model.findOne(req.body)
-    .then((result) => {
-      if (result !== null){
-        res.json(result);
-      } 
-      else res.status(400).json({ message: 'login failed' })
-    }).catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+router.post('/authenticate', async(req, res) => {
+  const {email, password} = req.body;
+  const result = await Model.findOne({email: email});
+  // console.log(result, " result from db");  
+  console.log(result.email, " result from db");
+  console.log(result.password, " result from db");
+  const samePassword = bcrypt.compare(password, result.password)
+  try {
+    if(result.email == email && samePassword){
+      res.status(200).json({data: result});
+    }else{
+      res.status(400).json({ message: 'Email or password is incorrect' })
+    }
+  } catch (error) {
+    res.status(500).json({message: 'Something went wrong'});
+  }
 })
 
 // getall
