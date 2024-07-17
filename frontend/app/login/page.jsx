@@ -57,6 +57,7 @@ export default function Login() {
                         <Button className="w-full my-5" type="submit" color="purple"><LockOpen className="me-2" />Submit</Button>
                         <font className="mt-5">Don't have an account yet?<Link href="/signup"><span className="ms-2" style={{ color: 'blue' }}>Signup</span></Link></font>
                     </form>
+                    
                 </Paper>
             </Box>
 
