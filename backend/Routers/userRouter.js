@@ -108,7 +108,8 @@ router.post('/authenticate', async(req, res) => {
   // console.log(result, " result from db");  
   console.log(result.email, " result from db");
   console.log(result.password, " result from db");
-  const samePassword = bcrypt.compare(password, result.password)
+  const samePassword = await bcrypt.compare(password, result.password)
+  console.log(samePassword, " same p");
   try {
     if(result.email == email && samePassword){
       res.status(200).json({data: result});
