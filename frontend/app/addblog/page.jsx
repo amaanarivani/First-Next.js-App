@@ -20,8 +20,8 @@ const AddBlog = () => {
     // console.log(currentUser);
 
     useEffect(() => {
-        let user = JSON.parse(sessionStorage.getItem('user'));
-        if (!user) {
+        // let user = JSON.parse(sessionStorage.getItem('user'));
+        if (!currentUser) {
             toast.error("Please Login to continue")
             router.push("/login")
         }
