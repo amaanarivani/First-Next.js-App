@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env : {
-    backend: "https://blog-app-backend-ud98.onrender.com",
+    backend: "https://first-next-js-app.onrender.com",
     // backend : "http://localhost:5000",
 },
     reactStrictMode: false,
