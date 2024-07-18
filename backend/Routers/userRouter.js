@@ -4,50 +4,70 @@ const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
-router.post("/add", async(req, res) => {
+router.post("/add", async (req, res) => {
   console.log(req.body);
   const { firstname, lastname, email, password, confirmpassword, myFile } = req.body;
   const hashedPassword = await bcrypt.hash(password, 2);
   console.log(hashedPassword, " hash");
-  const check = await Model.find({email}).countDocuments();
+  const check = await Model.find({ email }).countDocuments();
   console.log(check);
-  if(check){
-    return res.status(400).json({message : 'Email Already registered'})
+  if (check) {
+    return res.status(400).json({ message: 'Email Already registered' })
   }
   try {
     const result = await Model.create({
       firstname,
       lastname,
       email,
-      password : hashedPassword,
-      confirmpassword : hashedPassword,
+      password: hashedPassword,
+      confirmpassword: hashedPassword,
       myFile
     });
-    res.status(200).json({message: "signup successfull", result});
+    res.status(200).json({ message: "signup successfull", result });
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-router.post("/update", async(req, res) => {
-  const {result, myFile, userId} = req.body;
+router.post("/update", async (req, res) => {
+  const { result, myFile, userId } = req.body;
   try {
-    // console.log(result.password, "oijuoijuoijuoi");
-    // const hashedPassword = await bcrypt.hash(result.password, 2);
     const data = await Model.findByIdAndUpdate(
-      userId, 
+      userId,
       {
         firstname: result.firstname,
         lastname: result.lastname,
         myFile: myFile
-      } , { new: true })
-      console.log(data+"datatatatatatat");
-    res.status(200).json({message : "User Details Updated", data : data})
+      }, { new: true })
+    console.log(data + "datatatatatatat");
+    res.status(200).json({ message: "User Details Updated", data: data })
   } catch (error) {
-    res.status(500).json({message : error.message});
+    res.status(500).json({ message: error.message });
   }
 });
 
+router.post("/update-password", async (req, res) => {
+  const { currentPassword, newPassword, userId } = req.body;
+  const result = await Model.findById(userId)
+  const checkPassword = await bcrypt.compare(currentPassword, result.password)
+  console.log(checkPassword, " check pass");
+  if(!checkPassword){
+    return res.status(400).json({message: 'Current Password does not match'})
+  }
+  try {
+    const hashedNewPassword = await bcrypt.hash(newPassword, 2);
+    const data = await Model.findByIdAndUpdate(
+      userId,
+      {
+        password: hashedNewPassword,
+        confirmpassword: hashedNewPassword
+      }, { new: true })
+    console.log(data + "datatatatatatat");
+    res.status(200).json({ message: "User Details Updated", data: data })
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+})
 
 router.get("/getall", (req, res) => {
   Model.find({})
@@ -99,22 +119,22 @@ router.delete("/delete/:id", (req, res) => {
     });
 });
 
-router.post('/authenticate', async(req, res) => {
-  const {email, password} = req.body;
-  const result = await Model.findOne({email: email});
-  if(result==null){
+router.post('/authenticate', async (req, res) => {
+  const { email, password } = req.body;
+  const result = await Model.findOne({ email: email });
+  if (result == null) {
     return res.status(400).json({ message: 'User not exist with this email' })
   }
   const samePassword = await bcrypt.compare(password, result.password)
   // console.log(samePassword, " same p");
   try {
-    if(result.email == email && samePassword){
-      res.status(200).json({data: result});
-    }else{
+    if (result.email == email && samePassword) {
+      res.status(200).json({ data: result });
+    } else {
       res.status(400).json({ message: 'Password is incorrect' })
     }
   } catch (error) {
-    res.status(500).json({message: 'Something went wrong'});
+    res.status(500).json({ message: 'Something went wrong' });
   }
 })
 

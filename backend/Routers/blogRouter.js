@@ -199,22 +199,7 @@ router.post("/getbyid", async (req, res) => {
       console.log(error);
       res.status(500).json(error);
     }
-    // .then(async (result) => {
-    //   let finalResult = [];
-    //   let i = 0;
-    //   for (i = 0; i < result.length; i++) {
-    //     let currentData = result[i];
-    //     let fetchUserData = await User.findById(currentData.userId);
-    //     if (fetchUserData) {
-    //       finalResult.push({ ...currentData._doc, userData: fetchUserData });
-    //     }
-    //   }
-    //   res.json(finalResult);
-
-    // }).catch((err) => {
-    //   console.log(err);
-    //   res.status(500).json(err);
-    // });
+   
   });
 
 router.get("/get-comment/:id", async (req, res) => {

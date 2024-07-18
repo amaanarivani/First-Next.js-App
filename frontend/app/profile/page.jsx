@@ -129,7 +129,7 @@ function Profile() {
                                                 {/* </div>
                                                     <div> */}
                                                 <label className="text-lg">Last Name</label>
-                                                <TextInput name="lastname" className="w-4/5 margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.lastname} />
+                                                <TextInput name="lastname" className="w-4/5 margin-vt" size="small" onChange={userData.handleChange} value={userData?.values?.lastname} />
                                                 {/* </div>
                                                 </div> */}
                                                 <label className="text-lg">Email</label>

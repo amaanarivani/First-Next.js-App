@@ -97,7 +97,7 @@ const AddBlog = () => {
         setSelFile({ ...selFile, blogFile: base64 });
         // uploadFile();
     };
-    return <div className="bg-body pt-16 pb-96">
+    return <div className="bg-body pt-10 pb-96">
         <Box className='m-auto md:w-1/2 sm:4/5 p-8'>
             <Paper elevation={16} className="p-10">
                 <h1 className="font-bold text-3xl text-center my-3">Add your Blogs here!</h1>

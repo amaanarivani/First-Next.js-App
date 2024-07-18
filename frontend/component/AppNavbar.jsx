@@ -3,7 +3,7 @@ import { AppBar, Box, IconButton, Toolbar, MenuIcon, Typography } from "@mui/mat
 import { useState } from "react";
 import UseAppContext from "./UseContext";
 import Link from "next/link";
-import { ExitToApp, HowToReg, LockOpen, PeopleAlt, Person } from "@mui/icons-material";
+import { ChangeCircle, ExitToApp, HowToReg, LockOpen, PeopleAlt, Person } from "@mui/icons-material";
 import Image from "next/image";
 import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
 import { usePathname } from "next/navigation";
@@ -61,6 +61,13 @@ export default function AppNavbar() {
               </Dropdown.Item>
               <Dropdown.Item>
                 <div className="block m-auto"><Button className="" color="purple" size='sm' onClick={logout}><ExitToApp className='me-2' />Logout</Button></div>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <div className="">
+                  <Link href='/changepassword'>
+                    <Button className="" color="purple" size='sm'><ChangeCircle className='me-2' />Change Password</Button>
+                  </Link>
+                </div>
               </Dropdown.Item>
             </Dropdown>
           </>

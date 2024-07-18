@@ -205,14 +205,14 @@ function SingleBlog() {
                 blogId,
                 userId
             })
-            console.log(blogData + "blogdata");
+            // console.log(blogData + "blogdata");
             setSingleBlog((e => {
                 if (e._id == blogId) {
                     return { ...e, likeCount: e.likeCount + 1, likedBy: currentUser?._id ? [...e.likedBy, currentUser._id] : e.likedBy }
                 } else { return e }
             }));
             setIsLikeLoading(false);
-            console.log(res + 'like');
+            // console.log(res + 'like');
         } catch (error) {
             setSingleBlog(previous => { previous }, (e => {
                 if (e._id == blogId) {
