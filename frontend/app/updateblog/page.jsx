@@ -38,11 +38,11 @@ function UpdateBlog() {
     }, [blogid]);
 
     useEffect(() => {
-        let user = JSON.parse(sessionStorage.getItem('user'));
+        // let user = JSON.parse(sessionStorage.getItem('user'));
 
         console.log(singleBlog?.userId);
 
-        if (singleBlog && (user?._id !== singleBlog?.userId || !user)) {
+        if (singleBlog && (currentUser?._id !== singleBlog?.userId || !currentUser)) {
             toast.error("You can only update your created blogs")
             router.back()
         }

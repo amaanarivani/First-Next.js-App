@@ -10,7 +10,7 @@ export const AppProvider = ({children}) => {
     );
 
     useEffect(() => {
-        console.log(JSON.parse(sessionStorage.getItem('user')), " wefjifmkl");
+        // console.log(JSON.parse(sessionStorage.getItem('user')), " wefjifmkl");
         setCurrentUser(JSON.parse(sessionStorage.getItem('user')))
         setLoggedIn(JSON.parse(sessionStorage.getItem('user'))? true: false)
     },[]);

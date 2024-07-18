@@ -14,13 +14,9 @@ const AddBlog = () => {
     const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     console.log(currentUser);
 
-    // const [currentUser, setCurrentUser] = useState(
-    //     JSON.parse(sessionStorage.getItem('user'))
-    // );
-    // console.log(currentUser);
+   
 
     useEffect(() => {
-        // let user = JSON.parse(sessionStorage.getItem('user'));
         if (!currentUser) {
             toast.error("Please Login to continue")
             router.push("/login")
