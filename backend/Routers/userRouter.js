@@ -105,16 +105,16 @@ router.delete("/delete/:id", (req, res) => {
 router.post('/authenticate', async(req, res) => {
   const {email, password} = req.body;
   const result = await Model.findOne({email: email});
-  // console.log(result, " result from db");  
-  console.log(result.email, " result from db");
-  console.log(result.password, " result from db");
+  if(result==null){
+    return res.status(400).json({ message: 'User not exist with this email' })
+  }
   const samePassword = await bcrypt.compare(password, result.password)
   console.log(samePassword, " same p");
   try {
     if(result.email == email && samePassword){
       res.status(200).json({data: result});
     }else{
-      res.status(400).json({ message: 'Email or password is incorrect' })
+      res.status(400).json({ message: 'Password is incorrect' })
     }
   } catch (error) {
     res.status(500).json({message: 'Something went wrong'});
