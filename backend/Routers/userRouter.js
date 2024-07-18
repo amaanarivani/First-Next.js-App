@@ -32,16 +32,13 @@ router.post("/add", async(req, res) => {
 router.post("/update", async(req, res) => {
   const {result, myFile, userId} = req.body;
   try {
-    console.log(result.password, "oijuoijuoijuoi");
-    const hashedPassword = await bcrypt.hash(result.password, 2);
+    // console.log(result.password, "oijuoijuoijuoi");
+    // const hashedPassword = await bcrypt.hash(result.password, 2);
     const data = await Model.findByIdAndUpdate(
       userId, 
       {
         firstname: result.firstname,
         lastname: result.lastname,
-        email: result.email,
-        password: hashedPassword,
-        confirmpassword: hashedPassword,
         myFile: myFile
       } , { new: true })
       console.log(data+"datatatatatatat");
@@ -109,7 +106,7 @@ router.post('/authenticate', async(req, res) => {
     return res.status(400).json({ message: 'User not exist with this email' })
   }
   const samePassword = await bcrypt.compare(password, result.password)
-  console.log(samePassword, " same p");
+  // console.log(samePassword, " same p");
   try {
     if(result.email == email && samePassword){
       res.status(200).json({data: result});

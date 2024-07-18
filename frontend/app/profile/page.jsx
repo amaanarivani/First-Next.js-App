@@ -2,7 +2,7 @@
 import { Button, Card, Table, TextInput } from "flowbite-react";
 import UseAppContext from "@/component/UseContext";
 import { Suspense, useEffect, useState } from "react";
-import { Edit, PeopleAlt, Person } from "@mui/icons-material";
+import { ArrowBack, Edit, PeopleAlt, Person } from "@mui/icons-material";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
@@ -93,18 +93,18 @@ function Profile() {
             }
         }
     }
-    return <div className="bg-body ">
-        <div className="grid md:grid-cols-3 sm:grid-cols-1 pb-36">
-            <div className="mt-12">
-                <Card className="w-4/5 m-auto">
-                    <div>
+    return <div className="bg-body pt-14 pb-36">
+        <Card className="w-4/5 mx-auto p-4">
+            <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-8">
+                <div className="w-4/5 me-auto">
+                    <div className="">
                         {
                             currentUser?.myFile ? (
                                 <>
-                                    <img src={currentUser?.myFile} className="rounded-full" alt="" />
+                                    <img src={currentUser?.myFile} className="pt-6 rounded-full" alt="" />
                                 </>
                             ) : <>
-                                <img src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png" className="rounded-full mb-7 pb-3" alt="" />
+                                <img src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png" className="rounded-full pb-7" alt="" />
                             </>
                         }
 
@@ -113,10 +113,8 @@ function Profile() {
                         <h1 className="text-lg text-center mt-3 font-bold">{currentUser?.firstname + " " + currentUser?.lastname}</h1>
                         <p className="text-center text-sm text-gray-500 dark:text-gray-400">{currentUser?.email}</p>
                     </div>
-                </Card>
-            </div>
-            <div className="md:col-span-2 mt-12">
-                <Card className="w-4/5 m-auto">
+                </div>
+                <div className="md:col-span-2">
                     {
                         isUserEdit ? (
                             <>
@@ -124,33 +122,32 @@ function Profile() {
                                     <Formik initialValues={userData} onSubmit={submitForm}>
                                         {(userData) => (
                                             <form onSubmit={userData.handleSubmit}>
-                                                <div className="grid grid-cols-2 gap-4 mt-3">
-                                                    <div>
-                                                        <label className="text-lg">First Name</label>
-                                                        <TextInput name="firstname" required className="w-75 margin-vt" id="outlined" label="Enter Name" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.firstname} />
-                                                    </div>
-                                                    <div>
-                                                        <label className="text-lg">Last Name</label>
-                                                        <TextInput name="lastname" className="margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.lastname} />
-                                                    </div>
-                                                </div>
+                                                {/* <div className="grid grid-cols-2 gap-4 mt-3">
+                                                    <div> */}
+                                                <label className="text-lg">First Name</label>
+                                                <TextInput name="firstname" required className="w-4/5 margin-vt" id="outlined" label="Enter Name" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.firstname} />
+                                                {/* </div>
+                                                    <div> */}
+                                                <label className="text-lg">Last Name</label>
+                                                <TextInput name="lastname" className="w-4/5 margin-vt" fullWidth id="outlined" label="Enter Name" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.lastname} />
+                                                {/* </div>
+                                                </div> */}
                                                 <label className="text-lg">Email</label>
-                                                <TextInput disabled type="email" name="email" required className="margin-vt" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
-                                                <label className="text-lg">Password</label>
-                                                <TextInput type="password" name="password" required fullWidth id="outlined-password-input" label="Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.password} />
-                                                <label className="text-lg">Confirm Password</label>
-                                                <TextInput type="password" name="confirmpassword" required fullWidth id="outlined-password-input" label="Re-Enter Password" size="small" className="margin-vt" onChange={userData.handleChange} value={userData?.values?.confirmpassword} />
+                                                <TextInput disabled type="email" name="email" required className="margin-vt w-4/5" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
                                                 <label className="text-lg">Avatar</label><br />
                                                 <input type="file" onChange={uploadFile} className="mb-4" />
 
-                                                <Button fullWidth disabled={userData.isSubmitting} type='submit' color="purple" className="mt-3 w-full">
-                                                    {
-                                                        userData.isSubmitting ? (
-                                                            <>
-                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ marginRight: '10px' }}></span>Loading...
-                                                            </>
-                                                        ) : 'Save Changes'
-                                                    }</Button>
+                                                <div className="">
+                                                    <Button disabled={userData.isSubmitting} type='submit' color="purple" className="mt-3 w-1/5 inline-flex">
+                                                        {
+                                                            userData.isSubmitting ? (
+                                                                <>
+                                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ marginRight: '10px' }}></span>Loading...
+                                                                </>
+                                                            ) : 'Update'
+                                                        }</Button>
+                                                    <Button color='purple' className="inline-flex w-1/5 ms-3" onClick={() => { setIsUserEdit(false) }}>Discard</Button>
+                                                </div>
                                             </form>
                                         )}
 
@@ -159,7 +156,7 @@ function Profile() {
 
                             </>
                         ) : <>
-                            <div className="w-4/5 py-10">
+                            <div className="w-4/5 py-6">
                                 <Table className="">
                                     <Table.Head className="">
                                         <Table.HeadCell className="text-2xl">
@@ -187,22 +184,16 @@ function Profile() {
                                                 </>
                                             }</Table.Cell>
                                         </Table.Row>
-                                        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                            <Table.Cell className="whitespace-nowrap text-lg text-gray-900 dark:text-white">
-                                                {'Password'}
-                                            </Table.Cell>
-                                            <Table.Cell className="text-base">{userData?.password.substring(0,10)}...</Table.Cell>
-                                        </Table.Row>
                                     </Table.Body>
                                     <Button color='purple' className="ms-3 mt-5" onClick={() => { setIsUserEdit(true) }}><Edit className='me-3' />Edit</Button>
                                 </Table>
                             </div>
                         </>
                     }
-                </Card>
+                </div>
             </div>
-        </div>
-    </div>
+        </Card>
+    </div >
 }
 
 export default function RenderedPage() {

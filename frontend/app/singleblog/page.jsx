@@ -1,6 +1,6 @@
 'use client'
 import UseAppContext from "@/component/UseContext";
-import { Comment, Delete, Edit, EditNote, Event, MoreVert, Person, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
+import { Comment, Delete, Edit, EditNote, Event, MoreVert, Navigation, NearMe, Person, Send, Telegram, ThumbUpAlt, Update, Visibility } from "@mui/icons-material";
 import { Box, CircularProgress, Paper, } from "@mui/material";
 import axios from "axios";
 import { Card, Dropdown, TextInput } from "flowbite-react";
@@ -341,11 +341,11 @@ function SingleBlog() {
                                                         {
                                                             blogComment.isSubmitting ? (
                                                                 <>
-                                                                    <font className='mx-3'>Comment....</font><Comment />
+                                                                    <font className='mx-3'>Loading....</font>
                                                                 </>
                                                             ) :
                                                                 <>
-                                                                    <font className='me-2'>Comment</font><Comment />
+                                                                    <font className='me-2'>Send</font><NearMe />
                                                                 </>
                                                         }
 
