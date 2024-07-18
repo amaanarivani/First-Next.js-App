@@ -54,8 +54,6 @@ function ChangePassword() {
             }
         }
     })
-        
-
 
     return (
         <div className="bg-body pt-16 pb-80">
@@ -64,11 +62,11 @@ function ChangePassword() {
                 <div>
                     <form onSubmit={passwordForm.handleSubmit}>
                         <label>Current Password</label>
-                        <TextInput required name="currentpassword" className="margin-vt" placeholder="Your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.currentpassword}/>
+                        <TextInput required type="password" name="currentpassword" className="margin-vt" placeholder="Your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.currentpassword}/>
                         <label>New Password</label>
-                        <TextInput required name="newpassword" className="margin-vt" placeholder="Your new passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.newpassword}/>
+                        <TextInput required type="password" name="newpassword" className="margin-vt" placeholder="Your new passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.newpassword}/>
                         <label>Confirm New Password</label>
-                        <TextInput required name="cnfnewpassword" className="margin-vt" placeholder="Confirm your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.cnfnewpassword}/>
+                        <TextInput required type="password" name="cnfnewpassword" className="margin-vt" placeholder="Confirm your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.cnfnewpassword}/>
                         <Button disabled={passwordForm.isSubmitting} type="submit" className="my-3 w-full" color="purple" >
                             {
                                 passwordForm.isSubmitting ? (
