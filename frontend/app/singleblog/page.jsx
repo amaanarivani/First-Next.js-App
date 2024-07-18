@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation';
 import { Suspense, useEffect, useState } from "react";
 import { Button } from "flowbite-react";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+// import { confirmAlert } from '@sweetalert2/react';
+
 
 function SingleBlog() {
 
@@ -83,13 +86,28 @@ function SingleBlog() {
     }
     console.log(loggedIn);
 
+    const showConfirmAlert = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to delete this blog?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteBlog(singleBlog?._id)
+            }
+        });
+    }
 
     const deleteAndUpdateButton = () => {
         if (currentUser?._id == singleBlog?.userId) {
             return (
                 <>
                     <div className="inline-flex mt-3">
-                        <Button size="sm" className="mx-3 mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { deleteBlog(singleBlog._id) }}><Delete fontSize="medium" />Delete Blog</Button>
+                        <Button size="sm" className="mx-3 mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { showConfirmAlert() }}><Delete fontSize="medium" />Delete Blog</Button>
                         <Button size="sm" className="mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="medium" />Update Blog</Button>
                     </div>
 
@@ -330,7 +348,7 @@ function SingleBlog() {
                                                                     <font className='me-2'>Comment</font><Comment />
                                                                 </>
                                                         }
-                                                        
+
                                                     </button>
                                                 </form>
                                             </div>
