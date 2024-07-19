@@ -1,5 +1,5 @@
 'use client'
-import { Paper, Box,  } from "@mui/material";
+import { Paper, Box, } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
@@ -7,12 +7,13 @@ import { HowToReg } from "@mui/icons-material";
 import { Button, TextInput } from "flowbite-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Signup() {
 
     const router = useRouter();
     const [selFile, setSelFile] = useState('');
-    const [convertedFile, setConvertedFile] = useState('');
+    const [validFile, setValidFile] = useState(false);
 
     const signupform = useFormik({
         initialValues: {
@@ -24,35 +25,38 @@ export default function Signup() {
             myFile: ''
         },
         onSubmit: async (values, { setSubmitting }) => {
-            setSubmitting(true);
-            values.myFile = selFile;
-            setTimeout(() => {
-                console.log(values);
-                console.log(values.myFile);
-                setSubmitting(false);
-            }, 3000);
+            try {
+                if(!validFile){
+                    return toast.error("Invalid File")
+                 }
+                setSubmitting(true);
+                values.myFile = selFile;
+                setTimeout(() => {
+                    console.log(values);
+                    console.log(values.myFile);
+                    setSubmitting(false);
+                }, 3000);
 
-            if (values.password != values.confirmpassword) {
-                toast.error("Password Not Matched");
-                return;
-            }
-            //send data to the server
-            const res = await fetch(`${process.env.backend}/user/add`, {
-                method: 'Post',
-                body: JSON.stringify(values),
-                headers: {
-                    'Content-Type': 'application/json'
+                if (values.password != values.confirmpassword) {
+                    toast.error("Password Not Matched");
+                    return;
                 }
-            });
-            console.log(res.status);
-            if (res.status === 200) {
-                toast.success("You have signed up successfully")
-                router.push('/login')
-            }else if(res.status === 400){
-                toast.error("Email Already Registered")
-            }
-            else {
-                toast.error("Something went wrong")
+                //send data to the server
+                const res = await axios.post(`${process.env.backend}/user/add`, {
+                    values
+                });
+                console.log(res.status);
+                if (res.status == 200) {
+                    toast.success("You have signed up successfully")
+                    router.push('/login')
+                } else if (res.status == 400) {
+                    toast.error("Email Already Registered")
+                }
+                else {
+                    toast.error("Something went wrong")
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
     });
@@ -60,24 +64,31 @@ export default function Signup() {
         if (!e.target.files) return;
 
         let file = e.target.files[0];
-        let converted = await convertToBase64(file);
-        console.log(converted);
-        // console.log(file, 'abc');
-        setSelFile(converted);
+        console.log(file?.name, " blog file");
+        validateImage(file?.name);
 
-
-        const fd = new FormData();
-        fd.append('myfile', converted);
-
-        const res = await fetch(`${process.env.backend}/utils/uploadfile`, {
-            method: 'POST',
-            body: JSON.stringify({ myFile: converted }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(res.status);
+        if (validFile) {
+            let converted = await convertToBase64(file);
+            console.log(converted);
+            setSelFile(converted);
+            console.log(selFile, " ");
+            setValidFile(true)
+        }
     }
+
+    const validateImage = (filename) => {
+        console.log(filename, " imagewqdhuwefoifh");
+        const array_of_allowed_files = ['png', 'jpeg', 'jpg', 'gif'];
+
+        // Get the extension of the uploaded file
+        const ext = filename.split('.')
+        console.log(ext[1],"exten");
+        // Check if the uploaded file is allowed
+        if (array_of_allowed_files.includes(ext[1])) {
+            setValidFile(true);
+        }
+    }
+
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -105,21 +116,21 @@ export default function Signup() {
                         <div className="grid grid-cols-2 gap-5 mt-3">
                             <div>
                                 <label className="text-lg">First Name</label>
-                                <TextInput name="firstname" required className="w-75 margin-vt" placeholder="Enter first name"  size="small" onChange={signupform.handleChange} value={signupform.values.firstname} />
+                                <TextInput name="firstname" required className="w-75 margin-vt" placeholder="Enter first name" size="small" onChange={signupform.handleChange} value={signupform.values.firstname} />
                             </div>
                             <div>
                                 <label className="text-lg">Last Name</label>
-                                <TextInput name="lastname"  className="margin-vt" placeholder="Enter last name"  size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
+                                <TextInput name="lastname" className="margin-vt" placeholder="Enter last name" size="small" onChange={signupform.handleChange} value={signupform.values.lastname} />
                             </div>
                         </div>
                         <label className="text-lg">Email</label>
-                        <TextInput type="email" name="email" required className="margin-vt"  placeholder="Enter Email"  size="small" onChange={signupform.handleChange} value={signupform.values.email} />
+                        <TextInput type="email" name="email" required className="margin-vt" placeholder="Enter Email" size="small" onChange={signupform.handleChange} value={signupform.values.email} />
                         <label className="text-lg">Password</label>
                         <TextInput name="password" required placeholder="Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.password} />
                         <label className="text-lg">Confirm Password</label>
                         <TextInput name="confirmpassword" required placeholder="Re-Enter Password" type="password" size="small" className="margin-vt" onChange={signupform.handleChange} value={signupform.values.confirmpassword} />
                         <label className="text-lg">Avatar</label><br />
-                        <input type="file" onChange={uploadFile} className="mb-4"/>
+                        <input required type="file" accept="image/gif, image/jpeg, image/png, image/jpg" onChange={uploadFile} className="mb-4" />
 
                         <Button disabled={signupform.isSubmitting} type="submit" className="my-3 w-full" color="purple" >
                             {
@@ -128,11 +139,11 @@ export default function Signup() {
                                         Loading...
                                     </>
                                 ) : <>
-                                <HowToReg className="me-2"/> Submit
+                                    <HowToReg className="me-2" /> Submit
                                 </>
                             }
                         </Button>
-                        <p className="mt-3">Already have an account?<Link href='/login'><span className="ms-2" style={{color: 'blue'}}>Login</span></Link></p>
+                        <p className="mt-3">Already have an account?<Link href='/login'><span className="ms-2" style={{ color: 'blue' }}>Login</span></Link></p>
                     </form>
                 </Paper>
             </Box>

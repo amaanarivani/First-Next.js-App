@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post("/add", async (req, res) => {
   console.log(req.body);
-  const { firstname, lastname, email, password, confirmpassword, myFile } = req.body;
+  const { firstname, lastname, email, password, confirmpassword, myFile } = req.body.values;
+  console.log(firstname, " name user");
   const hashedPassword = await bcrypt.hash(password, 2);
   console.log(hashedPassword, " hash");
   const check = await Model.find({ email }).countDocuments();
