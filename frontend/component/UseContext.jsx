@@ -8,11 +8,16 @@ export const AppProvider = ({children}) => {
 
     const [currentUser, setCurrentUser] = useState( null
     );
+    const [loadingData, setLoadingData] = useState(true);
+
+    console.log(currentUser, " current user data after reload");
 
     useEffect(() => {
-        // console.log(JSON.parse(sessionStorage.getItem('user')), " wefjifmkl");
+        setLoadingData(true);
+        console.log(JSON.parse(sessionStorage.getItem('user')), " wefjifmkl");
         setCurrentUser(JSON.parse(sessionStorage.getItem('user')))
         setLoggedIn(JSON.parse(sessionStorage.getItem('user'))? true: false)
+        setLoadingData(false);
     },[]);
 
     const router = useRouter();
@@ -27,7 +32,7 @@ export const AppProvider = ({children}) => {
 
     const [loggedIn, setLoggedIn] = useState(currentUser ? true: false);
 
-    return <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser}}>
+    return <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser, loadingData, setLoadingData}}>
         {children}
     </AppContext.Provider>
 };

@@ -63,7 +63,7 @@ router.post("/update-password", async (req, res) => {
         confirmpassword: hashedNewPassword
       }, { new: true })
     console.log(data + "datatatatatatat");
-    res.status(200).json({ message: "User Details Updated", data: data })
+    res.status(200).json({ message: "Password Changed Successfully", data: data })
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

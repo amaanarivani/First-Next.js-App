@@ -12,7 +12,7 @@ export default function AppNavbar() {
   const { loggedIn, setLoggedIn, logout, currentUser } = UseAppContext();
   const pathname = usePathname();
 
-  console.log(currentUser?.name);
+  console.log(currentUser?.firstname, "vjgvhc");
   // console.log(currentUser?.myFile);
 
   const displayMyBlog = () => {
@@ -42,7 +42,7 @@ export default function AppNavbar() {
                 <Avatar alt="User settings" img={currentUser?.myFile} rounded className="me-3">
                   <div className="space-y-1 font-medium dark:text-white">
                     <div>{currentUser?.firstname}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{currentUser?.email.substring(0, 10)}...</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{currentUser?.email?.substring(0, 10)}...</div>
                   </div>
                 </Avatar>
               }

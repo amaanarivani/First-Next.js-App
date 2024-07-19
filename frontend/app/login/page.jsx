@@ -16,7 +16,7 @@ export default function Login() {
 
     const router = useRouter();
 
-    const { setLoggedIn, setCurrentUser } = UseAppContext();
+    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
 
     const loginForm = useFormik({
         initialValues: {
@@ -33,10 +33,12 @@ export default function Login() {
                 })
                 toast.success('Login Successfull!');
                 router.push('/');
-                console.log(res.data.data);
-                sessionStorage.setItem('user', res.data.data);
+                console.log(res.data.data, " user after login");
+                sessionStorage.setItem('user', JSON.stringify(res.data.data));
                 setLoggedIn(true);
                 setCurrentUser(res.data.data);
+                setLoadingData(false);
+                console.log(currentUser, ' current user after login');
             } catch (error) {
                 if (error.response.data.message) {
                     toast.error(error.response.data.message)

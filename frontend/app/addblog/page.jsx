@@ -5,23 +5,25 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import toast from "react-hot-toast";
 import UseAppContext from "@/component/UseContext";
+import axios from "axios";
 
 const AddBlog = () => {
     const router = useRouter();
     const [selFile, setSelFile] = useState('');
     const [convertedFile, setConvertedFile] = useState('');
 
-    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
     console.log(currentUser);
 
    
-
+    console.log(currentUser, " current user");
     useEffect(() => {
-        if (!currentUser) {
+        console.log(currentUser, " current user data ");
+        if (!currentUser  && !loadingData) {
             toast.error("Please Login to continue")
             router.push("/login")
         }
-    }, [])
+    }, [loadingData, currentUser])
 
     const Blog = useFormik({
         initialValues: {
@@ -39,14 +41,9 @@ const AddBlog = () => {
             }, 3000);
 
             // send the data to the server
-            const res = await fetch(`${process.env.backend}/blog/add`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    values, userId: currentUser._id
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            const res = await axios.post(`${process.env.backend}/blog/add`, {
+                values,
+                userId: currentUser._id
             });
 
             console.log(res.status);
@@ -65,19 +62,6 @@ const AddBlog = () => {
         console.log(converted);
         // console.log(file, 'abc');
         setSelFile(converted);
-
-
-        const fd = new FormData();
-        fd.append('blogFile', converted);
-
-        const res = await fetch(`${process.env.backend}/utils/uploadfile`, {
-            method: 'POST',
-            body: JSON.stringify({ blogFile: converted }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(res.status);
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -107,7 +91,7 @@ const AddBlog = () => {
                     <label className="text-lg mb-10">Description</label><br />
                     <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={Blog.handleChange} value={Blog.values.description} />
                     <label className="text-lg">Blog Image</label><br />
-                    <input required type="file" onChange={uploadFile} />
+                    <input required type="file" accept="image/gif, image/jpeg, image/png" onChange={uploadFile} />
                     <Button fullWidth disabled={Blog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                         {
                             Blog.isSubmitting ? (

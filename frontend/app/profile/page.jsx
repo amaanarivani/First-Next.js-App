@@ -156,7 +156,7 @@ function Profile() {
 
                             </>
                         ) : <>
-                            <div className="w-4/5 py-6">
+                            {/* <div className="w-4/5 py-6"> */}
                                 <Table className="">
                                     <Table.Head className="">
                                         <Table.HeadCell className="text-2xl">
@@ -187,7 +187,7 @@ function Profile() {
                                     </Table.Body>
                                     <Button color='purple' className="ms-3 mt-5" onClick={() => { setIsUserEdit(true) }}><Edit className='me-3' />Edit</Button>
                                 </Table>
-                            </div>
+                            {/* </div> */}
                         </>
                     }
                 </div>

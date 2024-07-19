@@ -34,8 +34,10 @@ export default function MyBlogs() {
     };
 
     useEffect(() => {
-        fetchMyblogData();
-    }, []);
+        if (currentUser?._id) {
+            fetchMyblogData();
+        }
+    }, [currentUser?._id]);
 
     const displayData = () => {
         if (!isLoading) {

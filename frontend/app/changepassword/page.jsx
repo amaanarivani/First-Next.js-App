@@ -41,7 +41,7 @@ function ChangePassword() {
                 console.log(res.data.data);
 
                 if (res.status == 200) {
-                    toast.success("User Details Updated Successfully")
+                    toast.success("Password Changed Successfully")
                     console.log(res.data.data);
                     router.back()
                 }
