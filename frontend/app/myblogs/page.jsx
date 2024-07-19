@@ -59,7 +59,7 @@ export default function MyBlogs() {
                                                                 currentUser?.myFile ? (
                                                                     <img className="w-10 h-10 rounded-full" src={currentUser?.myFile} alt="" />
 
-                                                                ) : <Person fontSize="medium" />
+                                                                ) : <img className="w-8 h-7 rounded-full" src="./User image.png" alt="" />
                                                             }
                                                             <font className="font-bold mx-2">{currentUser?.firstname}</font>
                                                             <ThumbUpAlt fontSize="medium" className="me-1" /><font className='font-medium'>{myblog?.likeCount} </font>

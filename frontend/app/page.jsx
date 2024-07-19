@@ -189,7 +189,7 @@ export default function Home() {
                               {
                                 blog?.userData?.myFile ? (
                                   <img className="mt-1 inline-flex w-8 h-8 rounded-full" src={blog?.userData?.myFile} />
-                                ) : <Person fontSize="large" className="inline-flex rounded-full" />
+                                ) : <img className="mt-1 inline-flex w-10 h-9 rounded-full" src="./User image.png" />
                               }
                               <font className="text-lg font-bold mt-3 ms-2">{blog?.userData?.firstname}</font>
                             </div>

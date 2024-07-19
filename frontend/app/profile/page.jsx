@@ -104,7 +104,7 @@ function Profile() {
                                     <img src={currentUser?.myFile} className="pt-6 rounded-full" alt="" />
                                 </>
                             ) : <>
-                                <img src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png" className="rounded-full pb-7" alt="" />
+                                <img src="./User image.png" className="rounded-full pb-7" alt="" />
                             </>
                         }
 

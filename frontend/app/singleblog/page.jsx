@@ -241,7 +241,7 @@ function SingleBlog() {
                         {
                             blogUser.myFile ? (
                                 <img className="w-10 h-10 rounded-full inline-flex" src={blogUser?.myFile} />
-                            ) : <Person fontSize="large" />
+                            ) : <img className="w-11 h-10 rounded-full inline-flex" src="./User image.png" />
                         }
                         <font className="ms-2 mt-1 font-bold text-xl">{blogUser?.firstname + " " + blogUser?.lastname}</font>
                     </div>
@@ -296,7 +296,7 @@ function SingleBlog() {
                                                         <img src={blogComment?.userResult.myFile} className="inline-flex rounded-full w-12 h-12" alt="" />
                                                     </>
                                                 ) : <>
-                                                    <Person fontSize="large" className="" />
+                                                    <img src="./User image.png" className="inline-flex rounded-full w-12 h-11" alt="" />
                                                 </>
                                             }
 
