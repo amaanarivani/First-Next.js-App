@@ -53,21 +53,21 @@ export default function AppNavbar() {
                 {/* <span className="block truncate text-sm">{currentUser?.email}</span> */}
               </Dropdown.Header>
               <Dropdown.Item>
-                <div className="block m-auto">
+                <div className="">
                   <Link href='/profile'>
-                    <Button className="" color="purple" size='sm'><PeopleAlt className='me-2' />Profile</Button>
+                    <Button className="" color="light" size='sm' style={{border: 'none'}}><PeopleAlt className='me-2' />Profile</Button>
                   </Link>
                 </div>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <div className="block m-auto"><Button className="" color="purple" size='sm' onClick={logout}><ExitToApp className='me-2' />Logout</Button></div>
               </Dropdown.Item>
               <Dropdown.Item>
                 <div className="">
                   <Link href='/changepassword'>
-                    <Button className="" color="purple" size='sm'><ChangeCircle className='me-2' />Change Password</Button>
+                    <Button className="" color="light" size='sm' style={{border: 'none'}}><ChangeCircle className='me-2' />Change Password</Button>
                   </Link>
                 </div>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <div className=""><Button className="" color="light" size='sm' onClick={logout} style={{border: 'none'}}><ExitToApp className='me-2' />Logout</Button></div>
               </Dropdown.Item>
             </Dropdown>
           </>
