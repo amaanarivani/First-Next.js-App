@@ -86,7 +86,7 @@ function SingleBlog() {
     }
     console.log(loggedIn);
 
-    const showConfirmAlert = () => {
+    const deleteBlogAlert = () => {
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to delete this blog?",
@@ -107,7 +107,7 @@ function SingleBlog() {
             return (
                 <>
                     <div className="inline-flex mt-3">
-                        <Button size="sm" className="mx-3 mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { showConfirmAlert() }}><Delete fontSize="medium" />Delete Blog</Button>
+                        <Button size="sm" className="mx-3 mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { deleteBlogAlert() }}><Delete fontSize="medium" />Delete Blog</Button>
                         <Button size="sm" className="mt-3" outline gradientDuoTone="purpleToPink" onClick={() => { router.push(`/updateblog?blogid=${singleBlog?._id}`) }}><Edit fontSize="medium" />Update Blog</Button>
                     </div>
 
@@ -154,10 +154,10 @@ function SingleBlog() {
     const deleteComment = async (commentId, commentBy) => {
         console.log(commentId + " comment id");
         console.log(commentBy + " commentBy");
-        if (currentUser?._id == commentBy) {
+        if (currentUser?._id == commentBy || currentUser?._id == singleBlog?.userId) {
             try {
                 const res = await axios.delete(`${process.env.backend}/blog/delete-comment/${commentId}`)
-                if (res.status === 200) {
+                if (res.status == 200) {
                     toast.success("Comment Deleted")
                 }
                 setblogCommentData(e => {
@@ -168,9 +168,22 @@ function SingleBlog() {
                 console.log(error);
             }
         }
-        else {
-            toast.error("You cannot delete someone else comment")
-        }
+    }
+
+    const deleteCommentAlert = (commentId, commentBy) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to delete this comment?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteComment(commentId, commentBy)
+            }
+        });
     }
 
     const editComment = async (commentId, editedComment) => {
@@ -306,7 +319,7 @@ function SingleBlog() {
                                                     <>
                                                         <div className="inline-flex">
                                                             <Dropdown label={<MoreVert fontSize="small" className="mt-2" />} arrowIcon={false} inline >
-                                                                <Dropdown.Item onClick={() => { deleteComment(blogComment?._id, currentUser?._id, blogComment?.commentBy) }}>Delete</Dropdown.Item>
+                                                                <Dropdown.Item onClick={() => { deleteCommentAlert(blogComment?._id, blogComment?.commentBy) }}>Delete</Dropdown.Item>
                                                                 <Dropdown.Item onClick={() => { setIsEdit(true), setEditCommentId(blogComment?._id) }}>Edit</Dropdown.Item>
                                                             </Dropdown>
                                                         </div>

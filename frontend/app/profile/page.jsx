@@ -90,7 +90,8 @@ function Profile() {
     };
 
     const uploadFile = async (e) => {
-        if (!e.target.files) return;
+        if (!e.target.files)
+        return;
     
         let file = e.target.files[0];
         console.log(file.name, " user file");
