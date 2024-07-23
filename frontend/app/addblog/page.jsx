@@ -10,12 +10,11 @@ import axios from "axios";
 const AddBlog = () => {
     const router = useRouter();
     const [selFile, setSelFile] = useState('');
-    const [validFile, setValidFile] = useState(false);
-
+    const [isValid, setIsValid] = useState(false);
+    
     const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
     console.log(currentUser);
-
-
+    
     console.log(currentUser, " current user");
     useEffect(() => {
         console.log(currentUser, " current user data ");
@@ -23,8 +22,8 @@ const AddBlog = () => {
             toast.error("Please Login to continue")
             router.push("/login")
         }
-    }, [loadingData, currentUser])
-
+    }, [loadingData, currentUser]);
+    
     const Blog = useFormik({
         initialValues: {
             title: '',
@@ -33,9 +32,9 @@ const AddBlog = () => {
         },
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                if(!validFile){
-                    return toast.error("Invalid File")
-                 }
+                if(!isValid){
+                    return toast.error("Invalid File");
+                }
                 setSubmitting(true);
                 console.log(selFile);
                 values.blogFile = selFile;
@@ -53,31 +52,46 @@ const AddBlog = () => {
     
                 console.log(res.status);
                 if (res.status === 200) {
-                    toast.success("Blog Added Successfully")
-                    router.push("/")
+                    toast.success("Blog Added Successfully");
+                    router.push("/");
                 }
             } catch (error) {
                 console.log(error);
             }
         },
     });
-
+    
+    const validateImage = (filename) => {
+        const allowedExt = ["png", "jpeg", "jpg", "gif", "webp"];
+    
+        // Get the extension of the uploaded file
+        const ext = filename.split('.');
+        const extension = ext[1];
+    
+        //Check if the uploaded file is allowed
+        return allowedExt.includes(extension);
+    };
+    
     const uploadFile = async (e) => {
         if (!e.target.files) return;
-
+    
         let file = e.target.files[0];
         console.log(file.name, " blog file");
-        await validateImage(file.name);
-
-        if (validFile) {
+        const isFileValid = validateImage(file.name);
+        console.log(isFileValid, "validation result");
+        
+        if (isFileValid) {
             let converted = await convertToBase64(file);
             console.log(converted);
-            // console.log(file, 'abc');
+            console.log(file, 'abc');
             setSelFile(converted);
-            console.log(selFile, " blog file selected");
-            setValidFile(true);
         }
-    }
+    
+        setIsValid(isFileValid);
+        console.log(isFileValid, "final validation result");
+        console.log(isValid, "updated state value");
+    };
+    
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -90,25 +104,8 @@ const AddBlog = () => {
             };
         });
     };
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setSelFile({ ...selFile, blogFile: base64 });
-        // uploadFile();
-    };
+    
 
-    const validateImage = async(filename) => {
-        console.log(filename, " imagewqdhuwefoifh");
-        const array_of_allowed_files = ['png', 'jpeg', 'jpg', 'gif'];
-
-        // Get the extension of the uploaded file
-        const ext = filename.split('.')
-        console.log(ext[1],"exten");
-        // Check if the uploaded file is allowed
-        if (array_of_allowed_files.includes(ext[1])) {
-            setValidFile(true);
-        }
-    }
 
 
     return <div className="bg-body pt-10 pb-96">
@@ -121,7 +118,7 @@ const AddBlog = () => {
                     <label className="text-lg mb-10">Description</label><br />
                     <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={Blog.handleChange} value={Blog.values.description} />
                     <label className="text-lg">Blog Image</label><br />
-                    <input required type="file" accept="image/gif, image/jpeg, image/png, image/jpg" onChange={uploadFile} />
+                    <input required type="file" accept="image/gif, image/jpeg, image/png, image/jpg, image/webp" onChange={uploadFile} />
                     <Button fullWidth disabled={Blog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>
                         {
                             Blog.isSubmitting ? (

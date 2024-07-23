@@ -15,6 +15,7 @@ function Profile() {
     const [userData, setUserData] = useState();
     const [isUserEdit, setIsUserEdit] = useState(false);
     const [selFile, setSelFile] = useState("");
+    const [validFile, setValidFile] = useState(false);
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -38,28 +39,6 @@ function Profile() {
         fetchUserData();
     }, []);
 
-    const uploadFile = async (e) => {
-        if (!e.target.files) return;
-
-        let file = e.target.files[0];
-        let converted = await convertToBase64(file);
-        console.log(converted, " converted file");
-        setSelFile(converted);
-
-    }
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
-
     const submitForm = async (values, { setSubmitting }) => {
         if (values.password != values.confirmpassword) {
             toast.error("Password Not Matched")
@@ -68,6 +47,9 @@ function Profile() {
 
         console.log(values);
         try {
+            if(!validFile){
+                return toast.error("Invalid File")
+             }
             const res = await axios.post(`${process.env.backend}/user/update`, {
                 result: values,
                 myFile: selFile,
@@ -93,6 +75,52 @@ function Profile() {
             }
         }
     }
+
+    const validateImage = (filename) => {
+        const allowedExt = ["png", "jpeg", "jpg", "gif"];
+    
+        // Get the extension of the uploaded file
+        const ext = filename.split('.');
+        const extension = ext[1];
+    
+        //Check if the uploaded file is allowed
+        return allowedExt.includes(extension);
+    };
+
+    const uploadFile = async (e) => {
+        if (!e.target.files) return;
+    
+        let file = e.target.files[0];
+        console.log(file.name, " user file");
+        const isFileValid = validateImage(file.name);
+        console.log(isFileValid, "validation result");
+        
+        if (isFileValid) {
+            let converted = await convertToBase64(file);
+            console.log(converted);
+            console.log(file, 'abc');
+            setSelFile(converted);
+        }
+    
+        setValidFile(isFileValid);
+        console.log(isFileValid, "final validation result");
+        console.log(validFile, "updated state value");
+    };
+
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
+
     return <div className="bg-body pt-14 pb-36">
         <Card className="w-4/5 mx-auto p-4">
             <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-8">
@@ -135,7 +163,7 @@ function Profile() {
                                                 <label className="text-lg">Email</label>
                                                 <TextInput disabled type="email" name="email" required className="margin-vt w-4/5" fullWidth id="outlined" label="Enter Email" variant="outlined" size="small" onChange={userData.handleChange} value={userData?.values?.email} />
                                                 <label className="text-lg">Avatar</label><br />
-                                                <input type="file" onChange={uploadFile} className="mb-4" />
+                                                <input required type="file" onChange={uploadFile} className="mb-4" />
 
                                                 <div className="">
                                                     <Button disabled={userData.isSubmitting} type='submit' color="purple" className="mt-3 w-1/5 inline-flex">

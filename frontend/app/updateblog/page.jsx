@@ -18,6 +18,7 @@ function UpdateBlog() {
     const [singleBlog, setSingleBlog] = useState(null);
     const [blogUser, setBlogUser] = useState();
     const [selFile, setSelFile] = useState('');
+    const [isValid, setIsValid] = useState(false);
 
     const fetchSingleBlogData = async () => {
         try {
@@ -48,15 +49,37 @@ function UpdateBlog() {
         }
     }, [singleBlog])
 
+    const validateImage = (filename) => {
+        const allowedExt = ["png", "jpeg", "jpg", "gif", "webp"];
+    
+        // Get the extension of the uploaded file
+        const ext = filename.split('.');
+        const extension = ext[1];
+    
+        //Check if the uploaded file is allowed
+        return allowedExt.includes(extension);
+    };
+
     const uploadFile = async (e) => {
         if (!e.target.files) return;
-
+    
         let file = e.target.files[0];
-        let converted = await convertToBase64(file);
-        console.log(converted, " converted file");
-        setSelFile(converted);
+        console.log(file.name, " blog file");
+        const isFileValid = validateImage(file.name);
+        console.log(isFileValid, "validation result");
+        
+        if (isFileValid) {
+            let converted = await convertToBase64(file);
+            console.log(converted);
+            console.log(file, 'abc');
+            setSelFile(converted);
+        }
+    
+        setIsValid(isFileValid);
+        console.log(isFileValid, "final validation result");
+        console.log(isValid, "updated state value");
+    };
 
-    }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -76,6 +99,9 @@ function UpdateBlog() {
         console.log(singleBlog?._id);
 
         try {
+            if(!isValid){
+                return toast.error("Invalid File");
+            }
             const res = await axios.post(`${process.env.backend}/blog/update`, {
                 Title: values.title,
                 Description: values.description,

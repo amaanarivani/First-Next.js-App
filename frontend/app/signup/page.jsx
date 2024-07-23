@@ -46,48 +46,47 @@ export default function Signup() {
                     values
                 });
                 console.log(res.status);
-                if (res.status == 200) {
-                    toast.success("You have signed up successfully")
-                    router.push('/login')
-                } else if (res.status == 400) {
-                    toast.error("Email Already Registered")
-                }
-                else {
-                    toast.error("Something went wrong")
-                }
+                toast.success("You have signed up successfully")
+                router.push('/login')
             } catch (error) {
-                console.log(error);
+                if (error.response.data.message) {
+                    toast.error(error.response.data.message)
+                }
             }
         },
     });
-    const uploadFile = async (e) => {
-        if (!e.target.files) return;
-
-        let file = e.target.files[0];
-        console.log(file?.name, " blog file");
-        validateImage(file?.name);
-
-        if (validFile) {
-            let converted = await convertToBase64(file);
-            console.log(converted);
-            setSelFile(converted);
-            console.log(selFile, " ");
-            setValidFile(true)
-        }
-    }
 
     const validateImage = (filename) => {
-        console.log(filename, " imagewqdhuwefoifh");
-        const array_of_allowed_files = ['png', 'jpeg', 'jpg', 'gif'];
-
+        const allowedExt = ["png", "jpeg", "jpg", "gif"];
+    
         // Get the extension of the uploaded file
-        const ext = filename.split('.')
-        console.log(ext[1],"exten");
-        // Check if the uploaded file is allowed
-        if (array_of_allowed_files.includes(ext[1])) {
-            setValidFile(true);
+        const ext = filename.split('.');
+        const extension = ext[1];
+    
+        //Check if the uploaded file is allowed
+        return allowedExt.includes(extension);
+    };
+
+    const uploadFile = async (e) => {
+        if (!e.target.files) return;
+    
+        let file = e.target.files[0];
+        console.log(file.name, " user file");
+        const isFileValid = validateImage(file.name);
+        console.log(isFileValid, "validation result");
+        
+        if (isFileValid) {
+            let converted = await convertToBase64(file);
+            console.log(converted);
+            console.log(file, 'abc');
+            setSelFile(converted);
         }
-    }
+    
+        setValidFile(isFileValid);
+        console.log(isFileValid, "final validation result");
+        console.log(validFile, "updated state value");
+    };
+
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -101,12 +100,7 @@ export default function Signup() {
             };
         });
     };
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setSelFile({ ...selFile, myFile: base64 });
-        // uploadFile();
-    };
+
     return (
         <div className="bg-body pb-36">
             <Box className='md:w-3/5 sm:w-11/12 p-8 m-auto'>
