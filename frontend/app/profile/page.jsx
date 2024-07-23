@@ -11,13 +11,25 @@ import toast from "react-hot-toast";
 
 function Profile() {
 
-    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
+    // const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
     const [userData, setUserData] = useState();
     const [isUserEdit, setIsUserEdit] = useState(false);
     const [selFile, setSelFile] = useState("");
     const [validFile, setValidFile] = useState(false);
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
+    console.log(currentUser);
+    
+    console.log(currentUser, " current user");
+    useEffect(() => {
+        console.log(currentUser, " current user data ");
+        if (!currentUser && !loadingData) {
+            toast.error("Please Login to continue")
+            router.push("/login")
+        }
+    }, [loadingData, currentUser]);
 
     const fetchUserData = async () => {
         try {

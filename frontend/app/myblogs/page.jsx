@@ -7,15 +7,28 @@ import axios from "axios";
 import { Card } from "flowbite-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from 'next/navigation';
 
 
 export default function MyBlogs() {
 
-    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
-    console.log(currentUser, " currwnssw");
-
     const [myblogData, setMyblogData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
+    console.log(currentUser);
+    
+    console.log(currentUser, " current user");
+    useEffect(() => {
+        console.log(currentUser, " current user data ");
+        if (!currentUser && !loadingData) {
+            toast.error("Please Login to continue")
+            router.push("/login")
+        }
+    }, [loadingData, currentUser]);
+
     const fetchMyblogData = async () => {
         console.log(currentUser?._id, " cudsbns");
         try {

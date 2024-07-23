@@ -17,12 +17,11 @@ import Swal from "sweetalert2";
 
 function SingleBlog() {
 
-    const { loggedIn, logout, currentUser } = UseAppContext();
+    // const { loggedIn, logout, currentUser } = UseAppContext();
     const [isCommenting, setIsCommenting] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [editCommentId, setEditCommentId] = useState();
     const [editedComment, setEditedComment] = useState("");
-    console.log(currentUser);
 
     const searchParams = useSearchParams();
     const blogid = searchParams.get('blogid');
@@ -35,6 +34,19 @@ function SingleBlog() {
 
 
     const [blogUser, setBlogUser] = useState();
+
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
+    console.log(currentUser);
+    
+    console.log(currentUser, " current user");
+    useEffect(() => {
+        console.log(currentUser, " current user data ");
+        if (!currentUser && !loadingData) {
+            toast.error("Please Login to continue")
+            router.push("/login")
+        }
+    }, [loadingData, currentUser]);
+
     const fetchSingleBlogData = async () => {
         try {
             const res = await axios.get(`${process.env.backend}/blog/getsingleblog/${searchParams.get('blogid')}`);

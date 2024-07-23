@@ -1,7 +1,7 @@
 'use client'
 import axios from "axios"
 import { Button, Card, Textarea, TextInput } from "flowbite-react"
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Login from "../login/page";
 import { useFormik } from "formik";
 import UseAppContext from "@/component/UseContext";
@@ -14,7 +14,17 @@ function ChangePassword() {
 
     const[passData, setPassData] = useState();
     const router = useRouter();
-    const { loggedIn, logout, currentUser, setCurrentUser } = UseAppContext();
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
+    console.log(currentUser);
+    
+    console.log(currentUser, " current user");
+    useEffect(() => {
+        console.log(currentUser, " current user data ");
+        if (!currentUser && !loadingData) {
+            toast.error("Please Login to continue")
+            router.push("/login")
+        }
+    }, [loadingData, currentUser]);
 
     const passwordForm = useFormik({
         initialValues: {

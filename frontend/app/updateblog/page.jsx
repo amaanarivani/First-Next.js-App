@@ -9,8 +9,6 @@ import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function UpdateBlog() {
-    const { currentUser } = UseAppContext();
-    console.log(currentUser);
 
     const searchParams = useSearchParams()
     const blogid = searchParams.get('blogid');
@@ -19,6 +17,18 @@ function UpdateBlog() {
     const [blogUser, setBlogUser] = useState();
     const [selFile, setSelFile] = useState('');
     const [isValid, setIsValid] = useState(false);
+
+    const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
+    console.log(currentUser);
+    
+    console.log(currentUser, " current user");
+    useEffect(() => {
+        console.log(currentUser, " current user data ");
+        if (!currentUser && !loadingData) {
+            toast.error("Please Login to continue")
+            router.push("/login")
+        }
+    }, [loadingData, currentUser]);
 
     const fetchSingleBlogData = async () => {
         try {
