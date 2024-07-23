@@ -33,6 +33,8 @@ export default function Signup() {
                 values.myFile = selFile;
                 console.log(values.email, " email ");
                 values.email = values.email.toLowerCase();
+                values.firstname = values.firstname.trim();
+                values.lastname = values.lastname.trim();
                 setTimeout(() => {
                     console.log(values);
                     console.log(values.myFile);

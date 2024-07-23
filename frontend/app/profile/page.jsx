@@ -50,6 +50,8 @@ function Profile() {
             if(!validFile){
                 return toast.error("Invalid File")
              }
+             values.firstname = values.firstname.trim();
+             values.lastname = values.lastname.trim();
             const res = await axios.post(`${process.env.backend}/user/update`, {
                 result: values,
                 myFile: selFile,
