@@ -28,7 +28,7 @@ export default function Login() {
             console.log(values.email);
             try {
                 const res = await axios.post(`${process.env.backend}/user/authenticate`, {
-                    email: values.email,
+                    email: values.email.toLowerCase(),
                     password: values.password
                 })
                 toast.success('Login Successfull!');

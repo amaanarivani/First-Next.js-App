@@ -31,9 +31,12 @@ export default function Signup() {
                  }
                 setSubmitting(true);
                 values.myFile = selFile;
+                console.log(values.email, " email ");
+                values.email = values.email.toLowerCase();
                 setTimeout(() => {
                     console.log(values);
                     console.log(values.myFile);
+                    console.log(values.email, " email aa ");
                     setSubmitting(false);
                 }, 3000);
 

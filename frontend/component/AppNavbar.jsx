@@ -16,6 +16,7 @@ export default function AppNavbar() {
   // console.log(currentUser?.myFile);
 
   const displayMyBlog = () => {
+    console.log(loggedIn, " logged in ?");
     if (loggedIn) {
       return (
         <>
