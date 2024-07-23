@@ -97,7 +97,7 @@ router.post("/blog-comment", async (req, res) => {
     const result = await blogCommentModel.create({
       commentOn,
       commentBy,
-      comment: comment.comment,
+      comment: comment,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     })

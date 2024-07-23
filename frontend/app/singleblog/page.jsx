@@ -37,7 +37,7 @@ function SingleBlog() {
 
     const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
     console.log(currentUser);
-    
+
     console.log(currentUser, " current user");
     useEffect(() => {
         console.log(currentUser, " current user data ");
@@ -130,21 +130,28 @@ function SingleBlog() {
 
     const blogComment = useFormik({
         initialValues: {
-            comment: ''
+            comment: ""
         },
         onSubmit: async (comment, { setSubmitting, resetForm }) => {
-            setSubmitting(true);
-            setTimeout(() => {
-                console.log(comment);
-                setSubmitting(false);
-            }, 5000);
-
             try {
+                const trimmedComment = comment.comment.trim();
+                console.log(comment, " comment adding");
+                if (!trimmedComment) {
+                    return toast.error("Comment can't be empty")
+                }
+                setSubmitting(true);
+                setTimeout(() => {
+                    console.log(trimmedComment);
+                    setSubmitting(false);
+                }, 5000);
+
+                //send data to server
+
                 const res = await axios.post(`${process.env.backend}/blog/blog-comment`, {
 
                     commentOn: singleBlog._id,
                     commentBy: currentUser._id,
-                    comment
+                    comment: trimmedComment
 
                 })
                 if (res.status === 200) {
@@ -361,7 +368,7 @@ function SingleBlog() {
                                             <div className="w-full">
                                                 <form onSubmit={blogComment.handleSubmit} className="">
                                                     <label for="message" className="block mb-2 font-bold text-md text-gray-900 dark:text-white">Your Comments</label>
-                                                    <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment.values.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comment here..." />
+                                                    <textarea required name="comment" onChange={blogComment.handleChange} value={blogComment?.values?.comment} id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Comment here..." />
                                                     <button disabled={blogComment.isSubmitting} type="submit" className="p-2 rounded mt-4 text-white bg-blue-700 hover:bg-blue-800">
                                                         {
                                                             blogComment.isSubmitting ? (

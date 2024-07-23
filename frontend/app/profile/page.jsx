@@ -59,11 +59,14 @@ function Profile() {
 
         console.log(values);
         try {
+            values.firstname = values.firstname.trim();
+             values.lastname = values.lastname.trim();
+             if(!values.firstname){
+                return toast.error("User first name can't be empty")
+             }
             if(!validFile){
                 return toast.error("Invalid File")
              }
-             values.firstname = values.firstname.trim();
-             values.lastname = values.lastname.trim();
             const res = await axios.post(`${process.env.backend}/user/update`, {
                 result: values,
                 myFile: selFile,

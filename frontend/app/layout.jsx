@@ -27,17 +27,17 @@ export default function RootLayout({ children }) {
 
       </head>
       <body className={inter.className}>
-        <Toaster 
+        <Toaster
         // position="top-right"
-          // reverseOrder={false}
-           />
+        // reverseOrder={false}
+        />
         <AppProvider>
           <AppNavbar />
           {children}
         </AppProvider>
         {(pathname == "/") ? <AppFooter /> : ""}
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.js" />
-        <Script src="../path/to/flowbite/dist/flowbite.min.js" />
+        <Script src="../path/to/flowbite/dist/flowbite.min.js" />  
       </body>
     </html>
   );

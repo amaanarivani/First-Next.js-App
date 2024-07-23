@@ -2,6 +2,7 @@
 import UseAppContext from "@/component/UseContext"
 import { Box, Button, CircularProgress, Paper, TextField, TextareaAutosize, DatePicker } from "@mui/material";
 import axios from "axios";
+import { TextInput, Textarea} from "flowbite-react";
 import { Form, Formik } from "formik";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
@@ -20,7 +21,7 @@ function UpdateBlog() {
 
     const { loggedIn, logout, currentUser, setCurrentUser, loadingData } = UseAppContext();
     console.log(currentUser);
-    
+
     console.log(currentUser, " current user");
     useEffect(() => {
         console.log(currentUser, " current user data ");
@@ -61,30 +62,30 @@ function UpdateBlog() {
 
     const validateImage = (filename) => {
         const allowedExt = ["png", "jpeg", "jpg", "gif", "webp"];
-    
+
         // Get the extension of the uploaded file
         const ext = filename.split('.');
         const extension = ext[1];
-    
+
         //Check if the uploaded file is allowed
         return allowedExt.includes(extension);
     };
 
     const uploadFile = async (e) => {
         if (!e.target.files) return;
-    
+
         let file = e.target.files[0];
         console.log(file.name, " blog file");
         const isFileValid = validateImage(file.name);
         console.log(isFileValid, "validation result");
-        
+
         if (isFileValid) {
             let converted = await convertToBase64(file);
             console.log(converted);
             console.log(file, 'abc');
             setSelFile(converted);
         }
-    
+
         setIsValid(isFileValid);
         console.log(isFileValid, "final validation result");
         console.log(isValid, "updated state value");
@@ -104,12 +105,13 @@ function UpdateBlog() {
     };
 
     const submitForm = async (values, { setSubmitting }) => {
-        console.log(values.title);
-        console.log(values.description);
-        console.log(singleBlog?._id);
-
         try {
-            if(!isValid){
+            values.title = values.title.trim();
+            values.description = values.description.trim();
+            if(!values.title || !values.description){
+                return toast.error("Blog title or description can't be empty")
+            }
+            if (!isValid) {
                 return toast.error("Invalid File");
             }
             const res = await axios.post(`${process.env.backend}/blog/update`, {
@@ -140,9 +142,9 @@ function UpdateBlog() {
                             {(singleBlog) => (
                                 <form onSubmit={singleBlog.handleSubmit}>
                                     <label className="text-lg">Title</label>
-                                    <TextField required fullWidth className="margin-vt" name="title" label="Enter Title" variant="outlined" size="small" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
+                                    <TextInput required className="margin-vt" name="title" placeholder="Enter Title" onChange={singleBlog.handleChange} value={singleBlog?.values?.title} />
                                     <label className="text-lg mb-10">Description</label><br />
-                                    <TextareaAutosize required style={{ width: "100%" }} name="description" minRows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
+                                    <Textarea required style={{ width: "100%" }} name="description" rows={3} placeholder="Enter Description" className="margin-vt" onChange={singleBlog.handleChange} value={singleBlog?.values?.description} />
                                     <label className="text-lg">Blog Image</label><br />
                                     <input type="file" onChange={uploadFile} className="mb-4" />
                                     <Button fullWidth disabled={singleBlog.isSubmitting} type='submit' style={{ backgroundColor: 'black', color: 'white', marginTop: '2rem' }}>

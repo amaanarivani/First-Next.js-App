@@ -33,6 +33,12 @@ function ChangePassword() {
             cnfnewpassword: ''
         },
         onSubmit: async (values, { setSubmitting }) => {
+            values.currentpassword = values.currentpassword.trim();
+            values.newpassword = values.newpassword.trim();
+            values.cnfnewpassword = values.cnfnewpassword.trim();
+            if(!values.newpassword || !values.cnfnewpassword){
+                return toast.error("new password or confirm new password is empty")
+            }
             setSubmitting(true);
             setTimeout(() => {
                 console.log(values);

@@ -26,15 +26,18 @@ export default function Signup() {
         },
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                if(!validFile){
+                values.firstname = values.firstname.trim();
+                values.lastname = values.lastname.trim();
+                if (!values.firstname) {
+                    return toast.error("User first name can't be empty")
+                }
+                if (!validFile) {
                     return toast.error("Invalid File")
-                 }
+                }
                 setSubmitting(true);
                 values.myFile = selFile;
                 console.log(values.email, " email ");
                 values.email = values.email.toLowerCase();
-                values.firstname = values.firstname.trim();
-                values.lastname = values.lastname.trim();
                 setTimeout(() => {
                     console.log(values);
                     console.log(values.myFile);
@@ -63,30 +66,30 @@ export default function Signup() {
 
     const validateImage = (filename) => {
         const allowedExt = ["png", "jpeg", "jpg", "gif"];
-    
+
         // Get the extension of the uploaded file
         const ext = filename.split('.');
         const extension = ext[1];
-    
+
         //Check if the uploaded file is allowed
         return allowedExt.includes(extension);
     };
 
     const uploadFile = async (e) => {
         if (!e.target.files) return;
-    
+
         let file = e.target.files[0];
         console.log(file.name, " user file");
         const isFileValid = validateImage(file.name);
         console.log(isFileValid, "validation result");
-        
+
         if (isFileValid) {
             let converted = await convertToBase64(file);
             console.log(converted);
             console.log(file, 'abc');
             setSelFile(converted);
         }
-    
+
         setValidFile(isFileValid);
         console.log(isFileValid, "final validation result");
         console.log(validFile, "updated state value");
