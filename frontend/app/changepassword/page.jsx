@@ -72,18 +72,18 @@ function ChangePassword() {
     })
 
     return (
-        <div className="bg-body pt-16 pb-80">
-            <Card className="w-3/5 m-auto">
+        <div className="bg-body pt-16 pb-96">
+            <Card className="w-96 m-auto ">
                 <h1 className="text-center text-2xl font-bold">Change Your Password here</h1>
-                <div>
+                <div className="px-5">
                     <form onSubmit={passwordForm.handleSubmit}>
                         <label>Current Password</label>
                         <TextInput required type="password" name="currentpassword" className="margin-vt" placeholder="Your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.currentpassword}/>
                         <label>New Password</label>
                         <TextInput required type="password" name="newpassword" className="margin-vt" placeholder="Your new passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.newpassword}/>
                         <label>Confirm New Password</label>
-                        <TextInput required type="password" name="cnfnewpassword" className="margin-vt" placeholder="Confirm your current passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.cnfnewpassword}/>
-                        <Button disabled={passwordForm.isSubmitting} type="submit" className="my-3 w-full" color="purple" >
+                        <TextInput required type="password" name="cnfnewpassword" className="margin-vt" placeholder="Confirm your new passowrd" onChange={passwordForm?.handleChange} value={passwordForm?.values?.cnfnewpassword}/>
+                        <Button disabled={passwordForm.isSubmitting} type="submit" className="my-5 w-full" color="purple" >
                             {
                                 passwordForm.isSubmitting ? (
                                     <>
