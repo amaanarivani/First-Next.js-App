@@ -55,6 +55,26 @@ path {
   }
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #d9d9d9; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d9d9d9; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #757575; 
+}
+
 .margin-vt{
   margin-top: 0.5rem !important; 
   margin-bottom: 0.5rem !important;
